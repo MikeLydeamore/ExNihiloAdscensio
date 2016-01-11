@@ -1,0 +1,7 @@
+item.hammerWood.name=Wooden Hammer
+item.hammerStone.name=Stone Hammer
+item.hammerIron.name=Iron Hammer
+item.hammerGold.name=Gold Hammer
+item.hammerDiamond.name=Diamond Hammer
+
+tile.blockDust.name=Dust
