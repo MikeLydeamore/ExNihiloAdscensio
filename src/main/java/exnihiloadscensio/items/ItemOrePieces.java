@@ -3,6 +3,7 @@ package exnihiloadscensio.items;
 import java.util.List;
 
 import lombok.Getter;
+import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.texturing.TextureDynamic;
 import net.minecraft.creativetab.CreativeTabs;
@@ -47,7 +48,7 @@ public class ItemOrePieces extends Item {
 		ResourceLocation baseTexture = new ResourceLocation("exnihiloadscensio", "textures/items/ItemBrokenBase.png");
 		ResourceLocation templateTexture = new ResourceLocation("exnihiloadscensio", "textures/items/ItemBrokenTemplate.png");
 		
-		if (!Proxy.runningOnServer())
+		if (!ExNihiloAdscensio.proxy.runningOnServer())
 		{
 			texture[brokenIndex] = new TextureDynamic(name, baseTexture, templateTexture, color);
 			//attachTexture(broken, texture_name, baseTexture, templateTexture, color);
