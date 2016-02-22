@@ -1,8 +1,10 @@
 package exnihiloadscensio.blocks;
 
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import exnihiloadscensio.ExNihiloAdscensio;
+import exnihiloadscensio.tiles.TileBarrel;
 
 public class ENBlocks {
 	
@@ -16,6 +18,7 @@ public class ENBlocks {
 		
 		barrelWood = new BlockBarrel();
 		barrelWood.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		GameRegistry.registerTileEntity(TileBarrel.class, "blockBarrel");
 	}
 	
 	@SideOnly(Side.CLIENT)

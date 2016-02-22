@@ -1,5 +1,11 @@
 package exnihiloadscensio.tiles;
 
+import java.util.ArrayList;
+
+import lombok.Getter;
+import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.registries.BarrelModeRegistry;
+import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import exnihiloadscensio.util.BarrelMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,39 +21,96 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 
 	private ItemStack processingStack;
 	private FluidTank fluidTank;
-	private BarrelMode mode;
-	
+	@Getter
+	private IBarrelMode mode;
+
 	public TileBarrel()
 	{
 		fluidTank = new FluidTank(1000);
 	}
-	
+
+	public boolean onBlockActivated(EntityPlayer player, EnumFacing side)
+	{
+		if (mode == null)
+		{
+			if (player.getHeldItem() != null)
+			{
+				ItemStack stack = player.getHeldItem();
+				ArrayList<IBarrelMode> modes = BarrelModeRegistry.getModes(TriggerType.ITEM);
+				if (modes == null)
+					return false;
+				for (IBarrelMode possibleMode : modes)
+				{
+					if (possibleMode.isTriggerItemStack(stack))
+					{
+						mode = possibleMode;
+						this.markDirty();
+						return true;
+					}
+				}
+			}
+		}
+		else
+		{
+			
+		}
+
+		return false;
+	}
+
 	@Override
 	public void update()
 	{
+		if (mode != null)
+			System.out.println(mode.getName());
+		else
+			System.out.println("null");
 		if (worldObj.isRemote)
 			return;
 	}
-	
+
+	@Override
 	public void writeToNBT(NBTTagCompound tag)
 	{
+		super.writeToNBT(tag);
 		NBTTagCompound fluidTag = new NBTTagCompound();
 		fluidTank.writeToNBT(fluidTag);
 		tag.setTag("tank", fluidTag);
-		
-		tag.setInteger("mode", mode.getNumber())
+
+		if (mode != null)
+		{
+			NBTTagCompound barrelModeTag = new NBTTagCompound();
+			mode.writeToNBT(barrelModeTag);
+			barrelModeTag.setString("name", mode.getClass().getName());
+			tag.setTag("mode", barrelModeTag);
+		}
+
 	}
-	
+
+	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
+		super.readFromNBT(tag);
 		if (tag.hasKey("tank"))
 			fluidTank.readFromNBT((NBTTagCompound) tag.getTag("tank"));
+		if (tag.hasKey("mode"))
+		{
+			NBTTagCompound barrelModeTag = (NBTTagCompound) tag.getTag("mode");
+			try 
+			{
+				mode = (IBarrelMode) Class.forName(barrelModeTag.getString("name")).newInstance();
+			} catch (Exception e)
+			{
+				e.printStackTrace(); //Naughty
+			}
+			mode.readFromNBT(barrelModeTag);
+		}
 	}
 	/* *****
 	 * ISIDEDINVENTORY
 	 * *****/
-	
-	
+
+
 	@Override
 	public int getSizeInventory() 
 	{
@@ -59,7 +122,7 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 	{
 		if (index == 0)
 			return processingStack;
-		
+
 		return null;
 	}
 
@@ -115,7 +178,7 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 	@Override
 	public void setField(int id, int value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -127,7 +190,7 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

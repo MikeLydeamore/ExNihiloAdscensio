@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
@@ -35,9 +36,12 @@ public class ExNihiloAdscensio {
 		ENItems.init();
 		ENBlocks.init();
 		proxy.initModels();
+		proxy.registerRenderers();
 		
 		HammerRegistry.addDefaultRecipes();
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());
+		
+		BarrelModeRegistry.registerDefaults();
 	}
 	
 	@EventHandler

@@ -8,5 +8,10 @@ public class CommonProxy {
 	{
 		return true;
 	}
+	
+	public void registerRenderers()
+	{
+		
+	}
 
 }
