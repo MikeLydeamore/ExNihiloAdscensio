@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 
@@ -42,6 +43,8 @@ public class ExNihiloAdscensio {
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());
 		
 		BarrelModeRegistry.registerDefaults();
+		
+		PacketHandler.initPackets();
 	}
 	
 	@EventHandler

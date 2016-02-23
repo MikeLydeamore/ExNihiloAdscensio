@@ -3,7 +3,10 @@ package exnihiloadscensio.tiles;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import lombok.Setter;
 import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.networking.MessageBarrelModeUpdate;
+import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import exnihiloadscensio.util.BarrelMode;
@@ -44,7 +47,9 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 					if (possibleMode.isTriggerItemStack(stack))
 					{
 						mode = possibleMode;
+						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getClass().getName(), this.pos), this);
 						this.markDirty();
+						this.worldObj.markBlockForUpdate(pos);
 						return true;
 					}
 				}
@@ -52,7 +57,7 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 		}
 		else
 		{
-			
+
 		}
 
 		return false;
@@ -96,14 +101,21 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 		if (tag.hasKey("mode"))
 		{
 			NBTTagCompound barrelModeTag = (NBTTagCompound) tag.getTag("mode");
-			try 
-			{
-				mode = (IBarrelMode) Class.forName(barrelModeTag.getString("name")).newInstance();
-			} catch (Exception e)
-			{
-				e.printStackTrace(); //Naughty
-			}
+			this.setMode(barrelModeTag.getString("name"));
 			mode.readFromNBT(barrelModeTag);
+		}
+	}
+
+	public void setMode(String modeName)
+	{
+		try 
+		{
+			mode = (IBarrelMode) Class.forName(modeName).newInstance();
+			this.markDirty();
+			this.worldObj.markBlockForUpdate(pos);
+		} catch (Exception e)
+		{
+			e.printStackTrace(); //Naughty
 		}
 	}
 	/* *****
