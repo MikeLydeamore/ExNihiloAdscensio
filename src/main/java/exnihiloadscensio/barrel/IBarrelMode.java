@@ -1,8 +1,15 @@
 package exnihiloadscensio.barrel;
 
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.tiles.TileBarrel;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,9 +27,15 @@ public interface IBarrelMode {
 	
 	public String getName();
 	
+	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ);
+	
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender();
 	
+	public Color getColorForRender();
+	
 	public float getFilledLevelForRender();
+	
+	public void update(TileBarrel barrel);
 
 }

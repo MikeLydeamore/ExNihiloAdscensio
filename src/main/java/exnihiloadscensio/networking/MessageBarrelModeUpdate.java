@@ -1,7 +1,5 @@
 package exnihiloadscensio.networking;
 
-import com.sun.jna.platform.win32.WinNT.HANDLE;
-
 import exnihiloadscensio.tiles.TileBarrel;
 
 import io.netty.buffer.ByteBuf;

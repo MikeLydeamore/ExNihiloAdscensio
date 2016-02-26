@@ -2,6 +2,7 @@ package exnihiloadscensio.client.renderers;
 
 import org.lwjgl.opengl.GL11;
 
+import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -25,30 +26,31 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel> {
 		GlStateManager.disableLighting();
 		if (te.getMode() != null)
 		{
-			
+
 			TextureAtlasSprite icon = te.getMode().getTextureForRender();
 			double minU = (double) icon.getMinU();
 			double maxU = (double) icon.getMaxU();
 			double minV = (double) icon.getMinV();
 			double maxV = (double) icon.getMaxV();
-			
+
 			this.bindTexture(TextureMap.locationBlocksTexture);
 
-			wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-			
+			wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+
 			float fillAmount = te.getMode().getFilledLevelForRender();
-			wr.pos(0.0625,fillAmount,0.0625).tex(minU, minV).endVertex();
-			wr.pos(0.0625,fillAmount,0.9375).tex(minU,maxV).endVertex();
-			wr.pos(0.9375,fillAmount,0.9375).tex(maxU,maxV).endVertex();
-			wr.pos(0.9375,fillAmount,0.0625).tex(maxU,minV).endVertex();
-			
+
+			Color color = te.getMode().getColorForRender();
+			wr.pos(0.125f,fillAmount,0.125f).tex(minU, minV).color(color.r, color.g, color.b, color.a).endVertex();
+			wr.pos(0.125f,fillAmount,0.875f).tex(minU,maxV).color(color.r, color.g, color.b, color.a).endVertex();
+			wr.pos(0.875f,fillAmount,0.875f).tex(maxU,maxV).color(color.r, color.g, color.b, color.a).endVertex();
+			wr.pos(0.875f,fillAmount,0.125f).tex(maxU,minV).color(color.r, color.g, color.b, color.a).endVertex();
+
 			tes.draw();
 		}
-		
+
 		GlStateManager.disableBlend();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
-		//tessellator.setColorRGBA_F(color.r, color.g, color.b, color.a);
 
 	}
 

@@ -10,14 +10,20 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import exnihiloadscensio.util.BarrelMode;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 
 public class TileBarrel extends TileEntity implements ITickable, ISidedInventory {
@@ -32,7 +38,7 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 		fluidTank = new FluidTank(1000);
 	}
 
-	public boolean onBlockActivated(EntityPlayer player, EnumFacing side)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (mode == null)
 		{
@@ -46,8 +52,9 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 				{
 					if (possibleMode.isTriggerItemStack(stack))
 					{
-						mode = possibleMode;
+						setMode(possibleMode.getClass().getName());
 						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getClass().getName(), this.pos), this);
+						mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
 						this.markDirty();
 						this.worldObj.markBlockForUpdate(pos);
 						return true;
@@ -57,7 +64,7 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 		}
 		else
 		{
-
+			return mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
 		}
 
 		return false;
@@ -66,12 +73,10 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 	@Override
 	public void update()
 	{
-		if (mode != null)
-			System.out.println(mode.getName());
-		else
-			System.out.println("null");
 		if (worldObj.isRemote)
 			return;
+		if (mode != null)
+			mode.update(this);
 	}
 
 	@Override
@@ -104,6 +109,22 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 			this.setMode(barrelModeTag.getString("name"));
 			mode.readFromNBT(barrelModeTag);
 		}
+	}
+	
+	@Override
+	public Packet getDescriptionPacket()
+    {
+		NBTTagCompound tag = new NBTTagCompound();
+		this.writeToNBT(tag);
+
+		return new S35PacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
+    }
+	
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+	{
+		NBTTagCompound tag = pkt.getNbtCompound();
+		readFromNBT(tag);
 	}
 
 	public void setMode(String modeName)

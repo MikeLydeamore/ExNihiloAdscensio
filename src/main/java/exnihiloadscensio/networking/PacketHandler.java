@@ -17,6 +17,7 @@ public class PacketHandler {
 	public static void initPackets()
 	{
 		INSTANCE.registerMessage(MessageBarrelModeUpdate.MessageBarrelModeUpdateHandler.class, MessageBarrelModeUpdate.class, id++, Side.CLIENT);
+		INSTANCE.registerMessage(MessageCompostUpdate.MessageCompostAmountUpdateHandler.class, MessageCompostUpdate.class, id++, Side.CLIENT);
 	}
 	
 	public static void sendToAllAround(IMessage message, TileEntity te, int range) 

@@ -1,5 +1,7 @@
 package exnihiloadscensio;
 
+import javax.security.auth.login.Configuration;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -14,10 +16,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.config.Config;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
+import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
@@ -34,6 +38,7 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
+		Config.doNormalConfig(event.getSuggestedConfigurationFile());
 		ENItems.init();
 		ENBlocks.init();
 		proxy.initModels();
@@ -56,7 +61,7 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void postInit(FMLPostInitializationEvent event)
 	{
-		
+		CompostRegistry.registerDefaults();
 	}
 	
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")
