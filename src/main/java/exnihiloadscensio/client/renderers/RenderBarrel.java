@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.util.Util;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -40,6 +41,8 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel> {
 			float fillAmount = te.getMode().getFilledLevelForRender();
 
 			Color color = te.getMode().getColorForRender();
+			if (color == null)
+				color = Util.whiteColor;
 			wr.pos(0.125f,fillAmount,0.125f).tex(minU, minV).color(color.r, color.g, color.b, color.a).endVertex();
 			wr.pos(0.125f,fillAmount,0.875f).tex(minU,maxV).color(color.r, color.g, color.b, color.a).endVertex();
 			wr.pos(0.875f,fillAmount,0.875f).tex(maxU,maxV).color(color.r, color.g, color.b, color.a).endVertex();

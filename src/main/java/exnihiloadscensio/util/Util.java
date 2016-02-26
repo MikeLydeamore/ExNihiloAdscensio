@@ -1,5 +1,6 @@
 package exnihiloadscensio.util;
 
+import exnihiloadscensio.texturing.Color;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -8,6 +9,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
 public class Util {
+	
+	public static Color whiteColor = new Color(1f, 1f, 1f, 1f);
 	
 	public static void dropItemInWorld(TileEntity source, EntityPlayer player, ItemStack stack, double speedfactor) 
 	{
