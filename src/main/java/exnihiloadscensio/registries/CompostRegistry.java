@@ -1,12 +1,21 @@
 package exnihiloadscensio.registries;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import exnihiloadscensio.config.ItemTypeAdapter;
+import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.ItemInfo;
@@ -15,6 +24,60 @@ import exnihiloadscensio.util.Util;
 public class CompostRegistry {
 
 	private static HashMap<ItemInfo, Compostable> registry = new HashMap<ItemInfo, Compostable>();
+
+	private static Gson gson;
+
+	public static void loadJson(File file)
+	{
+		gson = new GsonBuilder().setPrettyPrinting()
+				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
+		if (file.exists())
+		{
+			try 
+			{
+				FileReader fr = new FileReader(file);
+				HashMap<String, Compostable> gsonInput = gson.fromJson(fr, new TypeToken<HashMap<String, Compostable>>(){}.getType());
+				
+				Iterator<String> it = gsonInput.keySet().iterator();
+				
+				while (it.hasNext())
+				{
+					String s = (String) it.next();
+					ItemInfo stack = new ItemInfo(s);
+					register(stack, gsonInput.get(s));
+				}
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			registerDefaults();
+			saveJson(file);
+		}
+	}
+	
+	public static void saveJson(File file)
+	{
+		try
+		{
+			FileWriter fw = new FileWriter(file);
+			gson.toJson(registry, fw);
+			
+			fw.close();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void register(ItemInfo item, Compostable compostable)
+	{
+		registry.put(item, compostable);
+	}
 
 	public static void register(Item item, int meta, float value, Color color)
 	{
@@ -74,8 +137,8 @@ public class CompostRegistry {
 		register(Blocks.leaves, 1, 0.125f, new Color("2E8042"));
 		register(Blocks.leaves, 2, 0.125f, new Color("6CC449"));
 		register(Blocks.leaves, 3, 0.125f, new Color("22A116"));
-		register(Blocks.leaves2, 4, 0.125f, new Color("B8C754"));
-		register(Blocks.leaves2, 5, 0.125f, new Color("378030"));
+		register(Blocks.leaves2, 0, 0.125f, new Color("B8C754"));
+		register(Blocks.leaves2, 1, 0.125f, new Color("378030"));
 
 		register(Items.spider_eye, 0, 0.08f, new Color("963E44"));
 

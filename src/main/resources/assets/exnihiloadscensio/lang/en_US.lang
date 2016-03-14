@@ -4,4 +4,7 @@ item.hammerIron.name=Iron Hammer
 item.hammerGold.name=Gold Hammer
 item.hammerDiamond.name=Diamond Hammer
 
+item.crookWood.name=Wooden Crook
+item.crookBone.name=Bone Crook
+
 tile.blockDust.name=Dust

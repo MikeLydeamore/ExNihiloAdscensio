@@ -3,6 +3,8 @@ package exnihiloadscensio.handlers;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
@@ -48,6 +50,20 @@ public class HandlerCrook {
 				}
 
 			}
+		}
+		
+		if (event.state.getBlock() instanceof BlockLeavesBase) //Simulate vanilla drops without firing event
+		{
+			Block block = event.state.getBlock();
+			int fortune = EnchantmentHelper.getFortuneModifier(event.harvester);
+			java.util.List<ItemStack> items = block.getDrops(event.world, event.pos, event.state, fortune);
+            for (ItemStack item : items)
+            {
+                if (event.world.rand.nextFloat() <= event.dropChance)
+                {
+                    Block.spawnAsEntity(event.world, event.pos, item);
+                }
+            }
 		}
 
 	}

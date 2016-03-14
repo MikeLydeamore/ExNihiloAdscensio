@@ -24,6 +24,11 @@ public class CrookRegistry {
 		map.put(state, list);
 	}
 	
+	public static boolean registered(Block block)
+	{
+		return map.containsKey(block.getDefaultState());
+	}
+	
 	public static ArrayList<CrookReward> getRewards(IBlockState state)
 	{
 		if (!map.containsKey(state))

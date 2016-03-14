@@ -1,7 +1,9 @@
 package exnihiloadscensio.util;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,6 +25,24 @@ public class ItemInfo {
 	{
 		item = stack.getItem();
 		meta = stack.getItemDamage();
+	}
+	
+	public ItemInfo(String string)
+	{
+		String[] arr = string.split(":");
+		item = Item.itemRegistry.getObject(new ResourceLocation(arr[0]+":"+arr[1]));
+		meta = Integer.parseInt(arr[2]);
+	}
+	
+	public ItemInfo(IBlockState state)
+	{
+		this.item = Item.getItemFromBlock(state.getBlock());
+		this.meta = state.getBlock().getMetaFromState(state);
+	}
+	
+	public String toString()
+	{
+		return Item.itemRegistry.getNameForObject(item)+":"+meta;
 	}
 
 }

@@ -1,6 +1,7 @@
 package exnihiloadscensio.items;
 
 import exnihiloadscensio.ExNihiloAdscensio;
+import exnihiloadscensio.items.tools.CrookBase;
 import exnihiloadscensio.items.tools.HammerBase;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,6 +14,9 @@ public class ENItems {
 	public static HammerBase hammerIron;
 	public static HammerBase hammerDiamond;
 	public static HammerBase hammerGold;
+	
+	public static CrookBase crookWood;
+	public static CrookBase crookBone;
 	
 	public static void init()
 	{
@@ -31,6 +35,12 @@ public class ENItems {
 		hammerGold = new HammerBase("hammerGold", 64, ToolMaterial.GOLD);
 		hammerGold.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
+		crookWood = new CrookBase("crookWood", 64);
+		crookWood.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		
+		crookBone = new CrookBase("crookBone", 256);
+		crookBone.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -41,5 +51,8 @@ public class ENItems {
 		hammerIron.initModel();
 		hammerDiamond.initModel();
 		hammerGold.initModel();
+		
+		crookWood.initModel();
+		crookBone.initModel();
 	}
 }

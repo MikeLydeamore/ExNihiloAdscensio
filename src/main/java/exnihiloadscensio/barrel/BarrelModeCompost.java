@@ -71,6 +71,7 @@ public class BarrelModeCompost implements IBarrelMode {
 			fillAmount = 0;
 			color = new Color("EEA96D");
 			PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
+			barrel.setMode((IBarrelMode) null);
 			return true;
 		}
 		

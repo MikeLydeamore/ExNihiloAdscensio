@@ -139,6 +139,11 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 			e.printStackTrace(); //Naughty
 		}
 	}
+	
+	public void setMode(IBarrelMode mode)
+	{
+		this.mode = mode;
+	}
 	/* *****
 	 * ISIDEDINVENTORY
 	 * *****/
