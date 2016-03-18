@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 
 public interface IBarrelMode {
 	
@@ -37,5 +38,9 @@ public interface IBarrelMode {
 	public float getFilledLevelForRender();
 	
 	public void update(TileBarrel barrel);
+	
+	public boolean addItem(ItemStack stack, TileBarrel barrel);
+	
+	public ItemStackHandler getHandler(TileBarrel barrel);
 
 }

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 
@@ -84,6 +85,18 @@ public class BarrelModeFluid implements IBarrelMode {
 	public void update(TileBarrel barrel) 
 	{
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public boolean addItem(ItemStack stack, TileBarrel barrel) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ItemStackHandler getHandler(TileBarrel barrel) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

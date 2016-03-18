@@ -3,13 +3,12 @@ package exnihiloadscensio.tiles;
 import java.util.ArrayList;
 
 import lombok.Getter;
-import lombok.Setter;
+import exnihiloadscensio.barrel.BarrelItemHandler;
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
-import exnihiloadscensio.util.BarrelMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -24,18 +23,23 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileBarrel extends TileEntity implements ITickable, ISidedInventory {
+public class TileBarrel extends TileEntity implements ITickable {
 
 	private ItemStack processingStack;
 	private FluidTank fluidTank;
 	@Getter
 	private IBarrelMode mode;
+	
+	private BarrelItemHandler itemHandler;
 
 	public TileBarrel()
 	{
 		fluidTank = new FluidTank(1000);
+		itemHandler = new BarrelItemHandler(this);
 	}
 
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -94,6 +98,9 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 			barrelModeTag.setString("name", mode.getClass().getName());
 			tag.setTag("mode", barrelModeTag);
 		}
+		
+		NBTTagCompound handlerTag = itemHandler.serializeNBT();
+		tag.setTag("itemHandler", handlerTag);
 
 	}
 
@@ -107,7 +114,13 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 		{
 			NBTTagCompound barrelModeTag = (NBTTagCompound) tag.getTag("mode");
 			this.setMode(barrelModeTag.getString("name"));
-			mode.readFromNBT(barrelModeTag);
+			if (mode != null)
+				mode.readFromNBT(barrelModeTag);
+		}
+		
+		if (tag.hasKey("itemHandler"))
+		{
+			itemHandler.deserializeNBT((NBTTagCompound) tag.getTag("itemHandler"));
 		}
 	}
 	
@@ -144,129 +157,25 @@ public class TileBarrel extends TileEntity implements ITickable, ISidedInventory
 	{
 		this.mode = mode;
 	}
-	/* *****
-	 * ISIDEDINVENTORY
-	 * *****/
-
-
+	
 	@Override
-	public int getSizeInventory() 
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
-		return 1;
+		if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			if (this.mode == null)
+				return (T) itemHandler;
+			else
+				return (T) this.mode.getHandler(this);
+		}
+
+		return super.getCapability(capability, facing);
 	}
-
+	
 	@Override
-	public ItemStack getStackInSlot(int index) 
-	{
-		if (index == 0)
-			return processingStack;
-
-		return null;
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count) 
-	{
-		return null; //Can't extract.
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index) 
-	{
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) 
-	{
-		if (index == 0)
-			processingStack = stack;		
-	}
-
-	@Override
-	public int getInventoryStackLimit() 
-	{
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) 
-	{
-		return false;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int getField(int id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public IChatComponent getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn,
-			EnumFacing direction) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack,
-			EnumFacing direction) 
-	{
-		return false;
-	}
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+    }
 
 }

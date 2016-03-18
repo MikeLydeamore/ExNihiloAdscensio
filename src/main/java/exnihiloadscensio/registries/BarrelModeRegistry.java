@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 
-import exnihiloadscensio.barrel.BarrelModeCompost;
 import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 
 public class BarrelModeRegistry {
 	

@@ -7,7 +7,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import exnihiloadscensio.barrel.BarrelModeCompost;
+import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 
@@ -77,7 +77,6 @@ public class MessageCompostUpdate implements IMessage {
 						mode.setFillAmount(msg.fillAmount);
 						mode.setColor(new Color(msg.r, msg.g, msg.b, msg.a));
 						mode.setProgress(msg.progress);
-						Minecraft.getMinecraft().thePlayer.worldObj.markBlockForUpdate(new BlockPos(msg.x, msg.y, msg.z));
 					}
 				}
 			});

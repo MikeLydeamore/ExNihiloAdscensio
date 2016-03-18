@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import exnihiloadscensio.config.ItemTypeAdapter;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.texturing.Color;
