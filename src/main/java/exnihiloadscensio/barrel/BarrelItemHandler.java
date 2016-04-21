@@ -7,6 +7,7 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import exnihiloadscensio.tiles.TileBarrel;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -42,7 +43,8 @@ public class BarrelItemHandler extends ItemStackHandler {
 					PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(barrel.getMode().getClass().getName(), barrel.getPos()), barrel);
 					barrel.getMode().addItem(stack, barrel);
 					barrel.markDirty();
-					barrel.getWorld().markBlockForUpdate(barrel.getPos());
+					IBlockState state = barrel.getWorld().getBlockState(barrel.getPos());
+					barrel.getWorld().notifyBlockUpdate(barrel.getPos(), state, state, 3);
 				}
 				
 				ItemStack ret = stack.copy();

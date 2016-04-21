@@ -16,12 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidTank;
@@ -46,9 +46,9 @@ public class TileBarrel extends TileEntity implements ITickable {
 	{
 		if (mode == null)
 		{
-			if (player.getHeldItem() != null)
+			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
 			{
-				ItemStack stack = player.getHeldItem();
+				ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 				ArrayList<IBarrelMode> modes = BarrelModeRegistry.getModes(TriggerType.ITEM);
 				if (modes == null)
 					return false;
@@ -60,7 +60,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getClass().getName(), this.pos), this);
 						mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
 						this.markDirty();
-						this.worldObj.markBlockForUpdate(pos);
+						this.worldObj.notifyBlockUpdate(pos, state, state, 3);
 						return true;
 					}
 				}
@@ -130,11 +130,11 @@ public class TileBarrel extends TileEntity implements ITickable {
 		NBTTagCompound tag = new NBTTagCompound();
 		this.writeToNBT(tag);
 
-		return new S35PacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
+		return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
     }
 	
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
 		NBTTagCompound tag = pkt.getNbtCompound();
 		readFromNBT(tag);
@@ -146,7 +146,8 @@ public class TileBarrel extends TileEntity implements ITickable {
 		{
 			mode = (IBarrelMode) Class.forName(modeName).newInstance();
 			this.markDirty();
-			this.worldObj.markBlockForUpdate(pos);
+			IBlockState state = this.worldObj.getBlockState(pos);
+			this.worldObj.notifyBlockUpdate(pos, state, state, 3);
 		} catch (Exception e)
 		{
 			e.printStackTrace(); //Naughty

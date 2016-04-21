@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,15 +51,6 @@ public class BarrelModeFluid implements IBarrelMode {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, TileBarrel barrel,
-			BlockPos pos, IBlockState state, EntityPlayer player,
-			EnumFacing side, float hitX, float hitY, float hitZ) 
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender() 
 	{
@@ -97,6 +88,14 @@ public class BarrelModeFluid implements IBarrelMode {
 	public ItemStackHandler getHandler(TileBarrel barrel) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, TileBarrel barrel,
+			BlockPos pos, IBlockState state, EntityPlayer player,
+			EnumFacing side, float hitX, float hitY, float hitZ) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

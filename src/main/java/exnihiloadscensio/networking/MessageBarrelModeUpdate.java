@@ -5,7 +5,7 @@ import exnihiloadscensio.tiles.TileBarrel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -57,7 +57,7 @@ public class MessageBarrelModeUpdate implements IMessage {
 					{
 						TileBarrel te = (TileBarrel) entity;
 						te.setMode(msg.modeName);
-						Minecraft.getMinecraft().thePlayer.worldObj.markBlockForUpdate(new BlockPos(msg.x, msg.y, msg.z));
+						//Minecraft.getMinecraft().thePlayer.worldObj.notifyBlockUpdate(new BlockPos(msg.x, msg.y, msg.z));
 					}
 				}
 			});

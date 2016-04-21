@@ -4,7 +4,9 @@ import com.google.common.collect.Sets;
 
 import exnihiloadscensio.registries.CrookRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.client.model.ModelLoader;
@@ -18,11 +20,11 @@ public class CrookBase extends ItemTool implements ICrook {
 
 	public CrookBase(String name, int maxUses)
 	{
-		super(0.0f, ToolMaterial.WOOD, Sets.newHashSet(new Block[]{}));
+		super(ToolMaterial.WOOD, Sets.newHashSet(new Block[]{}));
 		
 		this.setUnlocalizedName(name);
 		this.setRegistryName(name);
-		GameRegistry.registerItem(this);
+		GameRegistry.<Item>register(this);
 		this.setMaxDamage(maxUses);
 
 	}
@@ -33,18 +35,10 @@ public class CrookBase extends ItemTool implements ICrook {
 		return true;
 	}
 
-	public float func_150893_a(ItemStack stack, Block block)
-	{
-		return CrookRegistry.registered(block) ? this.efficiencyOnProperMaterial : 1.0F;
-	}
-
 	@Override
-	public boolean canHarvestBlock(Block block)
+	public float getStrVsBlock(ItemStack stack, IBlockState state)
 	{
-		if (!CrookRegistry.registered(block))
-			return false;
-
-		return true;
+		return CrookRegistry.registered(state.getBlock()) ? this.efficiencyOnProperMaterial : 1.0F;
 	}
 
 	@SideOnly(Side.CLIENT)

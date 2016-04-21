@@ -2,11 +2,13 @@ package exnihiloadscensio.handlers;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeavesBase;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,49 +21,49 @@ public class HandlerCrook {
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void crook(BlockEvent.HarvestDropsEvent event)
 	{
-		if (event.world.isRemote)
+		if (event.getWorld().isRemote)
 			return;
 
-		if (event.harvester == null)
+		if (event.getHarvester() == null)
 			return;
 
-		if (event.isSilkTouching)
+		if (event.isSilkTouching())
 			return;
 
-		ItemStack held = event.harvester.getHeldItem();
+		ItemStack held = event.getHarvester().getHeldItem(EnumHand.MAIN_HAND);
 		if (!isCrook(held))
 			return;
 		
-		ArrayList<CrookReward> rewards = CrookRegistry.getRewards(event.state);
+		ArrayList<CrookReward> rewards = CrookRegistry.getRewards(event.getState());
 		if (rewards != null && rewards.size() > 0)
 		{
-			event.drops.clear();
-			event.dropChance = 1f;
+			event.getDrops().clear();
+			event.setDropChance(1f);
 
-			int fortune = EnchantmentHelper.getFortuneModifier(event.harvester);
+			int fortune = event.getFortuneLevel();
 			Iterator<CrookReward> it = rewards.iterator();
 			while(it.hasNext())
 			{
 				CrookReward reward = it.next();
 
-				if (event.world.rand.nextFloat() <= reward.getChance() + (reward.getFortuneChance() * fortune))
+				if (event.getWorld().rand.nextFloat() <= reward.getChance() + (reward.getFortuneChance() * fortune))
 				{
-					event.drops.add(reward.getStack().copy());
+					event.getDrops().add(reward.getStack().copy());
 				}
 
 			}
 		}
 		
-		if (event.state.getBlock() instanceof BlockLeavesBase) //Simulate vanilla drops without firing event
+		if (event.getState().getBlock() instanceof BlockLeaves) //Simulate vanilla drops without firing event
 		{
-			Block block = event.state.getBlock();
-			int fortune = EnchantmentHelper.getFortuneModifier(event.harvester);
-			java.util.List<ItemStack> items = block.getDrops(event.world, event.pos, event.state, fortune);
+			Block block = event.getState().getBlock();
+			int fortune = event.getFortuneLevel();
+			java.util.List<ItemStack> items = block.getDrops(event.getWorld(), event.getPos(), event.getState(), fortune);
             for (ItemStack item : items)
             {
-                if (event.world.rand.nextFloat() <= event.dropChance)
+                if (event.getWorld().rand.nextFloat() <= event.getDropChance())
                 {
-                    Block.spawnAsEntity(event.world, event.pos, item);
+                    Block.spawnAsEntity(event.getWorld(), event.getPos(), item);
                 }
             }
 		}

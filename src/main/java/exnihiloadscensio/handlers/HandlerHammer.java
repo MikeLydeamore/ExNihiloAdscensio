@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,35 +18,35 @@ public class HandlerHammer {
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void hammer(BlockEvent.HarvestDropsEvent event)
 	{
-		if (event.world.isRemote)
+		if (event.getWorld().isRemote)
 			return;
 
-		if (event.harvester == null)
+		if (event.getHarvester() == null)
 			return;
 
-		if (event.isSilkTouching)
+		if (event.isSilkTouching())
 			return;
 
-		ItemStack held = event.harvester.getHeldItem();
+		ItemStack held = event.getHarvester().getHeldItem(EnumHand.MAIN_HAND);
 		if (!isHammer(held))
 			return;
 		
 		int miningLevel = ((IHammer) held.getItem()).getMiningLevel(held);
-		ArrayList<HammerReward> rewards = HammerRegistry.getRewards(event.state, miningLevel);
+		ArrayList<HammerReward> rewards = HammerRegistry.getRewards(event.getState(), miningLevel);
 		if (rewards != null && rewards.size() > 0)
 		{
-			event.drops.clear();
-			event.dropChance = 1f;
+			event.getDrops().clear();
+			event.setDropChance(1f);
 
-			int fortune = EnchantmentHelper.getFortuneModifier(event.harvester);
+			int fortune = event.getFortuneLevel();
 			Iterator<HammerReward> it = rewards.iterator();
 			while(it.hasNext())
 			{
 				HammerReward reward = it.next();
 
-				if (event.world.rand.nextFloat() <= reward.getChance() + (reward.getFortuneChance() * fortune))
+				if (event.getWorld().rand.nextFloat() <= reward.getChance() + (reward.getFortuneChance() * fortune))
 				{
-					event.drops.add(reward.getStack().copy());
+					event.getDrops().add(reward.getStack().copy());
 				}
 
 			}

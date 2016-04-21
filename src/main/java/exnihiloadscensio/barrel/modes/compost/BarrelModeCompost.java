@@ -20,8 +20,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,9 +52,9 @@ public class BarrelModeCompost implements IBarrelMode {
 	{
 		if (fillAmount < 1)
 		{
-			if (player.getHeldItem() != null)
+			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
 			{
-				ItemInfo info = ItemInfo.getItemInfoFromStack(player.getHeldItem());
+				ItemInfo info = ItemInfo.getItemInfoFromStack(player.getHeldItem(EnumHand.MAIN_HAND));
 				if (CompostRegistry.containsItem(info))
 				{
 					Compostable compost = CompostRegistry.getItem(info);
@@ -67,7 +68,7 @@ public class BarrelModeCompost implements IBarrelMode {
 					if (fillAmount > 1)
 						fillAmount = 1;
 					if (!player.capabilities.isCreativeMode)
-						player.getHeldItem().stackSize--;
+						player.getHeldItem(EnumHand.MAIN_HAND).stackSize--;
 					PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
 					barrel.markDirty();
 					return true;

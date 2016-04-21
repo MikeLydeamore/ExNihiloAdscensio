@@ -29,7 +29,7 @@ public class ENItems {
 		hammerIron = new HammerBase("hammerIron", 512, ToolMaterial.IRON);
 		hammerIron.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
-		hammerDiamond = new HammerBase("hammerDiamond", 4096, ToolMaterial.EMERALD);
+		hammerDiamond = new HammerBase("hammerDiamond", 4096, ToolMaterial.DIAMOND);
 		hammerDiamond.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
 		hammerGold = new HammerBase("hammerGold", 64, ToolMaterial.GOLD);

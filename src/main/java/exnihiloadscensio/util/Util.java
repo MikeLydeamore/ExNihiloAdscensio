@@ -5,8 +5,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 public class Util {
 	
@@ -43,7 +43,7 @@ public class Util {
 		EntityItem droppedEntity = new EntityItem(source.getWorld(), stackCoordX, stackCoordY, stackCoordZ, stack);
 
 		if (player != null) {
-			Vec3 motion = new Vec3(player.posX - stackCoordX, player.posY - stackCoordY, player.posZ - stackCoordZ);
+			Vec3d motion = new Vec3d(player.posX - stackCoordX, player.posY - stackCoordY, player.posZ - stackCoordZ);
 			motion.normalize();
 			droppedEntity.motionX = motion.xCoord;
 			droppedEntity.motionY = motion.yCoord;

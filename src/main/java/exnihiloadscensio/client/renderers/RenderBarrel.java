@@ -7,7 +7,7 @@ import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.Util;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -20,11 +20,11 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel> {
 			float partialTicks, int destroyStage) 
 	{
 		Tessellator tes = Tessellator.getInstance();
-		WorldRenderer wr = tes.getWorldRenderer();
+		VertexBuffer wr = tes.getBuffer();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		GlStateManager.disableLighting();
+		//GlStateManager.disableLighting();
 		if (te.getMode() != null)
 		{
 
@@ -52,7 +52,7 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel> {
 		}
 
 		GlStateManager.disableBlend();
-		GlStateManager.enableLighting();
+		//GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 
 	}
