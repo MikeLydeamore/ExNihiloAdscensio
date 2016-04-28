@@ -47,6 +47,12 @@ public class HammerBase extends ItemTool implements IHammer  {
 	{
 		return HammerRegistry.registered(state.getBlock()) ? this.efficiencyOnProperMaterial : 1.0F;
 	}
+	
+	@Override
+	 public boolean canHarvestBlock(IBlockState state)
+    {
+        return HammerRegistry.registered(state.getBlock());
+    }
 
 
 	@SideOnly(Side.CLIENT)

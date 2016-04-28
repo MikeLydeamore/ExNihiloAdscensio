@@ -12,6 +12,7 @@ import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,6 +42,8 @@ public class BarrelModeCompost implements IBarrelMode {
 	@Setter @Getter
 	private float progress = 0;
 	
+	private IBlockState compostState;
+	
 	private BarrelItemHandlerCompost handler;
 	
 	public BarrelModeCompost()
@@ -50,12 +54,29 @@ public class BarrelModeCompost implements IBarrelMode {
 	@Override
 	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		if (fillAmount < 1)
+		if (fillAmount == 0)
 		{
 			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
 			{
 				ItemInfo info = ItemInfo.getItemInfoFromStack(player.getHeldItem(EnumHand.MAIN_HAND));
 				if (CompostRegistry.containsItem(info))
+				{
+					Compostable comp = CompostRegistry.getItem(info);
+					compostState = Block.getBlockFromItem(comp.getCompostBlock().getItem())
+							.getStateFromMeta(comp.getCompostBlock().getMeta());
+				}
+			}
+		}
+		if (fillAmount < 1 && compostState != null)
+		{
+			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
+			{
+				ItemInfo info = ItemInfo.getItemInfoFromStack(player.getHeldItem(EnumHand.MAIN_HAND));
+				Compostable comp = CompostRegistry.getItem(info);
+				IBlockState testState = Block.getBlockFromItem(comp.getCompostBlock().getItem())
+						.getStateFromMeta(comp.getCompostBlock().getMeta());
+				
+				if (CompostRegistry.containsItem(info) && compostState.equals(testState))
 				{
 					Compostable compost = CompostRegistry.getItem(info);
 					
@@ -77,8 +98,8 @@ public class BarrelModeCompost implements IBarrelMode {
 		}
 		else if (progress >= 1)
 		{
-			removeItem(barrel);
-			Util.dropItemInWorld(barrel, player, new ItemStack(Blocks.dirt), 0.02f);
+			Util.dropItemInWorld(barrel, player, new ItemStack(compostState.getBlock(), 1, compostState.getBlock().getMetaFromState(compostState)), 0.02f);
+			removeItem(barrel);		
 			return true;
 		}
 		
@@ -91,18 +112,24 @@ public class BarrelModeCompost implements IBarrelMode {
 		fillAmount = 0;
 		color = new Color("EEA96D");
 		handler.setStackInSlot(0, null);
+		compostState = null;
 		PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
 		barrel.setMode((IBarrelMode) null);
 	}
 	
 	public boolean addItem(ItemStack stack, TileBarrel barrel)
 	{
+		
 		if (fillAmount < 1)
 		{
 			if (stack != null)
 			{
 				ItemInfo info = ItemInfo.getItemInfoFromStack(stack);
-				if (CompostRegistry.containsItem(info))
+				Compostable comp = CompostRegistry.getItem(info);
+				IBlockState testState = Block.getBlockFromItem(comp.getCompostBlock().getItem())
+						.getStateFromMeta(comp.getCompostBlock().getMeta());
+				
+				if (CompostRegistry.containsItem(info) && compostState.equals(testState))
 				{
 					Compostable compost = CompostRegistry.getItem(info);
 					
@@ -135,8 +162,8 @@ public class BarrelModeCompost implements IBarrelMode {
 			PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
 			barrel.markDirty();
 		}
-		if (progress >= 1)
-			handler.setStackInSlot(0, new ItemStack(Blocks.dirt));
+		if (progress >= 1 && compostState != null)
+			handler.setStackInSlot(0, new ItemStack(compostState.getBlock(), 1, compostState.getBlock().getMetaFromState(compostState)));
 	}
 	
 	@Override
@@ -165,6 +192,11 @@ public class BarrelModeCompost implements IBarrelMode {
 		if (originalColor != null)
 			tag.setInteger("originalColor", originalColor.toInt());
 		tag.setFloat("progress", progress);
+		if (compostState != null)
+		{
+			tag.setString("block", Block.blockRegistry.getNameForObject(compostState.getBlock()).toString());
+			tag.setInteger("meta", compostState.getBlock().getMetaFromState(compostState));
+		}
 
 	}
 
@@ -176,14 +208,22 @@ public class BarrelModeCompost implements IBarrelMode {
 		if (tag.hasKey("originalColor"))
 			this.originalColor = new Color(tag.getInteger("originalColor"));
 		this.progress = tag.getFloat("progress");
+		if (tag.hasKey("block"))
+		{
+			Block block = Block.blockRegistry.getObject(new ResourceLocation(tag.getString("block")));
+			compostState = block.getStateFromMeta(tag.getInteger("meta"));
+		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender()
 	{
+		if (compostState == null)
+			return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+					.getTexture(Blocks.dirt.getDefaultState());
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
-		.getTexture(Blocks.dirt.getDefaultState());
+		.getTexture(compostState);
 	}
 	
 	@Override

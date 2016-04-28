@@ -1,6 +1,7 @@
 package exnihiloadscensio.registries.types;
 
 import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.util.ItemInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,5 +12,7 @@ public class Compostable {
 	private float value;
 	@Getter
 	private Color color;
+	@Getter
+	private ItemInfo compostBlock;
 
 }
