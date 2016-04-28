@@ -129,6 +129,11 @@ public class BarrelModeCompost implements IBarrelMode {
 				IBlockState testState = Block.getBlockFromItem(comp.getCompostBlock().getItem())
 						.getStateFromMeta(comp.getCompostBlock().getMeta());
 				
+				if (CompostRegistry.containsItem(info) && compostState == null)
+				{
+					compostState = testState;
+				}
+				
 				if (CompostRegistry.containsItem(info) && compostState.equals(testState))
 				{
 					Compostable compost = CompostRegistry.getItem(info);

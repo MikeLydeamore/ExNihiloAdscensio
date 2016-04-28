@@ -53,7 +53,7 @@ public class BarrelItemHandler extends ItemStackHandler {
 			}
 		}
 		
-		return null;
+		return stack;
 	}
 
 }

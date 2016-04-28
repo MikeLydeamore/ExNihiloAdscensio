@@ -145,6 +145,7 @@ public class CompostRegistry {
 		register(Items.spider_eye, 0, 0.08f, dirtState, new Color("963E44"));
 
 		register(Items.wheat, 0, 0.08f, dirtState, new Color("E3E162"));	
+		register(Items.wheat_seeds, 0, 0.08f, dirtState, new Color("35A82A"));
 		register(Items.bread, 0, 0.16f, dirtState, new Color("D1AF60"));
 
 		register(Blocks.yellow_flower, 0, 0.10f, dirtState, new Color("FFF461"));
