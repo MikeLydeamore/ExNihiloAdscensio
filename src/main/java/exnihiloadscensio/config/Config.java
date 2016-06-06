@@ -10,6 +10,13 @@ public class Config {
 	public static boolean enableBarrels;
 	
 	public static int compostingTicks;
+	public static int infestedLeavesTicks;
+	
+	public static double silkwormChance;
+	public static double silkwormFortuneChance;
+	
+	public static double stringChance;
+	public static double stringFortuneChance;
 	
 	public static void doNormalConfig(File file)
 	{
@@ -20,6 +27,11 @@ public class Config {
 		enableBarrels = config.get("Mechanics", "barrels", true).getBoolean();
 		
 		compostingTicks = config.get("Composting", "ticksToFormDirt", 600).getInt();
+		
+		infestedLeavesTicks = config.get("Infested Leaves","ticksToTransform",600).getInt();
+		
+		stringChance = config.get("Crooking", "stringChance", 1).getDouble();
+		stringFortuneChance = config.get("Crooking", "stringFortuneChance", 1).getDouble();
 		
 		if (config.hasChanged())
 			config.save();

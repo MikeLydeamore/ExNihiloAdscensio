@@ -18,7 +18,7 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.hammerDiamond, new Object[] { " x ", " yx", "y  ", 'x', "gemDiamond", 'y', "stickWood"}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.crookWood, new Object[] { "xx"," x"," x", 'x', "stickWood"}));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.crookBone, new Object[] { "xx"," x"," x", 'x', Items.bone}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.crookBone, new Object[] { "xx"," x"," x", 'x', Items.BONE}));
 		
 		if (Config.enableBarrels)
 			GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelWood, new Object[] {"x x","x x", "xyx", 'x', "plankWood", 'y', "slabWood"}));

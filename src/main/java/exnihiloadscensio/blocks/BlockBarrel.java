@@ -20,7 +20,7 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider {
 
 	public BlockBarrel()
 	{
-		super(Material.wood, "blockBarrel");
+		super(Material.WOOD, "blockBarrel");
 		this.setHardness(2.0f);
 	}
 

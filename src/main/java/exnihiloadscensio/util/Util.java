@@ -11,6 +11,7 @@ import net.minecraft.util.math.Vec3d;
 public class Util {
 	
 	public static Color whiteColor = new Color(1f, 1f, 1f, 1f);
+	public static Color greenColor = new Color(0f, 1f, 0f, 1f);
 	
 	public static void dropItemInWorld(TileEntity source, EntityPlayer player, ItemStack stack, double speedfactor) 
 	{

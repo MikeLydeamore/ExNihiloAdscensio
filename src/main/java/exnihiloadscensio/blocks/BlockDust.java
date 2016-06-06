@@ -6,7 +6,7 @@ public class BlockDust extends BlockBase {
 	
 	public BlockDust()
 	{
-		super(Material.sand, "blockDust");
+		super(Material.SAND, "blockDust");
 		
 	}
 

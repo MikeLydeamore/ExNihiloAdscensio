@@ -30,7 +30,7 @@ public class ItemInfo {
 	public ItemInfo(String string)
 	{
 		String[] arr = string.split(":");
-		item = Item.itemRegistry.getObject(new ResourceLocation(arr[0]+":"+arr[1]));
+		item = Item.REGISTRY.getObject(new ResourceLocation(arr[0]+":"+arr[1]));
 		meta = Integer.parseInt(arr[2]);
 	}
 	
@@ -42,7 +42,7 @@ public class ItemInfo {
 	
 	public String toString()
 	{
-		return Item.itemRegistry.getNameForObject(item)+":"+meta;
+		return Item.REGISTRY.getNameForObject(item)+":"+meta;
 	}
 
 }

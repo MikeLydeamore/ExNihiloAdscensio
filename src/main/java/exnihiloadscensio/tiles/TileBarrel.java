@@ -84,9 +84,9 @@ public class TileBarrel extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		
 		NBTTagCompound fluidTag = new NBTTagCompound();
 		fluidTank.writeToNBT(fluidTag);
 		tag.setTag("tank", fluidTag);
@@ -101,13 +101,15 @@ public class TileBarrel extends TileEntity implements ITickable {
 		
 		NBTTagCompound handlerTag = itemHandler.serializeNBT();
 		tag.setTag("itemHandler", handlerTag);
+		
+		return super.writeToNBT(tag);
 
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		
 		if (tag.hasKey("tank"))
 			fluidTank.readFromNBT((NBTTagCompound) tag.getTag("tank"));
 		if (tag.hasKey("mode"))
@@ -122,10 +124,11 @@ public class TileBarrel extends TileEntity implements ITickable {
 		{
 			itemHandler.deserializeNBT((NBTTagCompound) tag.getTag("itemHandler"));
 		}
+		super.readFromNBT(tag);
 	}
 	
 	@Override
-	public Packet getDescriptionPacket()
+	public SPacketUpdateTileEntity getUpdatePacket()
     {
 		NBTTagCompound tag = new NBTTagCompound();
 		this.writeToNBT(tag);

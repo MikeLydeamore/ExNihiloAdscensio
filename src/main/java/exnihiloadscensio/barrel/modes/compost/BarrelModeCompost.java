@@ -199,7 +199,7 @@ public class BarrelModeCompost implements IBarrelMode {
 		tag.setFloat("progress", progress);
 		if (compostState != null)
 		{
-			tag.setString("block", Block.blockRegistry.getNameForObject(compostState.getBlock()).toString());
+			tag.setString("block", Block.REGISTRY.getNameForObject(compostState.getBlock()).toString());
 			tag.setInteger("meta", compostState.getBlock().getMetaFromState(compostState));
 		}
 
@@ -215,7 +215,7 @@ public class BarrelModeCompost implements IBarrelMode {
 		this.progress = tag.getFloat("progress");
 		if (tag.hasKey("block"))
 		{
-			Block block = Block.blockRegistry.getObject(new ResourceLocation(tag.getString("block")));
+			Block block = Block.REGISTRY.getObject(new ResourceLocation(tag.getString("block")));
 			compostState = block.getStateFromMeta(tag.getInteger("meta"));
 		}
 	}
@@ -226,7 +226,7 @@ public class BarrelModeCompost implements IBarrelMode {
 	{
 		if (compostState == null)
 			return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
-					.getTexture(Blocks.dirt.getDefaultState());
+					.getTexture(Blocks.DIRT.getDefaultState());
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
 		.getTexture(compostState);
 	}

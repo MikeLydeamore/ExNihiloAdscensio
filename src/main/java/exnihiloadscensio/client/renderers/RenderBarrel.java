@@ -35,7 +35,7 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel> {
 			double minV = (double) icon.getMinV();
 			double maxV = (double) icon.getMaxV();
 
-			this.bindTexture(TextureMap.locationBlocksTexture);
+			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 			wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 			//wr.begin(GL11.GL_QUADS, new VertexFormat().addElement(DefaultVertexFormats.POSITION_3F).addElement(DefaultVertexFormats.COLOR_4UB).addElement(DefaultVertexFormats.NORMAL_3B));

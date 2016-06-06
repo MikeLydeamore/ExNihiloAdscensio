@@ -66,7 +66,7 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void init(FMLInitializationEvent event)
 	{
-		
+		proxy.registerColorHandlers();
 	}
 	
 	@EventHandler
@@ -86,7 +86,7 @@ public class ExNihiloAdscensio {
 		@SideOnly(Side.CLIENT)
 		public Item getTabIconItem()
 		{
-			return Items.string;
+			return Items.STRING;
 		}
 	};
 

@@ -46,7 +46,7 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 		{
 			if (!simulate)
 				mode.removeItem(barrel);
-			return new ItemStack(Blocks.dirt);
+			return new ItemStack(Blocks.DIRT);
 		}
 		
 		return null;

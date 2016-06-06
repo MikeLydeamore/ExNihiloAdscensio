@@ -118,9 +118,9 @@ public class HammerRegistry {
 	
 	public static void registerDefaults()
 	{
-		addHammerRecipe(Blocks.cobblestone.getDefaultState(), new ItemStack(Blocks.gravel), 0, 1f, 0f);
-		addHammerRecipe(Blocks.gravel.getDefaultState(), new ItemStack(Blocks.sand), 0, 1f, 0f);
-		addHammerRecipe(Blocks.sand.getDefaultState(), new ItemStack(ENBlocks.dust), 0, 1f, 0f);
+		addHammerRecipe(Blocks.COBBLESTONE.getDefaultState(), new ItemStack(Blocks.GRAVEL), 0, 1f, 0f);
+		addHammerRecipe(Blocks.GRAVEL.getDefaultState(), new ItemStack(Blocks.SAND), 0, 1f, 0f);
+		addHammerRecipe(Blocks.SAND.getDefaultState(), new ItemStack(ENBlocks.dust), 0, 1f, 0f);
 	}
 
 
