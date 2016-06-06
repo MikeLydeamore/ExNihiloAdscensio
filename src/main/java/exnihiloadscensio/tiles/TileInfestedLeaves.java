@@ -15,12 +15,7 @@ import net.minecraft.util.ITickable;
 public class TileInfestedLeaves extends TileEntity implements ITickable {
 	
 	@Getter
-	private float progress;
-
-	public TileInfestedLeaves()
-	{
-		progress = 0;
-	}
+	private float progress = 0;
 	
 	@Override
 	public void update() 
@@ -60,7 +55,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable {
 	{
 		System.out.println(tag.getFloat("progress"));
 		progress = tag.getFloat("progress");
-		super.writeToNBT(tag);
+		super.readFromNBT(tag);
 	}
 	
 	@Override
