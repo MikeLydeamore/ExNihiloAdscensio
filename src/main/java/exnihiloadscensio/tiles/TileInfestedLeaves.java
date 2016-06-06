@@ -78,5 +78,12 @@ public class TileInfestedLeaves extends TileEntity implements ITickable {
 		readFromNBT(tag);
 	}
 	
+	@Override
+	public NBTTagCompound getUpdateTag()
+    {
+		NBTTagCompound tag = writeToNBT(new NBTTagCompound());
+        return tag;
+    }
+	
 
 }

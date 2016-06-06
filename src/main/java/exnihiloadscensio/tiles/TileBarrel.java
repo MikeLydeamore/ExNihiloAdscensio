@@ -142,6 +142,13 @@ public class TileBarrel extends TileEntity implements ITickable {
 		NBTTagCompound tag = pkt.getNbtCompound();
 		readFromNBT(tag);
 	}
+	
+	@Override
+	public NBTTagCompound getUpdateTag()
+    {
+		NBTTagCompound tag = writeToNBT(new NBTTagCompound());
+        return tag;
+    }
 
 	public void setMode(String modeName)
 	{
