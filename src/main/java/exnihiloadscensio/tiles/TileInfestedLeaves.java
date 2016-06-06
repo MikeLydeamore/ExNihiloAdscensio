@@ -1,10 +1,8 @@
 package exnihiloadscensio.tiles;
 
-import exnihiloadscensio.config.Config;
 import exnihiloadscensio.networking.MessageInfestedLeavesUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -33,7 +31,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable {
 		if (worldObj.getWorldTime() % 40 == 0)
 		{
 			IBlockState state = worldObj.getBlockState(pos);
-			worldObj.notifyBlockUpdate(pos, state, state, 3);
+			this.worldObj.setBlockState(pos, state);
 		}
 	}
 	
@@ -53,7 +51,6 @@ public class TileInfestedLeaves extends TileEntity implements ITickable {
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
-		System.out.println(tag.getFloat("progress"));
 		progress = tag.getFloat("progress");
 		super.readFromNBT(tag);
 	}

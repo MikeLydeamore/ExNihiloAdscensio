@@ -60,7 +60,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getClass().getName(), this.pos), this);
 						mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
 						this.markDirty();
-						this.worldObj.notifyBlockUpdate(pos, state, state, 3);
+						this.worldObj.setBlockState(pos, state);
 						return true;
 					}
 				}
@@ -152,12 +152,11 @@ public class TileBarrel extends TileEntity implements ITickable {
 
 	public void setMode(String modeName)
 	{
+		System.out.println(modeName);
 		try 
 		{
 			mode = (IBarrelMode) Class.forName(modeName).newInstance();
 			this.markDirty();
-			IBlockState state = this.worldObj.getBlockState(pos);
-			this.worldObj.notifyBlockUpdate(pos, state, state, 3);
 		} catch (Exception e)
 		{
 			e.printStackTrace(); //Naughty

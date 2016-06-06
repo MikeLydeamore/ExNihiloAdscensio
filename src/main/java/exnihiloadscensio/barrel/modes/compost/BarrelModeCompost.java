@@ -115,6 +115,8 @@ public class BarrelModeCompost implements IBarrelMode {
 		compostState = null;
 		PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
 		barrel.setMode((IBarrelMode) null);
+		IBlockState state = barrel.getWorld().getBlockState(barrel.getPos());
+		barrel.getWorld().setBlockState(barrel.getPos(), state);
 	}
 	
 	public boolean addItem(ItemStack stack, TileBarrel barrel)
