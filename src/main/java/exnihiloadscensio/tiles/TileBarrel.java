@@ -24,7 +24,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileBarrel extends TileEntity implements ITickable {
@@ -33,8 +35,9 @@ public class TileBarrel extends TileEntity implements ITickable {
 	private FluidTank fluidTank;
 	@Getter
 	private IBarrelMode mode;
-	
+
 	private BarrelItemHandler itemHandler;
+	private FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME);
 
 	public TileBarrel()
 	{
@@ -56,8 +59,8 @@ public class TileBarrel extends TileEntity implements ITickable {
 				{
 					if (possibleMode.isTriggerItemStack(stack))
 					{
-						setMode(possibleMode.getClass().getName());
-						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getClass().getName(), this.pos), this);
+						setMode(possibleMode.getName());
+						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getName(), this.pos), this);
 						mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
 						this.markDirty();
 						this.worldObj.setBlockState(pos, state);
@@ -86,7 +89,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		
+
 		NBTTagCompound fluidTag = new NBTTagCompound();
 		fluidTank.writeToNBT(fluidTag);
 		tag.setTag("tank", fluidTag);
@@ -95,13 +98,13 @@ public class TileBarrel extends TileEntity implements ITickable {
 		{
 			NBTTagCompound barrelModeTag = new NBTTagCompound();
 			mode.writeToNBT(barrelModeTag);
-			barrelModeTag.setString("name", mode.getClass().getName());
+			barrelModeTag.setString("name", mode.getName());
 			tag.setTag("mode", barrelModeTag);
 		}
-		
+
 		NBTTagCompound handlerTag = itemHandler.serializeNBT();
 		tag.setTag("itemHandler", handlerTag);
-		
+
 		return super.writeToNBT(tag);
 
 	}
@@ -109,83 +112,88 @@ public class TileBarrel extends TileEntity implements ITickable {
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
-		
+
 		if (tag.hasKey("tank"))
 			fluidTank.readFromNBT((NBTTagCompound) tag.getTag("tank"));
 		if (tag.hasKey("mode"))
 		{
 			NBTTagCompound barrelModeTag = (NBTTagCompound) tag.getTag("mode");
+			String modeName = barrelModeTag.getString("name");
+			System.out.println(modeName);
 			this.setMode(barrelModeTag.getString("name"));
 			if (mode != null)
 				mode.readFromNBT(barrelModeTag);
 		}
-		
+
 		if (tag.hasKey("itemHandler"))
 		{
 			itemHandler.deserializeNBT((NBTTagCompound) tag.getTag("itemHandler"));
 		}
 		super.readFromNBT(tag);
 	}
-	
+
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket()
-    {
+	{
 		NBTTagCompound tag = new NBTTagCompound();
 		this.writeToNBT(tag);
 
 		return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
-    }
-	
+	}
+
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
 		NBTTagCompound tag = pkt.getNbtCompound();
 		readFromNBT(tag);
 	}
-	
+
 	@Override
 	public NBTTagCompound getUpdateTag()
-    {
+	{
 		NBTTagCompound tag = writeToNBT(new NBTTagCompound());
-        return tag;
-    }
+		return tag;
+	}
 
 	public void setMode(String modeName)
 	{
-		System.out.println(modeName);
 		try 
 		{
-			mode = (IBarrelMode) Class.forName(modeName).newInstance();
+			if (modeName.equals("null"))
+				mode = null;
+			else
+				mode = BarrelModeRegistry.getModeByName(modeName).getClass().newInstance();
 			this.markDirty();
 		} catch (Exception e)
 		{
 			e.printStackTrace(); //Naughty
 		}
 	}
-	
+
 	public void setMode(IBarrelMode mode)
 	{
 		this.mode = mode;
+		this.markDirty();
 	}
-	
+
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
-		if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
-			if (this.mode == null)
-				return (T) itemHandler;
-			else
-				return (T) this.mode.getHandler(this);
+			return (T) itemHandler;
 		}
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+			return (T) tank;
 
 		return super.getCapability(capability, facing);
 	}
-	
+
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
-    }
+	{
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
+				capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
 }

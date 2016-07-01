@@ -26,6 +26,16 @@ public class BarrelItemHandler extends ItemStackHandler {
 	{
 		return 1;
 	}
+	
+	@Override
+	public ItemStack extractItem(int slot, int amount, boolean simulate)
+	{
+		System.out.println("extracting");
+		if (barrel.getMode() != null)
+			return barrel.getMode().getHandler(barrel).extractItem(slot, amount, simulate);
+		
+		return null;
+	}
 
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
@@ -41,12 +51,12 @@ public class BarrelItemHandler extends ItemStackHandler {
 				{
 					if (!simulate)
 					{
-						barrel.setMode(possibleMode.getClass().getName());
-						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(barrel.getMode().getClass().getName(), barrel.getPos()), barrel);
+						barrel.setMode(possibleMode.getName());
+						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(barrel.getMode().getName(), barrel.getPos()), barrel);
 						barrel.getMode().addItem(stack, barrel);
 						barrel.markDirty();
 						IBlockState state = barrel.getWorld().getBlockState(barrel.getPos());
-						barrel.getWorld().notifyBlockUpdate(barrel.getPos(), state, state, 3);
+						barrel.getWorld().setBlockState(barrel.getPos(), state);
 					}
 
 					ItemStack ret = stack.copy();

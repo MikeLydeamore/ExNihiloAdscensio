@@ -39,5 +39,10 @@ public class BarrelModeRegistry {
 	{
 		registerBarrelMode(new BarrelModeCompost(), TriggerType.ITEM);
 	}
+	
+	public static IBarrelMode getModeByName(String name)
+	{
+		return barrelModeNames.get(name);
+	}
 
 }

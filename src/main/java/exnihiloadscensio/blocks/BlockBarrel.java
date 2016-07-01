@@ -62,5 +62,17 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider {
 	{
 		return boundingBox;
 	}
+	
+    @Override
+    public boolean isBlockSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return false;
+    }
+    
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
 
 }

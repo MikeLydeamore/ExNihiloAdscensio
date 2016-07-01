@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.config.Config;
+import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.MessageCompostUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CompostRegistry;
@@ -114,8 +115,9 @@ public class BarrelModeCompost implements IBarrelMode {
 		handler.setStackInSlot(0, null);
 		compostState = null;
 		PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
-		barrel.setMode((IBarrelMode) null);
+		barrel.setMode("null");
 		IBlockState state = barrel.getWorld().getBlockState(barrel.getPos());
+		PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
 		barrel.getWorld().setBlockState(barrel.getPos(), state);
 	}
 	
@@ -169,8 +171,11 @@ public class BarrelModeCompost implements IBarrelMode {
 			PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
 			barrel.markDirty();
 		}
-		if (progress >= 1 && compostState != null)
+		if (progress >= 1 && compostState != null) {
 			handler.setStackInSlot(0, new ItemStack(compostState.getBlock(), 1, compostState.getBlock().getMetaFromState(compostState)));
+			//barrel.getWorld().setBlockState(barrel.getPos(), barrel.getWorld().getBlockState(barrel.getPos()));
+			//System.out.println("update");
+		}
 	}
 	
 	@Override

@@ -23,7 +23,7 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 		if (CompostRegistry.containsItem(stack))
 		{
 			BarrelModeCompost mode = (BarrelModeCompost) this.barrel.getMode();
-			if (mode.getFillAmount() < 1)
+			if (mode != null && mode.getFillAmount() < 1)
 			{
 				ItemStack ret = stack.copy();
 				ret.stackSize--;
