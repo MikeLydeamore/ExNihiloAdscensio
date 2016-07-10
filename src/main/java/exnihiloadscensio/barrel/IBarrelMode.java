@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -31,16 +32,20 @@ public interface IBarrelMode {
 	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ);
 	
 	@SideOnly(Side.CLIENT)
-	public TextureAtlasSprite getTextureForRender();
+	public TextureAtlasSprite getTextureForRender(TileBarrel barrel);
 	
 	public Color getColorForRender();
 	
-	public float getFilledLevelForRender();
+	public float getFilledLevelForRender(TileBarrel barrel);
 	
 	public void update(TileBarrel barrel);
 	
 	public boolean addItem(ItemStack stack, TileBarrel barrel);
 	
 	public ItemStackHandler getHandler(TileBarrel barrel);
+	
+	public FluidTank getFluidHandler(TileBarrel barrel);
+	
+	public boolean canFillWithFluid(TileBarrel barrel);
 
 }

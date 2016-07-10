@@ -1,6 +1,8 @@
 package exnihiloadscensio.barrel.modes.compost;
 
 import lombok.Setter;
+import exnihiloadscensio.networking.MessageBarrelModeUpdate;
+import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
 import net.minecraft.init.Blocks;
@@ -46,7 +48,9 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 		{
 			if (!simulate)
 				mode.removeItem(barrel);
-			return new ItemStack(Blocks.DIRT);
+			barrel.setMode("null");
+			PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
+			return super.extractItem(slot, amount, simulate);
 		}
 		
 		return null;

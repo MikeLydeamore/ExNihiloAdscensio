@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
+import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
 
 public class BarrelModeRegistry {
 	
@@ -38,6 +39,7 @@ public class BarrelModeRegistry {
 	public static void registerDefaults()
 	{
 		registerBarrelMode(new BarrelModeCompost(), TriggerType.ITEM);
+		registerBarrelMode(new BarrelModeFluid(), TriggerType.FLUID);
 	}
 	
 	public static IBarrelMode getModeByName(String name)

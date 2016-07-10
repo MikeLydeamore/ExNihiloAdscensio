@@ -28,10 +28,18 @@ public class BarrelItemHandler extends ItemStackHandler {
 	}
 	
 	@Override
+    public ItemStack getStackInSlot(int slot) {
+		if (barrel.getMode() != null && barrel.getMode().getHandler(barrel) != null) {
+			return barrel.getMode().getHandler(barrel).getStackInSlot(slot);
+		}
+		
+		return super.getStackInSlot(slot);
+	}
+	
+	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate)
 	{
-		System.out.println("extracting");
-		if (barrel.getMode() != null)
+		if (barrel.getMode() != null && barrel.getMode().getHandler(barrel)!= null )
 			return barrel.getMode().getHandler(barrel).extractItem(slot, amount, simulate);
 		
 		return null;
@@ -69,8 +77,11 @@ public class BarrelItemHandler extends ItemStackHandler {
 		}
 		else
 		{
-			return barrel.getMode().getHandler(barrel).insertItem(slot, stack, simulate);
+			if (barrel.getMode().getHandler(barrel)!= null)
+				return barrel.getMode().getHandler(barrel).insertItem(slot, stack, simulate);
 		}
+		
+		return stack;
 	}
 
 }

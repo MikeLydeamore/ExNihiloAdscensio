@@ -19,6 +19,9 @@ public class PacketHandler {
 		INSTANCE.registerMessage(MessageBarrelModeUpdate.MessageBarrelModeUpdateHandler.class, MessageBarrelModeUpdate.class, id++, Side.CLIENT);
 		INSTANCE.registerMessage(MessageCompostUpdate.MessageCompostAmountUpdateHandler.class, MessageCompostUpdate.class, id++, Side.CLIENT);
 		INSTANCE.registerMessage(MessageInfestedLeavesUpdate.MessageInfestedLeavesUpdateHandler.class, MessageInfestedLeavesUpdate.class, id++, Side.CLIENT);
+		INSTANCE.registerMessage(MessageFluidLevelUpdate.MessageFluidLevelUpdateHandler.class, MessageFluidLevelUpdate.class, id++, Side.CLIENT);
+		INSTANCE.registerMessage(MessageFluidUpdate.MessageFluidUpdateHandler.class, MessageFluidUpdate.class, id++, Side.CLIENT);
+		INSTANCE.registerMessage(MessageNBTUpdate.MessageNBTUpdateHandler.class, MessageNBTUpdate.class, id++, Side.CLIENT);
 	}
 	
 	public static void sendToAllAround(IMessage message, TileEntity te, int range) 
@@ -31,4 +34,8 @@ public class PacketHandler {
 	{
         sendToAllAround(message, te, 64);
     }
+	
+	public static void sendNBTUpdate(TileEntity te) {
+		sendToAllAround(new MessageNBTUpdate(te), te);
+	}
 }

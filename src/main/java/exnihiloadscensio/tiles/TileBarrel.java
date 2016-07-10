@@ -3,9 +3,11 @@ package exnihiloadscensio.tiles;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import exnihiloadscensio.barrel.BarrelFluidHandler;
 import exnihiloadscensio.barrel.BarrelItemHandler;
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
+import exnihiloadscensio.networking.MessageFluidUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
@@ -25,6 +27,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -32,25 +37,43 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public class TileBarrel extends TileEntity implements ITickable {
 
 	private ItemStack processingStack;
-	private FluidTank fluidTank;
 	@Getter
 	private IBarrelMode mode;
 
 	private BarrelItemHandler itemHandler;
-	private FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME);
+	@Getter
+	private BarrelFluidHandler tank;
 
 	public TileBarrel()
 	{
-		fluidTank = new FluidTank(1000);
 		itemHandler = new BarrelItemHandler(this);
+		tank = new BarrelFluidHandler(this);
 	}
 
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
+		if (mode == null || mode.getName().equals("fluid")) {
+			if (FluidContainerRegistry.isContainer(player.getHeldItemMainhand())) {
+				ItemStack container = player.getHeldItemMainhand();
+				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(container);
+				int amount = this.getTank().fill(FluidContainerRegistry.getFluidForFilledItem(container), false);
+				ItemStack filledStack = FluidContainerRegistry.drainFluidContainer(container);
+				if (amount > 0 && filledStack != null) {
+					this.getTank().fill(FluidContainerRegistry.getFluidForFilledItem(container), true);
+					System.out.println(this.getTank().getFluidAmount());
+					container.stackSize--;
+					player.inventory.addItemStackToInventory(filledStack);
+					this.setMode("fluid");
+					PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("fluid", pos), this);
+				}
+				if (filledStack != null)
+					return true;
+			}
+		}
 		if (mode == null)
 		{
 			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
-			{
+			{				
 				ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 				ArrayList<IBarrelMode> modes = BarrelModeRegistry.getModes(TriggerType.ITEM);
 				if (modes == null)
@@ -82,6 +105,14 @@ public class TileBarrel extends TileEntity implements ITickable {
 	{
 		if (worldObj.isRemote)
 			return;
+
+		if ((mode == null || mode.getName() == "fluid")) {
+			BlockPos plusY = new BlockPos(pos.getX(), pos.getY()+1, pos.getZ());
+			if(worldObj.isRainingAt(plusY)) {
+				FluidStack stack = new FluidStack(FluidRegistry.WATER, 2);
+				tank.fill(stack, true);
+			}
+		}
 		if (mode != null)
 			mode.update(this);
 	}
@@ -89,10 +120,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-
-		NBTTagCompound fluidTag = new NBTTagCompound();
-		fluidTank.writeToNBT(fluidTag);
-		tag.setTag("tank", fluidTag);
+		tank.writeToNBT(tag);
 
 		if (mode != null)
 		{
@@ -112,14 +140,10 @@ public class TileBarrel extends TileEntity implements ITickable {
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
-
-		if (tag.hasKey("tank"))
-			fluidTank.readFromNBT((NBTTagCompound) tag.getTag("tank"));
+		tank.readFromNBT(tag);
 		if (tag.hasKey("mode"))
 		{
 			NBTTagCompound barrelModeTag = (NBTTagCompound) tag.getTag("mode");
-			String modeName = barrelModeTag.getString("name");
-			System.out.println(modeName);
 			this.setMode(barrelModeTag.getString("name"));
 			if (mode != null)
 				mode.readFromNBT(barrelModeTag);
@@ -193,7 +217,8 @@ public class TileBarrel extends TileEntity implements ITickable {
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
 	{
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
-				capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+				capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ||
+				super.hasCapability(capability, facing);
 	}
 
 }

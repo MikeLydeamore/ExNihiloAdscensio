@@ -1,28 +1,30 @@
 package exnihiloadscensio.networking;
 
-import exnihiloadscensio.tiles.TileBarrel;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.tiles.TileBarrel;
 
-public class MessageBarrelModeUpdate implements IMessage {
+public class MessageFluidLevelUpdate implements IMessage {
+	
+	public MessageFluidLevelUpdate(){}
 
-	public MessageBarrelModeUpdate(){}
-
-	private String modeName;
+	private int fillAmount;
 	private int x, y, z;
-	public MessageBarrelModeUpdate(String modeName, BlockPos pos)
+
+	public MessageFluidLevelUpdate(int fillAmount, BlockPos pos)
 	{
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
-		this.modeName = modeName;
+		this.fillAmount = fillAmount;
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class MessageBarrelModeUpdate implements IMessage {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		ByteBufUtils.writeUTF8String(buf, modeName);
+		buf.writeInt(fillAmount);
 	}
 
 	@Override
@@ -40,13 +42,13 @@ public class MessageBarrelModeUpdate implements IMessage {
 		this.x = buf.readInt();
 		this.y = buf.readInt();
 		this.z = buf.readInt();
-		this.modeName = ByteBufUtils.readUTF8String(buf);
+		this.fillAmount = buf.readInt();
 	}
 
-	public static class MessageBarrelModeUpdateHandler implements IMessageHandler<MessageBarrelModeUpdate, IMessage> 
+	public static class MessageFluidLevelUpdateHandler implements IMessageHandler<MessageFluidLevelUpdate, IMessage> 
 	{
 		@Override
-		public IMessage onMessage(final MessageBarrelModeUpdate msg, MessageContext ctx)
+		public IMessage onMessage(final MessageFluidLevelUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 				@Override
@@ -56,9 +58,12 @@ public class MessageBarrelModeUpdate implements IMessage {
 					if (entity instanceof TileBarrel)
 					{
 						TileBarrel te = (TileBarrel) entity;
-						te.setMode(msg.modeName);
-						
-						//Minecraft.getMinecraft().thePlayer.worldObj.notifyBlockUpdate(new BlockPos(msg.x, msg.y, msg.z));
+						FluidStack f = te.getTank().getFluid();
+						if (f != null) {
+							System.out.println("test");
+							f.amount = msg.fillAmount;
+							te.getTank().setFluid(f);
+						}
 					}
 				}
 			});

@@ -25,9 +25,9 @@ group= "exnihiloadscensio" // http://maven.apache.org/guides/mini/guide-naming-c
 archivesBaseName = "exnihiloadscensio"
 
 minecraft {
-    version = "1.9.4-12.17.0.1951"
+    version = "1.10.2-12.18.0.2008"
     runDir = "run"
-	 mappings = "snapshot_20160604"
+	 mappings = "snapshot_20160707"
 }
 
 dependencies {

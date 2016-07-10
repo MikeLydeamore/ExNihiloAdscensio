@@ -1,8 +1,12 @@
 package exnihiloadscensio.util;
 
 import exnihiloadscensio.texturing.Color;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.MathHelper;
@@ -58,6 +62,11 @@ public class Util {
 		droppedEntity.motionZ *= speedfactor;
 
 		source.getWorld().spawnEntityInWorld(droppedEntity);
+	}
+	
+	public static TextureAtlasSprite getTextureFromBlockState(IBlockState state) {
+		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+		.getTexture(state);
 	}
 
 }

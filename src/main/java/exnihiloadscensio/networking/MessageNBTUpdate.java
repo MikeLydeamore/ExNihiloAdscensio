@@ -1,28 +1,30 @@
 package exnihiloadscensio.networking;
 
-import exnihiloadscensio.tiles.TileBarrel;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.tiles.TileBarrel;
 
-public class MessageBarrelModeUpdate implements IMessage {
+public class MessageNBTUpdate implements IMessage {
+	
+	public MessageNBTUpdate(){}
 
-	public MessageBarrelModeUpdate(){}
-
-	private String modeName;
 	private int x, y, z;
-	public MessageBarrelModeUpdate(String modeName, BlockPos pos)
+	private NBTTagCompound tag;
+	public MessageNBTUpdate(TileEntity te)
 	{
-		this.x = pos.getX();
-		this.y = pos.getY();
-		this.z = pos.getZ();
-		this.modeName = modeName;
+		this.x = te.getPos().getX();
+		this.y = te.getPos().getY();
+		this.z = te.getPos().getZ();
+		this.tag = te.writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class MessageBarrelModeUpdate implements IMessage {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		ByteBufUtils.writeUTF8String(buf, modeName);
+		ByteBufUtils.writeTag(buf, tag);
 	}
 
 	@Override
@@ -40,29 +42,24 @@ public class MessageBarrelModeUpdate implements IMessage {
 		this.x = buf.readInt();
 		this.y = buf.readInt();
 		this.z = buf.readInt();
-		this.modeName = ByteBufUtils.readUTF8String(buf);
+		this.tag = ByteBufUtils.readTag(buf);
 	}
 
-	public static class MessageBarrelModeUpdateHandler implements IMessageHandler<MessageBarrelModeUpdate, IMessage> 
+	public static class MessageNBTUpdateHandler implements IMessageHandler<MessageNBTUpdate, IMessage> 
 	{
 		@Override
-		public IMessage onMessage(final MessageBarrelModeUpdate msg, MessageContext ctx)
+		public IMessage onMessage(final MessageNBTUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 				@Override
 				public void run()
 				{
 					TileEntity entity =  Minecraft.getMinecraft().thePlayer.worldObj.getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
-					if (entity instanceof TileBarrel)
-					{
-						TileBarrel te = (TileBarrel) entity;
-						te.setMode(msg.modeName);
-						
-						//Minecraft.getMinecraft().thePlayer.worldObj.notifyBlockUpdate(new BlockPos(msg.x, msg.y, msg.z));
-					}
+					entity.readFromNBT(msg.tag);
 				}
 			});
 			return null;
 		}
 	}
+
 }

@@ -19,7 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -28,6 +27,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -65,6 +65,7 @@ public class BarrelModeCompost implements IBarrelMode {
 					Compostable comp = CompostRegistry.getItem(info);
 					compostState = Block.getBlockFromItem(comp.getCompostBlock().getItem())
 							.getStateFromMeta(comp.getCompostBlock().getMeta());
+					PacketHandler.sendNBTUpdate(barrel);
 				}
 			}
 		}
@@ -229,7 +230,7 @@ public class BarrelModeCompost implements IBarrelMode {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public TextureAtlasSprite getTextureForRender()
+	public TextureAtlasSprite getTextureForRender(TileBarrel barrel)
 	{
 		if (compostState == null)
 			return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
@@ -239,7 +240,7 @@ public class BarrelModeCompost implements IBarrelMode {
 	}
 	
 	@Override
-	public float getFilledLevelForRender()
+	public float getFilledLevelForRender(TileBarrel barrel)
 	{
 		return fillAmount;
 	}
@@ -255,6 +256,16 @@ public class BarrelModeCompost implements IBarrelMode {
 	{
 		handler.setBarrel(barrel);
 		return handler;
+	}
+
+	@Override
+	public FluidTank getFluidHandler(TileBarrel barrel) {
+		return null;
+	}
+	
+	@Override
+	public boolean canFillWithFluid(TileBarrel barrel) {
+		return false;
 	}
 	
 }

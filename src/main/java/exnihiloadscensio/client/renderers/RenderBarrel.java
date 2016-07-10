@@ -25,11 +25,9 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel> {
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		GlStateManager.disableLighting();
 		if (te.getMode() != null)
 		{
-
-			TextureAtlasSprite icon = te.getMode().getTextureForRender();
+			TextureAtlasSprite icon = te.getMode().getTextureForRender(te);
 			double minU = (double) icon.getMinU();
 			double maxU = (double) icon.getMaxU();
 			double minV = (double) icon.getMinV();
@@ -39,8 +37,7 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel> {
 
 			wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 			//wr.begin(GL11.GL_QUADS, new VertexFormat().addElement(DefaultVertexFormats.POSITION_3F).addElement(DefaultVertexFormats.COLOR_4UB).addElement(DefaultVertexFormats.NORMAL_3B));
-			float fillAmount = te.getMode().getFilledLevelForRender();
-
+			float fillAmount = te.getMode().getFilledLevelForRender(te);
 			Color color = te.getMode().getColorForRender();
 			if (color == null)
 				color = Util.whiteColor;
