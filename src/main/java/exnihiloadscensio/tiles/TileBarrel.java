@@ -6,6 +6,7 @@ import lombok.Getter;
 import exnihiloadscensio.barrel.BarrelFluidHandler;
 import exnihiloadscensio.barrel.BarrelItemHandler;
 import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.config.Config;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.MessageFluidUpdate;
 import exnihiloadscensio.networking.PacketHandler;
@@ -60,7 +61,6 @@ public class TileBarrel extends TileEntity implements ITickable {
 				ItemStack filledStack = FluidContainerRegistry.drainFluidContainer(container);
 				if (amount > 0 && filledStack != null) {
 					this.getTank().fill(FluidContainerRegistry.getFluidForFilledItem(container), true);
-					System.out.println(this.getTank().getFluidAmount());
 					container.stackSize--;
 					player.inventory.addItemStackToInventory(filledStack);
 					this.setMode("fluid");
@@ -106,7 +106,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 		if (worldObj.isRemote)
 			return;
 
-		if ((mode == null || mode.getName() == "fluid")) {
+		if (Config.shouldBarrelsFillWithRain && (mode == null || mode.getName() == "fluid")) {
 			BlockPos plusY = new BlockPos(pos.getX(), pos.getY()+1, pos.getZ());
 			if(worldObj.isRainingAt(plusY)) {
 				FluidStack stack = new FluidStack(FluidRegistry.WATER, 2);
