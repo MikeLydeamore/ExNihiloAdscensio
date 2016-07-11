@@ -23,6 +23,7 @@ import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.CompostRegistry;
+import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
@@ -77,6 +78,7 @@ public class ExNihiloAdscensio {
 		
 		HammerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HammerRegistry.json"));
 		
+		FluidBlockTransformerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidBlockTransformerRegistry.json"));
 		Recipes.init();
 	}
 	
