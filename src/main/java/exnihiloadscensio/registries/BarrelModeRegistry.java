@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 
 import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
 
@@ -12,7 +13,7 @@ public class BarrelModeRegistry {
 	
 	public enum TriggerType
 	{
-		ITEM, FLUID, TICK
+		ITEM, FLUID, TICK, NONE
 	}
 	
 	private static EnumMap<TriggerType, ArrayList<IBarrelMode>> barrelModes = new EnumMap<TriggerType, ArrayList<IBarrelMode>>(TriggerType.class);
@@ -40,6 +41,7 @@ public class BarrelModeRegistry {
 	{
 		registerBarrelMode(new BarrelModeCompost(), TriggerType.ITEM);
 		registerBarrelMode(new BarrelModeFluid(), TriggerType.FLUID);
+		registerBarrelMode(new BarrelModeBlock(), TriggerType.NONE);
 	}
 	
 	public static IBarrelMode getModeByName(String name)

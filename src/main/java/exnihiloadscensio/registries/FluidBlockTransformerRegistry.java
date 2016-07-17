@@ -34,6 +34,17 @@ public class FluidBlockTransformerRegistry {
 		return false;
 	}
 	
+	public static ItemInfo getBlockForTransformation(Fluid fluid, ItemStack stack){
+		ItemInfo info = ItemInfo.getItemInfoFromStack(stack);
+		for (FluidBlockTransformer transformer : registry) {
+			if (fluid.getName().equals(transformer.getFluidName()) && info.equals(transformer.getInput())) {
+				return transformer.getOutput();
+			}
+		}
+		
+		return null;
+	}
+	
 	private static Gson gson;
 
 	public static void loadJson(File file)

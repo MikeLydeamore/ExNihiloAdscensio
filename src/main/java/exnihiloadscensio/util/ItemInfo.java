@@ -2,6 +2,7 @@ package exnihiloadscensio.util;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import lombok.AllArgsConstructor;
@@ -43,6 +44,10 @@ public class ItemInfo {
 	public String toString()
 	{
 		return Item.REGISTRY.getNameForObject(item)+":"+meta;
+	}
+	
+	public ItemStack getItemStack() {
+		return new ItemStack(this.item, 1, this.meta);
 	}
 
 }

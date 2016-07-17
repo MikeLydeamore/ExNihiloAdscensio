@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -36,6 +37,9 @@ public class BarrelModeBlock implements IBarrelMode {
 		if (block != null) {
 			tag.setString("block", block.toString());
 		}
+		if (handler.getStackInSlot(0) != null) {
+			handler.getStackInSlot(0).writeToNBT(tag);
+		}
 	}
 
 	@Override
@@ -43,6 +47,8 @@ public class BarrelModeBlock implements IBarrelMode {
 		if (tag.hasKey("block")) {
 			block = new ItemInfo(tag.getString("block"));
 		}
+		
+		handler.setStackInSlot(0, ItemStack.loadItemStackFromNBT(tag));
 	}
 
 	@Override
@@ -69,6 +75,7 @@ public class BarrelModeBlock implements IBarrelMode {
 			handler.setStackInSlot(0, null);
 			barrel.setMode("null");
 			PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
+			return true;
 		}
 		return false;
 	}
@@ -78,6 +85,8 @@ public class BarrelModeBlock implements IBarrelMode {
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
 		handler.setBarrel(barrel);
 		ItemStack stack = handler.getStackInSlot(0);
+		if (stack == null)
+			return Util.getTextureFromBlockState(Blocks.AIR.getDefaultState());
 		return Util.getTextureFromBlockState(Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getItemDamage()));
 	}
 
@@ -93,14 +102,14 @@ public class BarrelModeBlock implements IBarrelMode {
 
 	@Override
 	public void update(TileBarrel barrel) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean addItem(ItemStack stack, TileBarrel barrel) {
+		handler.setBarrel(barrel);
 		if (handler.getStackInSlot(0) == null) {
-			handler.insertItem(0, stack, true);
+			handler.insertItem(0, stack, false);
+			PacketHandler.sendNBTUpdate(barrel);
 			return true;
 		}
 		return false;

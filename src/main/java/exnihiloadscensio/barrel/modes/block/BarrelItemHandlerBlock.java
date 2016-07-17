@@ -19,6 +19,15 @@ public class BarrelItemHandlerBlock extends ItemStackHandler {
 	
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+		if (slot != 0)
+			return stack;
+		
+		if (getStackInSlot(0) == null) {
+			ItemStack ret = super.insertItem(slot, stack, simulate);
+			PacketHandler.sendNBTUpdate(barrel);
+			return ret;
+		}
+		
 		return stack;
 	}
 	
