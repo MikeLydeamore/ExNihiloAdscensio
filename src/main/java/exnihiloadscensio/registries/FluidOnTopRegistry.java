@@ -92,6 +92,7 @@ public class FluidOnTopRegistry {
 	
 	public static void registerDefaults() {
 		register(FluidRegistry.LAVA, FluidRegistry.WATER, new ItemInfo(Blocks.OBSIDIAN.getDefaultState()));
+		register(FluidRegistry.WATER, FluidRegistry.LAVA, new ItemInfo(Blocks.COBBLESTONE.getDefaultState()));
 	}
 	
 }

@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileBarrel extends TileEntity implements ITickable {
@@ -54,20 +55,19 @@ public class TileBarrel extends TileEntity implements ITickable {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (mode == null || mode.getName().equals("fluid")) {
-			if (FluidContainerRegistry.isContainer(player.getHeldItemMainhand())) {
-				ItemStack container = player.getHeldItemMainhand();
-				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(container);
-				int amount = this.getTank().fill(FluidContainerRegistry.getFluidForFilledItem(container), false);
-				ItemStack filledStack = FluidContainerRegistry.drainFluidContainer(container);
-				if (amount > 0 && filledStack != null) {
-					this.getTank().fill(FluidContainerRegistry.getFluidForFilledItem(container), true);
-					container.stackSize--;
-					player.inventory.addItemStackToInventory(filledStack);
+			ItemStack stack = player.getHeldItemMainhand();
+			if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+				IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+				FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, false);
+				int amount = this.getTank().fill(drainStack, false);
+				
+				if (amount > 0) {
+					handler.drain(Fluid.BUCKET_VOLUME, true);
+					this.getTank().fill(drainStack, true);
 					this.setMode("fluid");
 					PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("fluid", pos), this);
-				}
-				if (filledStack != null)
 					return true;
+				}
 			}
 		}
 		if (mode == null)

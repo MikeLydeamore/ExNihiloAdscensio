@@ -13,14 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.ItemFluidContainer;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fluids.capability.wrappers.BlockLiquidWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -77,21 +75,19 @@ public class BarrelModeFluid implements IBarrelMode {
 	public boolean onBlockActivated(World world, TileBarrel barrel,
 			BlockPos pos, IBlockState state, EntityPlayer player,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (FluidContainerRegistry.isContainer(player.getHeldItemMainhand())) {
+		ItemStack stack = player.getHeldItemMainhand();
+		if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 			FluidStack fluid = barrel.getTank().drain(Fluid.BUCKET_VOLUME, false);
-			ItemStack container = player.getHeldItemMainhand();
-			ItemStack filledStack = FluidContainerRegistry.fillFluidContainer(fluid, container);
-			if (filledStack != null) {
+			int amount = handler.fill(fluid, true);
+			if (amount != 0) {
 				barrel.getTank().drain(Fluid.BUCKET_VOLUME, true);
-				container.stackSize--;
-				player.inventory.addItemStackToInventory(filledStack);
 			}
 			return true;
 		}
 
-		ItemStack stack = player.getHeldItemMainhand();
 		ItemStack stack2 = getHandler(barrel).insertItem(0, stack, true);
-		if (!stack.areItemStacksEqual(stack, stack2)) {
+		if (!ItemStack.areItemStacksEqual(stack, stack2)) {
 			getHandler(barrel).insertItem(0, stack, false);
 			stack.stackSize--;
 			return true;
