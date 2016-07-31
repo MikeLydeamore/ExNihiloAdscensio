@@ -2,6 +2,7 @@ package exnihiloadscensio.barrel.modes.fluid;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -131,8 +132,7 @@ public class BarrelModeFluid implements IBarrelMode {
 
 			Fluid fluidOnTop = null;
 			if (onTop instanceof BlockLiquid) {
-				BlockLiquidWrapper block = new BlockLiquidWrapper((BlockLiquid) onTop, barrel.getWorld(), pos);
-				fluidOnTop = block.drain(Fluid.BUCKET_VOLUME, false).getFluid();
+				fluidOnTop = onTop.getMaterial(barrel.getWorld().getBlockState(pos)) == Material.WATER ? FluidRegistry.WATER : FluidRegistry.LAVA;
 			}
 
 			if (onTop != null && onTop instanceof IFluidBlock) {

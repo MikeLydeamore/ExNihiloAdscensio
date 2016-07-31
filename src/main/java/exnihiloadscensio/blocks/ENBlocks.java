@@ -6,6 +6,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 
 public class ENBlocks {
@@ -13,6 +14,7 @@ public class ENBlocks {
 	public static BlockDust dust;
 	public static BlockBarrel barrelWood;
 	public static BlockInfestedLeaves infestedLeaves;
+	public static BlockCrucible crucible;
 
 	public static void init()
 	{
@@ -26,6 +28,10 @@ public class ENBlocks {
 		infestedLeaves = new BlockInfestedLeaves();
 		GameRegistry.registerTileEntity(TileInfestedLeaves.class, "blockInfestedLeaves");
 		infestedLeaves.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		
+		crucible = new BlockCrucible();
+		crucible.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		GameRegistry.registerTileEntity(TileCrucible.class, "blockCrucible");
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -13,6 +13,7 @@ import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -89,6 +90,8 @@ public class FluidBlockTransformerRegistry {
 	
 	public static void registerDefaults() {
 		register(FluidRegistry.WATER, new ItemInfo(new ItemStack(ENBlocks.dust)), new ItemInfo(new ItemStack(Blocks.CLAY)));
+		register(FluidRegistry.LAVA, new ItemInfo(new ItemStack(Items.REDSTONE)), new ItemInfo(new ItemStack(Blocks.NETHERRACK)));
+		register(FluidRegistry.LAVA, new ItemInfo(new ItemStack(Items.GLOWSTONE_DUST)), new ItemInfo(new ItemStack(Blocks.END_STONE)));
 	}
 
 }

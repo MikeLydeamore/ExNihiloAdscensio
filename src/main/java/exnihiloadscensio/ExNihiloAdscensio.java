@@ -23,9 +23,11 @@ import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.CompostRegistry;
+import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.registries.FluidOnTopRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
+import exnihiloadscensio.registries.HeatRegistry;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
 public class ExNihiloAdscensio {
@@ -82,6 +84,10 @@ public class ExNihiloAdscensio {
 		FluidBlockTransformerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidBlockTransformerRegistry.json"));
 		
 		FluidOnTopRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidOnTopRegistry.json"));
+		
+		CrucibleRegistry.registerDefaults();
+		HeatRegistry.registerDefaults();
+		
 		Recipes.init();
 	}
 	
