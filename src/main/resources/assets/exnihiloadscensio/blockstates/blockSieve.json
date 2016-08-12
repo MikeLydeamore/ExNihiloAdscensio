@@ -1,0 +1,22 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "exnihiloadscensio:blockSieve"
+	},
+	"variants": {
+    	"mesh": {
+    		"none": {},
+    		"string": {
+    			"submodel": {
+    				"mesh1": { "model": "exnihiloadscensio:meshBase"},
+    				"mesh2": { "model": "exnihiloadscensio:meshBase", "y": 90}
+  				}
+  			},
+    		"flint": {},
+    		"iron": {},
+    		"diamond": {}
+    	},
+    	"normal": [{}],
+    	"inventory": [{}]
+  	}
+}

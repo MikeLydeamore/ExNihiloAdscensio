@@ -10,3 +10,5 @@ item.crookBone.name=Bone Crook
 tile.blockDust.name=Dust
 
 tile.blockBarrel.name=Wooden Barrel
+
+tile.blockSieve.name=Sieve

@@ -8,6 +8,7 @@ import exnihiloadscensio.config.Config;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
+import exnihiloadscensio.tiles.TileSieve;
 
 public class ENBlocks {
 
@@ -15,6 +16,7 @@ public class ENBlocks {
 	public static BlockBarrel barrelWood;
 	public static BlockInfestedLeaves infestedLeaves;
 	public static BlockCrucible crucible;
+	public static BlockSieve sieve;
 
 	public static void init()
 	{
@@ -32,6 +34,10 @@ public class ENBlocks {
 		crucible = new BlockCrucible();
 		crucible.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		GameRegistry.registerTileEntity(TileCrucible.class, "blockCrucible");
+		
+		sieve = new BlockSieve();
+		sieve.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		GameRegistry.registerTileEntity(TileSieve.class, "blockSieve");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -39,6 +45,7 @@ public class ENBlocks {
 	{
 		dust.initModel();
 		barrelWood.initModel();
+		sieve.initModel();
 	}
 
 }

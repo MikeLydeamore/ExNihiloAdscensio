@@ -18,6 +18,8 @@ public class ENItems {
 	public static CrookBase crookWood;
 	public static CrookBase crookBone;
 	
+	public static ItemMesh mesh;
+	
 	public static void init()
 	{
 		hammerWood = new HammerBase("hammerWood", 64, ToolMaterial.WOOD);
@@ -41,6 +43,9 @@ public class ENItems {
 		crookBone = new CrookBase("crookBone", 256);
 		crookBone.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
+		mesh = new ItemMesh();
+		mesh.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -54,5 +59,7 @@ public class ENItems {
 		
 		crookWood.initModel();
 		crookBone.initModel();
+		
+		mesh.initModel();
 	}
 }
