@@ -12,10 +12,12 @@ import exnihiloadscensio.CommonProxy;
 import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.client.renderers.RenderBarrel;
+import exnihiloadscensio.client.renderers.RenderCrucible;
 import exnihiloadscensio.client.renderers.RenderInfestedLeaves;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 
 public class ClientProxy extends CommonProxy {
@@ -36,7 +38,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderers()
 	{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileBarrel.class, new RenderBarrel());
-		
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCrucible.class, new RenderCrucible());
 	}
 
 	@Override

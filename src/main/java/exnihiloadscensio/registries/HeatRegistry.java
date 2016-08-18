@@ -20,7 +20,8 @@ public class HeatRegistry {
 	}
 	
 	public static void registerDefaults() {
-		register(new ItemStack(Blocks.TORCH), 1);
+		for (int i = 0 ; i < 16; i++)
+			register(new ItemStack(Blocks.TORCH, 1, i), 1);
 	}
 	
 	public static int getHeatAmount(ItemStack stack) {
@@ -28,7 +29,10 @@ public class HeatRegistry {
 	}
 	
 	public static int getHeatAmount(ItemInfo info) {
-		return registry.get(info);
+		if (registry.containsKey(info))
+			return registry.get(info);
+		
+		return 0;
 	}
 
 }

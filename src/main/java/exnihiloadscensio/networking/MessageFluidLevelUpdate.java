@@ -60,7 +60,6 @@ public class MessageFluidLevelUpdate implements IMessage {
 						TileBarrel te = (TileBarrel) entity;
 						FluidStack f = te.getTank().getFluid();
 						if (f != null) {
-							System.out.println("test");
 							f.amount = msg.fillAmount;
 							te.getTank().setFluid(f);
 						}
