@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -49,5 +50,21 @@ public class ItemInfo {
 	public ItemStack getItemStack() {
 		return new ItemStack(this.item, 1, this.meta);
 	}
-
+	
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		
+		tag.setString("item", Item.REGISTRY.getNameForObject(item).toString());
+		tag.setInteger("meta", meta);
+		
+		return tag;
+		
+	}
+	
+	public static ItemInfo readFromNBT(NBTTagCompound tag) {
+		Item item_ = Item.REGISTRY.getObject(new ResourceLocation(tag.getString("item")));
+		int meta_ = tag.getInteger("meta");
+		
+		return new ItemInfo(item_, meta_);
+	}
+ 
 }

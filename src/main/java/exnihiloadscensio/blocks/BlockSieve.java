@@ -1,7 +1,9 @@
 package exnihiloadscensio.blocks;
 
 import exnihiloadscensio.items.ItemMesh;
+import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.tiles.TileSieve;
+import exnihiloadscensio.util.Util;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,32 +20,32 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockSieve extends BlockBase implements ITileEntityProvider {
-	
+
 	public enum MeshType implements IStringSerializable {
 		NONE(0, "none"), STRING(1, "string"), FLINT(2, "flint"), IRON(3, "iron"), DIAMOND(4, "diamond");
 
 		private int id;
 		private String name;
-		
+
 		private MeshType(int id, String name) {
 			this.id = id;
 			this.name = name;
 		}
-		
+
 		@Override
 		public String getName() {
 			return name;
 		}
-		
+
 		public int getID() {
 			return id;
 		}
-		
+
 		@Override
 		public String toString() {
 			return getName();
 		}
-		
+
 		public static MeshType getMeshTypeByID(int meta) {
 			switch (meta) {
 			case 0:
@@ -57,11 +59,11 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 			case 4:
 				return DIAMOND;
 			}
-			
+
 			return NONE;
 		}
 	}
-	
+
 	public static final PropertyEnum<MeshType> MESH = PropertyEnum.create("mesh", MeshType.class);
 
 	public BlockSieve() {
@@ -69,31 +71,48 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(MESH, MeshType.NONE));
 		this.setHardness(2.0f);
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (world.isRemote)
 			return true;
-		
+
 		TileSieve te = (TileSieve) world.getTileEntity(pos);
-		if (te != null && heldItem != null && heldItem.getItem() instanceof ItemMesh) {
-			MeshType type = MeshType.getMeshTypeByID(heldItem.getItemDamage());
-			boolean done = te.setMesh(type);
-			if (done) {
-				heldItem.stackSize--;
-				world.setBlockState(pos, state.withProperty(MESH, type));
+		if (te != null) {
+			if (heldItem != null && heldItem.getItem() instanceof ItemMesh) {
+				//Adding a mesh.
+				ItemStack meshStack = heldItem.copy(); meshStack.stackSize = 1;
+				MeshType type = MeshType.getMeshTypeByID(heldItem.getItemDamage());
+				boolean done = te.setMesh(meshStack, false);
+				
+				if (done) {
+					heldItem.stackSize--;
+					System.out.println(te.getMeshStack() == null);
+					world.setBlockState(pos, state.withProperty(MESH, type));
+					PacketHandler.sendNBTUpdate(te);			
+					return true;
+				}
+			}
+			System.out.println(te.getMeshStack() == null);
+			if (heldItem == null && te.getMeshStack() != null && player.isSneaking() && te.setMesh(null, true)) {
+				//Removing a mesh.
+				Util.dropItemInWorld(te, player, te.getMeshStack(), 0.02f);
+				te.setMesh(null);
+				world.setBlockState(pos, state.withProperty(MESH, MeshType.NONE));
+				
+				return true;
 			}
 		}
-		
+
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] {MESH});
 	}
-	
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		MeshType type;
@@ -119,7 +138,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 		}
 		return getDefaultState().withProperty(MESH, type);
 	}
-	
+
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		MeshType type = (MeshType) state.getValue(MESH);
@@ -130,29 +149,29 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileSieve();
 	}
-	
+
 	@Override
 	public boolean isFullyOpaque(IBlockState state)
 	{
 		return false;
 	}
-	
+
 	@Override
-	 public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
-	
+	public boolean isFullBlock(IBlockState state)
+	{
+		return false;
+	}
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-	
+	{
+		return false;
+	}
+
 	@Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
+	public boolean isFullCube(IBlockState state)
+	{
+		return false;
+	}
 
 }
