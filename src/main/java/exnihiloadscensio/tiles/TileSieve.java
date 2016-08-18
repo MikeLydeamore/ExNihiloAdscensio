@@ -3,11 +3,14 @@ package exnihiloadscensio.tiles;
 import lombok.Getter;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.util.ItemInfo;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class TileSieve extends TileEntity {
 	
@@ -50,6 +53,22 @@ public class TileSieve extends TileEntity {
 		
 		return false;
 		
+	}
+	
+	public void doSieving() {
+		if (currentStack == null)
+			return;
+		
+		progress += 10;
+		
+		if (progress >= 100) {
+			
+		}
+	}
+	
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		return oldState.getBlock() != newState.getBlock();
 	}
 	
 	@Override
