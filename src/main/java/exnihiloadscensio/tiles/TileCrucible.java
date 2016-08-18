@@ -88,7 +88,6 @@ public class TileCrucible extends TileEntity implements ITickable {
 			if (fillAmount > 0) {
 				tank.fill(fStack, true);
 				solidAmount -= getHeatRate(); //Moving items into the "meltable" slot is handled earlier.
-				System.out.println(tank.getFluidAmount()+":"+solidAmount);
 				PacketHandler.sendNBTUpdate(this);
 			}
 		}
