@@ -101,7 +101,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 		if (blockBelow == null)
 			return 0;
 		
-		return 5*HeatRegistry.getHeatAmount(new ItemInfo(blockBelow));
+		return HeatRegistry.getHeatAmount(new ItemInfo(blockBelow));
 	}
 	
 	@SideOnly(Side.CLIENT)
