@@ -13,38 +13,40 @@ import com.google.gson.reflect.TypeToken;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.Compostable;
+import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 
 public class HeatRegistry {
 	
-	private static HashMap<ItemInfo, Integer> registry = new HashMap<ItemInfo, Integer>();
+	private static HashMap<BlockInfo, Integer> registry = new HashMap<BlockInfo, Integer>();
 	
 	private static Gson gson;
 	
-	public static void register(ItemInfo info, int ticksBetween) {
+	public static void register(BlockInfo info, int ticksBetween) {
 		registry.put(info, ticksBetween);
 	}
 	
 	public static void register(ItemStack stack, int ticksBetween) {
-		register(new ItemInfo(stack), ticksBetween);
+		register(new BlockInfo(stack), ticksBetween);
 	}
 	
 	public static void registerDefaults() {
 		for (int i = 0 ; i < 16; i++)
 			register(new ItemStack(Blocks.TORCH, 1, i), 1);
 		for (int i = 0 ; i < 16; i++)
-			register(new ItemInfo(Blocks.LAVA, i), 3);
+			register(new BlockInfo(Blocks.LAVA, i), 3);
 		for (int i = 0 ; i < 16; i++)
-			register(new ItemInfo(Blocks.FLOWING_LAVA, 1), 2);
+			register(new BlockInfo(Blocks.FLOWING_LAVA, i), 2);
 	}
 	
 	public static int getHeatAmount(ItemStack stack) {
-		return registry.get(new ItemInfo(stack));
+		return registry.get(new BlockInfo(stack));
 	}
 	
-	public static int getHeatAmount(ItemInfo info) {
+	public static int getHeatAmount(BlockInfo info) {
 		if (registry.containsKey(info))
 			return registry.get(info);
 		
@@ -53,7 +55,7 @@ public class HeatRegistry {
 	
 	public static void loadJson(File file) {
 		gson = new GsonBuilder().setPrettyPrinting()
-				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
+				.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson()).create();
 		if (file.exists())
 		{
 			try 
@@ -66,7 +68,7 @@ public class HeatRegistry {
 				while (it.hasNext())
 				{
 					String s = (String) it.next();
-					ItemInfo stack = new ItemInfo(s);
+					BlockInfo stack = new BlockInfo(s);
 					register(stack, gsonInput.get(s));
 				}
 			} 

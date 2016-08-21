@@ -6,6 +6,7 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.types.Meltable;
+import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
 import net.minecraft.block.Block;
@@ -104,7 +105,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 		if (blockBelow == null)
 			return 0;
 		
-		return HeatRegistry.getHeatAmount(new ItemInfo(blockBelow));
+		return HeatRegistry.getHeatAmount(new BlockInfo(blockBelow));
 	}
 	
 	@SideOnly(Side.CLIENT)

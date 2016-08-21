@@ -5,9 +5,7 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import exnihiloadscensio.util.BlockMeta;
 
 public class CrookRegistry {
 	
