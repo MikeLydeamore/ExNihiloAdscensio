@@ -1,6 +1,11 @@
 package exnihiloadscensio.tiles;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import lombok.Getter;
+import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -17,6 +22,8 @@ public class TileSieve extends TileEntity {
 	private byte progress = 0;
 	@Getter
 	private ItemStack meshStack;
+	
+	private static Random rand = new Random();
 	
 	public TileSieve() {}
 	
@@ -61,8 +68,19 @@ public class TileSieve extends TileEntity {
 		progress += 10;
 		
 		if (progress >= 100) {
-			
+			//Time to drop!
+			ArrayList<Siftable> siftables = SieveRegistry.getDrops(currentStack);
+			if (siftables == null || siftables.size() == 0) {
+				//Probably shouldn't happen, but weird shit always does.
+				resetSieve();
+				return;
+			}
 		}
+	}
+	
+	private void resetSieve() {
+		progress = 0;
+		currentStack = null;
 	}
 	
 	@Override
