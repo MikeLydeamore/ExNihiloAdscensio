@@ -1,6 +1,7 @@
 package exnihiloadscensio.tiles;
 
 import lombok.Getter;
+import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
@@ -11,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,6 +29,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -147,6 +150,34 @@ public class TileCrucible extends TileEntity implements ITickable {
 		}
 
 		return solidProportion > fluidProportion ? solidProportion : fluidProportion;
+	}
+	
+	public boolean onBlockActivated(ItemStack stack, EntityPlayer player) {
+		if (stack == null)
+			return false;
+		
+		//Bucketing out the fluid.
+		if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+			FluidStack fluid = tank.drain(Fluid.BUCKET_VOLUME, false);
+			int amount = handler.fill(fluid, true);
+			if (amount != 0) {
+				tank.drain(Fluid.BUCKET_VOLUME, true);
+				PacketHandler.sendNBTUpdate(this);
+			}
+			return true;
+		}
+		
+		//Adding a meltable.
+		ItemStack addStack = stack.copy(); addStack.stackSize = 1;
+		ItemStack insertStack = itemHandler.insertItem(0, addStack, true);
+		if (!ItemStack.areItemStacksEqual(addStack, insertStack)) {
+			itemHandler.insertItem(0, addStack, false);
+			stack.stackSize--;
+			PacketHandler.sendNBTUpdate(this);
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
