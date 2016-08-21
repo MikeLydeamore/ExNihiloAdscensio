@@ -1,7 +1,6 @@
 package exnihiloadscensio.registries.types;
 
 import exnihiloadscensio.util.ItemInfo;
-import net.minecraftforge.fluids.Fluid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

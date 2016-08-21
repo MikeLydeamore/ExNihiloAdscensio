@@ -14,10 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import exnihiloadscensio.json.CustomBlockInfoJson;
-import exnihiloadscensio.json.CustomItemInfoJson;
-import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.ItemInfo;
 
 public class HeatRegistry {
 	
