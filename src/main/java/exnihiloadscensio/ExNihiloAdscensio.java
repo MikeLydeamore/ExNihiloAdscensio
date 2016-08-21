@@ -85,8 +85,9 @@ public class ExNihiloAdscensio {
 		
 		FluidOnTopRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidOnTopRegistry.json"));
 		
+		HeatRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HeatRegistry.json"));
+		
 		CrucibleRegistry.registerDefaults();
-		HeatRegistry.registerDefaults();
 		
 		Recipes.init();
 	}

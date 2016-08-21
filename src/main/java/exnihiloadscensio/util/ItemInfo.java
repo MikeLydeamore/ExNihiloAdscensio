@@ -1,5 +1,6 @@
 package exnihiloadscensio.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -27,6 +28,11 @@ public class ItemInfo {
 	{
 		item = stack.getItem();
 		meta = stack.getItemDamage();
+	}
+	
+	public ItemInfo(Block block, int meta) {
+		item = Item.getItemFromBlock(block);
+		this.meta = meta;
 	}
 	
 	public ItemInfo(String string)
