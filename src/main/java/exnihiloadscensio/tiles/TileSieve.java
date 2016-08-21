@@ -1,7 +1,6 @@
 package exnihiloadscensio.tiles;
 
 import lombok.Getter;
-import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

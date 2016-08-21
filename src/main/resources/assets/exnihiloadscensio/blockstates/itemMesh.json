@@ -1,0 +1,15 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+  	},
+	"variants": {
+    	"mesh": {
+    		"string": {
+    			"submodel": {
+    				"mesh1": { "model": "exnihiloadscensio:block/meshBase"},
+    				"mesh2": { "model": "exnihiloadscensio:block/meshBase", "y": 90}
+  				}
+  			}
+    	}
+  	}
+}

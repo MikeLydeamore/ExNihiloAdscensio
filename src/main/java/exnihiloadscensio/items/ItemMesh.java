@@ -3,7 +3,6 @@ package exnihiloadscensio.items;
 import java.util.List;
 
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -40,7 +39,7 @@ public class ItemMesh extends Item {
 	@SideOnly(Side.CLIENT)
 	public void initModel()
 	{
-		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation(getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation("itemMesh", "mesh=string"));
 	}
 
 }
