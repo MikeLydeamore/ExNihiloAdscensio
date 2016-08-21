@@ -12,14 +12,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockCrucible extends BlockBase implements ITileEntityProvider {
+public class BlockCrucible extends BlockBase {
 
 	public BlockCrucible() {
 		super(Material.ROCK, "blockCrucible");
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, IBlockState state) {
 		return new TileCrucible();
 	}
 	
@@ -29,7 +29,10 @@ public class BlockCrucible extends BlockBase implements ITileEntityProvider {
 			return true;
 		
 		TileCrucible te = (TileCrucible) world.getTileEntity(pos);
-		return te.onBlockActivated(heldItem, player);
+		if (te != null)
+			return te.onBlockActivated(heldItem, player);
+		else
+			return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 	
 	@Override

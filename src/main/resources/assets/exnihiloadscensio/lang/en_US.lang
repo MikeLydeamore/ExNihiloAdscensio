@@ -7,6 +7,9 @@ item.hammerDiamond.name=Diamond Hammer
 item.crookWood.name=Wooden Crook
 item.crookBone.name=Bone Crook
 
+item.itemMaterial.stones.name=Stones
+item.itemMaterial.porcelain_clay.name=Porcelain Clay
+
 tile.blockDust.name=Dust
 
 tile.blockBarrel.name=Wooden Barrel

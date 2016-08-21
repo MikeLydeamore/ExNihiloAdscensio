@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "builtin/generated",
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "type": {
+      "stones": {
+        "textures": {
+          "layer0": "exnihiloadscensio:items/stones"
+        }
+       },
+       "porcelain_clay": {
+        "textures": {
+          "layer0": "exnihiloadscensio:items/porcelainClay"
+        }
+       }
+     }
+  }
+}

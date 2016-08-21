@@ -1,9 +1,13 @@
 package exnihiloadscensio;
 
+import exnihiloadscensio.blocks.BlockCrucible;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.items.ItemResource;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -22,6 +26,9 @@ public class Recipes {
 		
 		if (Config.enableBarrels)
 			GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelWood, new Object[] {"x x","x x", "xyx", 'x', "plankWood", 'y', "slabWood"}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.COBBLESTONE, new Object[] {"xx","xx", 'x', ItemResource.getResourceStack("stones")}));
+		GameRegistry.addShapelessRecipe(ItemResource.getResourceStack("porcelain_clay"), new ItemStack(Items.CLAY_BALL), new ItemStack(Items.DYE, 1, 15));
 	}
 
 }

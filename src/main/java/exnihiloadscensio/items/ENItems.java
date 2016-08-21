@@ -20,6 +20,8 @@ public class ENItems {
 	
 	public static ItemMesh mesh;
 	
+	public static ItemResource resources;
+	
 	public static void init()
 	{
 		hammerWood = new HammerBase("hammerWood", 64, ToolMaterial.WOOD);
@@ -46,6 +48,8 @@ public class ENItems {
 		mesh = new ItemMesh();
 		mesh.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
+		resources = new ItemResource();
+		
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -61,5 +65,9 @@ public class ENItems {
 		crookBone.initModel();
 		
 		mesh.initModel();
+		
+		resources.initModel();
 	}
+	
+	
 }
