@@ -4,6 +4,10 @@
     		"model": "exnihiloadscensio:blockCrucible"
   		},
   	"variants": {
+  		"fired": {
+  			"true": {},
+  			"false": { "model": "exnihiloadscensio:blockCrucibleUnfired" }
+  		},
    	 	"normal": [{}],
     	"inventory": [{}]
   }

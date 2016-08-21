@@ -1,26 +1,84 @@
 package exnihiloadscensio.blocks;
 
+import java.util.List;
+
+import exnihiloadscensio.items.ItemBlockMeta;
 import exnihiloadscensio.tiles.TileCrucible;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCrucible extends BlockBase {
+public class BlockCrucible extends Block {
 
+	public static final PropertyBool FIRED = PropertyBool.create("fired");
+	
 	public BlockCrucible() {
-		super(Material.ROCK, "blockCrucible");
+		super(Material.ROCK);
+		String name = "blockCrucible";
+		setUnlocalizedName(name);
+		setRegistryName(name);
+		GameRegistry.<Block>register(this);
+		GameRegistry.register(new ItemBlockMeta(this).setRegistryName(name));
+		this.setHardness(2.0f);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FIRED, false));
 	}
 
 	@Override
 	public TileEntity createTileEntity(World worldIn, IBlockState state) {
-		return new TileCrucible();
+		System.out.println(state.getValue(FIRED));
+		if (state.getValue(FIRED))
+			return new TileCrucible();
+		
+		return null;
+	}
+	
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+        return state.getValue(FIRED);
+    }
+	
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { FIRED });
+	}
+	
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+	    return getDefaultState().withProperty(FIRED, meta == 0 ? false : true);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+	    return state.getValue(FIRED) ? 1 : 0;
+	}
+	
+	@Override
+	public int damageDropped(IBlockState state) {
+	    return getMetaFromState(state);
+	}
+	
+	@Override
+	public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+	    list.add(new ItemStack(itemIn, 1, 0));
+	    list.add(new ItemStack(itemIn, 1, 1));
 	}
 	
 	@Override
@@ -54,5 +112,14 @@ public class BlockCrucible extends BlockBase {
     public boolean isFullCube(IBlockState state) {
         return false;
     }
+	
+	@SideOnly(Side.CLIENT)
+	public void initModel()
+	{
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
+				new ModelResourceLocation(getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 1,
+				new ModelResourceLocation(getRegistryName(), "inventory"));
+	}
 
 }

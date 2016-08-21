@@ -46,6 +46,7 @@ public class ENBlocks {
 		dust.initModel();
 		barrelWood.initModel();
 		sieve.initModel();
+		crucible.initModel();
 	}
 
 }

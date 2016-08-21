@@ -8,6 +8,7 @@ import exnihiloadscensio.items.ItemResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -26,7 +27,10 @@ public class Recipes {
 		
 		if (Config.enableBarrels)
 			GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelWood, new Object[] {"x x","x x", "xyx", 'x', "plankWood", 'y', "slabWood"}));
-		
+		if (Config.enableCrucible) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new Object[] {"x x","x x","xxx", 'x', ItemResource.getResourceStack("porcelain_clay")}));
+			FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new ItemStack(ENBlocks.crucible, 1, 1), 0.7f);
+		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.COBBLESTONE, new Object[] {"xx","xx", 'x', ItemResource.getResourceStack("stones")}));
 		GameRegistry.addShapelessRecipe(ItemResource.getResourceStack("porcelain_clay"), new ItemStack(Items.CLAY_BALL), new ItemStack(Items.DYE, 1, 15));
 	}

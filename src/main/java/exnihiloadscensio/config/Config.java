@@ -8,6 +8,7 @@ import net.minecraftforge.common.config.Configuration;
 public class Config {
 	
 	public static boolean enableBarrels;
+	public static boolean enableCrucible;
 	public static boolean shouldBarrelsFillWithRain;
 	
 	public static int compostingTicks;
@@ -26,6 +27,7 @@ public class Config {
 		config.load();
 		
 		enableBarrels = config.get("Mechanics", "barrels", true).getBoolean();
+		enableCrucible = config.get("Mechanics", "crucible", true).getBoolean();
 		shouldBarrelsFillWithRain = config.get("Mechanics", "barrelsFillWithRain", true).getBoolean();
 		
 		compostingTicks = config.get("Composting", "ticksToFormDirt", 600).getInt();

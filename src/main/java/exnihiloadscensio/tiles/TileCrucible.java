@@ -49,7 +49,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	
 	public TileCrucible() {
 		tank = new FluidTank(4*Fluid.BUCKET_VOLUME);
-		itemHandler = new CrucibleItemHandler();
+		itemHandler = new CrucibleItemHandler(); itemHandler.setTe(this);
 	}
 
 	@Override
@@ -127,8 +127,13 @@ public class TileCrucible extends TileEntity implements ITickable {
 		if (fluidProportion > solidProportion)
 			return Util.getTextureFromBlockState(tank.getFluid().getFluid().getBlock().getDefaultState());
 		else {
-			IBlockState block = Block.getBlockFromItem(currentItem.getItem())
-					.getStateFromMeta(currentItem.getMeta());
+			if (currentItem != null) {
+				IBlockState block = Block.getBlockFromItem(currentItem.getItem())
+						.getStateFromMeta(currentItem.getMeta());
+				return Util.getTextureFromBlockState(block);
+			}
+			IBlockState block = Block.getBlockFromItem(itemHandler.getStackInSlot(0).getItem())
+					.getStateFromMeta(itemHandler.getStackInSlot(0).getItemDamage());
 			return Util.getTextureFromBlockState(block);
 		}
 	}

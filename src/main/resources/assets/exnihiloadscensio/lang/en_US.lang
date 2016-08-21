@@ -14,4 +14,7 @@ tile.blockDust.name=Dust
 
 tile.blockBarrel.name=Wooden Barrel
 
+tile.blockCrucible.0.name=Unfired Crucible
+tile.blockCrucible.1.name=Crucible
+
 tile.blockSieve.name=Sieve

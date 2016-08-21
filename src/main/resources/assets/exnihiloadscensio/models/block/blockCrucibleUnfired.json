@@ -1,0 +1,10 @@
+{
+	"parent": "block/cauldron_empty",
+ 	"textures": {
+        "particle": "exnihiloadscensio:blocks/blockCrucibleUnfired",
+    	"top": "exnihiloadscensio:blocks/blockCrucibleUnfired",
+    	"bottom": "exnihiloadscensio:blocks/blockCrucibleUnfired",
+    	"side": "exnihiloadscensio:blocks/blockCrucibleUnfired",
+    	"inside": "exnihiloadscensio:blocks/blockCrucibleUnfired"
+    }
+}
