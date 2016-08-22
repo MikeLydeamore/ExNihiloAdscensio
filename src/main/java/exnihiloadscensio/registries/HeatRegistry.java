@@ -37,6 +37,8 @@ public class HeatRegistry {
 			register(new BlockInfo(Blocks.LAVA, i), 3);
 		for (int i = 0 ; i < 16; i++)
 			register(new BlockInfo(Blocks.FLOWING_LAVA, i), 2);
+		for (int i = 0 ; i < 16; i++)
+			register(new BlockInfo(Blocks.FIRE, i), 4);
 	}
 	
 	public static int getHeatAmount(ItemStack stack) {
