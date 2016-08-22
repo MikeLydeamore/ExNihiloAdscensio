@@ -6,6 +6,7 @@ import java.util.Random;
 import lombok.Getter;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
+import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +21,7 @@ import net.minecraft.world.World;
 
 public class TileSieve extends TileEntity {
 	
-	private ItemInfo currentStack;
+	private BlockInfo currentStack;
 	private byte progress = 0;
 	@Getter
 	private ItemStack meshStack;
@@ -65,7 +66,7 @@ public class TileSieve extends TileEntity {
 	
 	public boolean addBlock(ItemStack stack) {
 		if (currentStack == null && SieveRegistry.canBeSifted(stack)) {
-			currentStack = new ItemInfo(stack);
+			currentStack = new BlockInfo(stack);
 			return true;
 		}
 		
@@ -130,7 +131,7 @@ public class TileSieve extends TileEntity {
 	public void readFromNBT(NBTTagCompound tag) {
 		
 		if (tag.hasKey("stack"))
-			currentStack = ItemInfo.readFromNBT(tag.getCompoundTag("stack"));
+			currentStack = BlockInfo.readFromNBT(tag.getCompoundTag("stack"));
 		
 		if (tag.hasKey("mesh"))
 			meshStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mesh"));

@@ -10,23 +10,24 @@ import net.minecraft.item.ItemStack;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.registries.types.Siftable;
+import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 
 public class SieveRegistry {
 
-	private static HashMap<ItemInfo, ArrayList<Siftable>> registry = new HashMap<ItemInfo, ArrayList<Siftable>>();
+	private static HashMap<BlockInfo, ArrayList<Siftable>> registry = new HashMap<BlockInfo, ArrayList<Siftable>>();
 	
-	public static void register(ItemInfo block, ItemInfo drop, float chance, int meshLevel) {
+	public static void register(BlockInfo block, ItemInfo drop, float chance, int meshLevel) {
 		Siftable siftable = new Siftable(drop, chance, meshLevel);
 		
 		register(block, siftable);
 	}
 	
 	public static void register(IBlockState state, ItemStack drop, float chance, int meshLevel) {
-		register(new ItemInfo(state), new Siftable(new ItemInfo(drop), chance, meshLevel));
+		register(new BlockInfo(state), new Siftable(new ItemInfo(drop), chance, meshLevel));
 	}
 	
-	public static void register(ItemInfo block, Siftable drop) {
+	public static void register(BlockInfo block, Siftable drop) {
 		ArrayList<Siftable> currentDrops;
 		if (registry.containsKey(block)) {
 			currentDrops = registry.get(block);
@@ -35,6 +36,7 @@ public class SieveRegistry {
 		}
 		
 		currentDrops.add(drop);
+		registry.put(block, currentDrops);
 	}
 	
 	/**
@@ -44,7 +46,7 @@ public class SieveRegistry {
 	 * @return ArrayList of {@linkplain exnihiloadscensio.registries.types.Siftable}
 	 * that could *potentially* be dropped.
 	 */
-	public static ArrayList<Siftable> getDrops(ItemInfo block) {
+	public static ArrayList<Siftable> getDrops(BlockInfo block) {
 		if (!registry.containsKey(block))
 			return null;
 		
@@ -59,7 +61,7 @@ public class SieveRegistry {
 	 * that could *potentially* be dropped.
 	 */
 	public static ArrayList<Siftable> getDrops(ItemStack block) {
-		return getDrops(new ItemInfo(block));
+		return getDrops(new BlockInfo(block));
 	}
 	
 	public static boolean canBeSifted(ItemStack stack) {
