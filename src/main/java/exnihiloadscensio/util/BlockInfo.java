@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.chunk.BlockStateContainer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -52,6 +53,11 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		int meta_ = tag.getInteger("meta");
 		
 		return new BlockInfo(item_, meta_);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public IBlockState getBlockState() {
+		return block.getStateFromMeta(meta);
 	}
 
 }

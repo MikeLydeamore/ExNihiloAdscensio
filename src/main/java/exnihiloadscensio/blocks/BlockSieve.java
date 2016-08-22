@@ -1,5 +1,7 @@
 package exnihiloadscensio.blocks;
 
+import java.util.List;
+
 import exnihiloadscensio.items.ItemMesh;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.tiles.TileSieve;
@@ -17,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockSieve extends BlockBase implements ITileEntityProvider {
@@ -49,8 +52,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 		public static MeshType getMeshTypeByID(int meta) {
 			switch (meta) {
 			case 0:
-				return NONE;
-			case 1:
+
 				return STRING;
 			case 2:
 				return FLINT;
@@ -149,6 +151,20 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 	public int getMetaFromState(IBlockState state) {
 		MeshType type = (MeshType) state.getValue(MESH);
 		return type.getID();
+	}
+	
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack>  ret = super.getDrops(world, pos, state, fortune); 
+		
+		TileSieve te = (TileSieve) world.getTileEntity(pos);
+		if (te != null) {
+			if (te.getMeshStack() != null) {
+				ret.add(te.getMeshStack().copy());
+			}
+		}
+		
+		return ret;
 	}
 
 	@Override

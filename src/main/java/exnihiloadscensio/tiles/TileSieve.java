@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import lombok.Getter;
+import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,10 +20,13 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileSieve extends TileEntity {
 	
 	private BlockInfo currentStack;
+	@Getter
 	private byte progress = 0;
 	@Getter
 	private ItemStack meshStack;
@@ -66,8 +71,16 @@ public class TileSieve extends TileEntity {
 	
 	public boolean addBlock(ItemStack stack) {
 		if (currentStack == null && SieveRegistry.canBeSifted(stack)) {
-			currentStack = new BlockInfo(stack);
-			return true;
+			if (meshStack == null)
+				return false;
+			int meshLevel = meshStack.getItemDamage();
+			for (Siftable siftable : SieveRegistry.getDrops(stack)) {
+				if (siftable.getMeshLevel() == meshLevel) {
+					currentStack = new BlockInfo(stack);
+					PacketHandler.sendNBTUpdate(this);
+					return true;
+				}
+			}
 		}
 		
 		return false;
@@ -78,6 +91,7 @@ public class TileSieve extends TileEntity {
 			return;
 		
 		progress += 10;
+		PacketHandler.sendNBTUpdate(this);
 		
 		if (progress >= 100) {
 			//Time to drop!
@@ -103,6 +117,15 @@ public class TileSieve extends TileEntity {
 	private void resetSieve() {
 		progress = 0;
 		currentStack = null;
+		PacketHandler.sendNBTUpdate(this);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public TextureAtlasSprite getTexture() {
+		if (currentStack != null) {
+			return Util.getTextureFromBlockState(currentStack.getBlockState());
+		}
+		return null;
 	}
 	
 	@Override
@@ -132,6 +155,8 @@ public class TileSieve extends TileEntity {
 		
 		if (tag.hasKey("stack"))
 			currentStack = BlockInfo.readFromNBT(tag.getCompoundTag("stack"));
+		else 
+			currentStack = null;
 		
 		if (tag.hasKey("mesh"))
 			meshStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mesh"));

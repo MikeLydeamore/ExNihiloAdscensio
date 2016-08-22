@@ -5,7 +5,7 @@
     "name": "blockSieve",
     "elements": [
         {   
-        	"from": [ 0, 12, 0 ],
+        	"from": [ 0, 11, 0 ],
             "to": [ 16, 16, 1 ],
             "faces": {
                 "up":    { "texture": "#texture"},
@@ -16,7 +16,7 @@
             }
         },
         {   
-        	"from": [ 0, 12, 0 ],
+        	"from": [ 0, 11, 0 ],
             "to": [ 1, 16, 16 ],
             "faces": {
                 "up":    { "texture": "#texture"},
@@ -27,7 +27,7 @@
             }
         },
         {   
-        	"from": [ 0, 12, 15 ],
+        	"from": [ 0, 11, 15 ],
             "to": [ 16, 16, 16 ],
             "faces": {
                 "up":    { "texture": "#texture"},
@@ -38,7 +38,7 @@
             }
         },
         {   
-        	"from": [ 15, 12, 0 ],
+        	"from": [ 15, 11, 0 ],
             "to": [ 16, 16, 16 ],
             "faces": {
                 "up":    { "texture": "#texture"},

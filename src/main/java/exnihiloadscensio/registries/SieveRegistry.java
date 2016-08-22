@@ -65,7 +65,9 @@ public class SieveRegistry {
 	}
 	
 	public static boolean canBeSifted(ItemStack stack) {
-		return registry.containsKey(new ItemInfo(stack));
+		if (stack == null)
+			return false;
+		return registry.containsKey(new BlockInfo(stack));
 	}
 	
 	public static void registerDefaults() {
