@@ -28,6 +28,7 @@ import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.registries.FluidOnTopRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
+import exnihiloadscensio.registries.SieveRegistry;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
 public class ExNihiloAdscensio {
@@ -87,7 +88,9 @@ public class ExNihiloAdscensio {
 		
 		HeatRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HeatRegistry.json"));
 		
-		CrucibleRegistry.registerDefaults();
+		CrucibleRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrucibleRegistry.json"));
+		
+		SieveRegistry.registerDefaults();
 		
 		Recipes.init();
 	}

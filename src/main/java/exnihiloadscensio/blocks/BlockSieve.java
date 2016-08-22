@@ -101,6 +101,14 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 				
 				return true;
 			}
+			
+			if (te.addBlock(heldItem)) {
+				heldItem.stackSize--;
+				return true;
+			}
+			
+			te.doSieving(player);
+			return true;
 		}
 
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);

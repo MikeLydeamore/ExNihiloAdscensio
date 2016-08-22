@@ -7,7 +7,9 @@ import lombok.Getter;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.Util;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -61,7 +63,16 @@ public class TileSieve extends TileEntity {
 		
 	}
 	
-	public void doSieving() {
+	public boolean addBlock(ItemStack stack) {
+		if (currentStack == null && SieveRegistry.canBeSifted(stack)) {
+			currentStack = new ItemInfo(stack);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void doSieving(EntityPlayer player) {
 		if (currentStack == null)
 			return;
 		
@@ -75,6 +86,16 @@ public class TileSieve extends TileEntity {
 				resetSieve();
 				return;
 			}
+			int meshLevel = meshStack.getItemDamage();
+			for (Siftable siftable : siftables) {
+				if (meshLevel != siftable.getMeshLevel())
+					continue;
+				if (rand.nextDouble() < siftable.getChance()) {
+					ItemStack dropStack = siftable.getDrop().getItemStack();
+					Util.dropItemInWorld(this, player, dropStack, 0.02d);
+				}
+			}
+			resetSieve();
 		}
 	}
 	
