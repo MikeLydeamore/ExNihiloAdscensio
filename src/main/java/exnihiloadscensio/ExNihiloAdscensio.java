@@ -51,12 +51,14 @@ public class ExNihiloAdscensio {
 		configDirectory.mkdirs();
 		Config.doNormalConfig(new File(configDirectory.getAbsolutePath()+"/ExNihiloAdscensio.cfg"));
 		
+		OreRegistry.registerDefaults();
+		
 		ENItems.init();
 		ENBlocks.init();
 		proxy.initModels();
 		proxy.registerRenderers();
 		
-		OreRegistry.registerDefaults();
+		
 		
 		//HammerRegistry.registerDefaults();
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());

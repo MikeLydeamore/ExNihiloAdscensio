@@ -19,7 +19,8 @@ public class OreRegistry {
                 .setType(Ore.class)
                 .create(); 
     	
-    	Ore iron = new Ore("iron", new Color(194, 129, 45, 1));
+    	//Ore iron = new Ore("iron", new Color(194, 129, 45, 1));
+    	Ore gold = new Ore("gold", new Color(194, 129, 45, 1));
     }
 
 }

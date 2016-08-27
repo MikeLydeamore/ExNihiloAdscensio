@@ -1,6 +1,7 @@
 package exnihiloadscensio.items;
 
 import exnihiloadscensio.ExNihiloAdscensio;
+import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.tools.CrookBase;
 import exnihiloadscensio.items.tools.HammerBase;
 import net.minecraft.item.Item.ToolMaterial;
@@ -21,6 +22,8 @@ public class ENItems {
 	public static ItemMesh mesh;
 	
 	public static ItemResource resources;
+	
+	public static ItemOre ores;
 	
 	public static void init()
 	{
@@ -49,6 +52,8 @@ public class ENItems {
 		mesh.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
 		resources = new ItemResource();
+		
+		ores = new ItemOre();
 		
 	}
 	
