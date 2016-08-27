@@ -4,7 +4,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import exnihiloadscensio.ExNihiloAdscensio;
-import exnihiloadscensio.config.Config;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;

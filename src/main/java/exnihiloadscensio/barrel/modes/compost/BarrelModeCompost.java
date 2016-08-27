@@ -52,6 +52,7 @@ public class BarrelModeCompost implements IBarrelMode {
 		handler = new BarrelItemHandlerCompost(null);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
@@ -122,6 +123,7 @@ public class BarrelModeCompost implements IBarrelMode {
 		barrel.getWorld().setBlockState(barrel.getPos(), state);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean addItem(ItemStack stack, TileBarrel barrel)
 	{
 		
@@ -213,6 +215,7 @@ public class BarrelModeCompost implements IBarrelMode {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void readFromNBT(NBTTagCompound tag) 
 	{

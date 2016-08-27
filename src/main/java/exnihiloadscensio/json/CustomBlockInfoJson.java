@@ -14,10 +14,10 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.ItemInfo;
 
 public class CustomBlockInfoJson implements JsonDeserializer<BlockInfo>, JsonSerializer<BlockInfo> {
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public JsonElement serialize(BlockInfo src, Type typeOfSrc,
 			JsonSerializationContext context) {
@@ -28,6 +28,7 @@ public class CustomBlockInfoJson implements JsonDeserializer<BlockInfo>, JsonSer
 		return obj;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public BlockInfo deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {

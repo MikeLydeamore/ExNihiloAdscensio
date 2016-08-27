@@ -20,7 +20,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.wrappers.BlockLiquidWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -116,6 +115,7 @@ public class BarrelModeFluid implements IBarrelMode {
 		return (float) (amount/Fluid.BUCKET_VOLUME);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void update(TileBarrel barrel) {
 		// Fluids on top.

@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import exnihiloadscensio.json.CustomItemInfoJson;
-import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.registries.types.Meltable;
 import exnihiloadscensio.util.ItemInfo;
 

@@ -2,7 +2,6 @@ package exnihiloadscensio.json;
 
 import java.lang.reflect.Type;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
 
@@ -18,6 +17,7 @@ import exnihiloadscensio.util.ItemInfo;
 
 public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSerializer<ItemInfo> {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public JsonElement serialize(ItemInfo src, Type typeOfSrc,
 			JsonSerializationContext context) {
@@ -28,6 +28,7 @@ public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSeria
 		return obj;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public ItemInfo deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {

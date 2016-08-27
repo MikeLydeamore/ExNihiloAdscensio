@@ -80,6 +80,7 @@ public class BarrelModeBlock implements IBarrelMode {
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {

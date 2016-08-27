@@ -8,17 +8,14 @@ import exnihiloadscensio.barrel.BarrelItemHandler;
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
-import exnihiloadscensio.networking.MessageFluidUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -28,17 +25,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileBarrel extends TileEntity implements ITickable {
 
-	private ItemStack processingStack;
 	@Getter
 	private IBarrelMode mode;
 

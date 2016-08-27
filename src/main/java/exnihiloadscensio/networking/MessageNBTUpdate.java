@@ -9,9 +9,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.tiles.TileBarrel;
 
 public class MessageNBTUpdate implements IMessage {
 	

@@ -28,6 +28,7 @@ import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.registries.FluidOnTopRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
+import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
@@ -54,6 +55,8 @@ public class ExNihiloAdscensio {
 		ENBlocks.init();
 		proxy.initModels();
 		proxy.registerRenderers();
+		
+		OreRegistry.registerDefaults();
 		
 		//HammerRegistry.registerDefaults();
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());

@@ -8,7 +8,6 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

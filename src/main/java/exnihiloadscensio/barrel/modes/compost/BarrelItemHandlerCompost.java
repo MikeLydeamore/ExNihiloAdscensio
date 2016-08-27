@@ -5,7 +5,6 @@ import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 

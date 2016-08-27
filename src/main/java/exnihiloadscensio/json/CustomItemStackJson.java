@@ -16,7 +16,8 @@ import net.minecraftforge.fml.common.registry.GameData;
 
 public class CustomItemStackJson implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack> {
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonHelper helper = new JsonHelper(json);
 
@@ -27,7 +28,8 @@ public class CustomItemStackJson implements JsonDeserializer<ItemStack>, JsonSer
         return new ItemStack(GameData.getItemRegistry().containsKey(new ResourceLocation(name)) ? GameData.getItemRegistry().getObject(new ResourceLocation(name)) : null, amount, meta);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("name", GameData.getItemRegistry().getNameForObject(src.getItem()).toString());

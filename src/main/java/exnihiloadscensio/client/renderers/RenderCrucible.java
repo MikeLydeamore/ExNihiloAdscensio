@@ -2,10 +2,7 @@ package exnihiloadscensio.client.renderers;
 
 import org.lwjgl.opengl.GL11;
 
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
-import exnihiloadscensio.util.Util;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;

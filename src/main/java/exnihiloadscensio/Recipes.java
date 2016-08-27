@@ -1,6 +1,5 @@
 package exnihiloadscensio;
 
-import exnihiloadscensio.blocks.BlockCrucible;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ENItems;

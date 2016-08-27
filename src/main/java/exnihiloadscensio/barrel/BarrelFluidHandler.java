@@ -3,7 +3,6 @@ package exnihiloadscensio.barrel;
 import javax.annotation.Nullable;
 
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
-import exnihiloadscensio.networking.MessageFluidLevelUpdate;
 import exnihiloadscensio.networking.MessageFluidUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
@@ -11,7 +10,6 @@ import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import exnihiloadscensio.tiles.TileBarrel;
 
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 

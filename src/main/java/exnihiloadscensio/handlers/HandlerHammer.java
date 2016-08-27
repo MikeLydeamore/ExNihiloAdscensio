@@ -3,7 +3,6 @@ package exnihiloadscensio.handlers;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.world.BlockEvent;

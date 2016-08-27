@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 
 import exnihiloadscensio.ExNihiloAdscensio;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.PngSizeInfo;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;

@@ -2,23 +2,16 @@ package exnihiloadscensio.handlers;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import exnihiloadscensio.blocks.BlockInfestedLeaves;
-import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.tools.ICrook;
 import exnihiloadscensio.registries.CrookRegistry;
 import exnihiloadscensio.registries.CrookReward;
-import exnihiloadscensio.tiles.TileInfestedLeaves;
 
 public class HandlerCrook {
 

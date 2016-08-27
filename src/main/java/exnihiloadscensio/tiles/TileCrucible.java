@@ -1,7 +1,6 @@
 package exnihiloadscensio.tiles;
 
 import lombok.Getter;
-import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
@@ -11,10 +10,8 @@ import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,7 +19,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -108,6 +104,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 		return HeatRegistry.getHeatAmount(new BlockInfo(blockBelow));
 	}
 	
+	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTexture() {
 		int noItems = itemHandler.getStackInSlot(0) == null ? 0 : 
