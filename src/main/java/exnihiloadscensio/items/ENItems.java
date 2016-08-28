@@ -72,6 +72,8 @@ public class ENItems {
 		mesh.initModel();
 		
 		resources.initModel();
+		
+		ores.initModel();
 	}
 	
 	

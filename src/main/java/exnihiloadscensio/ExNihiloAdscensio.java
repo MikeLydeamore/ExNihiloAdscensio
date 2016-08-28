@@ -98,6 +98,7 @@ public class ExNihiloAdscensio {
 		SieveRegistry.registerDefaults();
 		
 		Recipes.init();
+		OreRegistry.doRecipes();
 	}
 	
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")

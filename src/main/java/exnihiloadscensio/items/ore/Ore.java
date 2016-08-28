@@ -2,6 +2,7 @@ package exnihiloadscensio.items.ore;
 
 import lombok.Getter;
 import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.util.ItemInfo;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
@@ -10,10 +11,13 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 	private String name;
 	@Getter
 	private Color color;
+	@Getter
+	private ItemInfo result;
 	
-	public Ore(String name, Color color) {
+	public Ore(String name, Color color, ItemInfo result) {
 		this.name = name;
 		this.color = color;
+		this.result = result;
 		this.setRegistryName(name);
 		GameRegistry.<Ore>register(this);
 	}

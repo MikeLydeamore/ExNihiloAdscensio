@@ -28,6 +28,8 @@ public class SieveRegistry {
 	}
 	
 	public static void register(BlockInfo block, Siftable drop) {
+		if (block == null)
+			return;
 		ArrayList<Siftable> currentDrops;
 		if (registry.containsKey(block)) {
 			currentDrops = registry.get(block);

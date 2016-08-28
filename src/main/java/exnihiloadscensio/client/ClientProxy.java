@@ -7,6 +7,7 @@ import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.client.renderers.RenderBarrel;
 import exnihiloadscensio.client.renderers.RenderCrucible;
 import exnihiloadscensio.client.renderers.RenderInfestedLeaves;
+import exnihiloadscensio.client.renderers.RenderOrePiece;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
@@ -37,6 +38,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerColorHandlers()
 	{
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new RenderInfestedLeaves(), ENBlocks.infestedLeaves);
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new RenderOrePiece(), ENItems.ores);
 	}
 
 
