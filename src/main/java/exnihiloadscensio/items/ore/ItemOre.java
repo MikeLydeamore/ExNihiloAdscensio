@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,8 +48,8 @@ public class ItemOre extends Item {
 		return ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack(ore.getRegistryName(), amount);
 	}
 
-	public static ItemStack getStack(Ore food) {
-		return getStack(food, 1);
+	public static ItemStack getStack(Ore ore) {
+		return getStack(ore, 1);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -59,11 +60,37 @@ public class ItemOre extends Item {
 				variant += "hunk";
 			else if (ore.getRegistryName().toString().contains("ingot"))
 				variant += "ingot";
+			else if (ore.getRegistryName().toString().contains("dust"))
+				variant += "dust";
 			else
 				variant += "piece";
 			
 			ModelLoader.setCustomModelResourceLocation(this, OreRegistry.ORES.getId(ore), new ModelResourceLocation("exnihiloadscensio:itemOre", variant));
 		}
 	}
+	
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		Ore ore = OreRegistry.ORES.getObjectById(stack.getItemDamage());
+		String pre = "ore";
+		String name = "";
+		if (ore.getRegistryName().toString().contains("hunk")) {
+			pre += "hunk"; 
+			name = ore.getRegistryName().toString().replace("hunk", "");
+		}
+		else if (ore.getRegistryName().toString().contains("ingot")) {
+			pre += "ingot";
+			name = ore.getRegistryName().toString().replace("ingot", "");
+		}
+		else if (ore.getRegistryName().toString().contains("dust")) {
+			pre += "dust";
+			name = ore.getRegistryName().toString().replace("dust", "");
+		}
+		else {
+			pre += "piece";
+			name = ore.getRegistryName().toString();
+		}
+        return ("" + I18n.translateToLocal(pre+".name")).trim();
+    }
 
 }

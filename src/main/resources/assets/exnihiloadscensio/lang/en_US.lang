@@ -18,3 +18,7 @@ tile.blockCrucible.0.name=Unfired Crucible
 tile.blockCrucible.1.name=Crucible
 
 tile.blockSieve.name=Sieve
+
+orepiece.name=Ore Piece
+orehunk.name=Ore Hunk
+oredust.name=Ore Dust

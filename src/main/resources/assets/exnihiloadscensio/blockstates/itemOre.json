@@ -16,6 +16,11 @@
           "layer0": "exnihiloadscensio:items/crookBone"
         }
        },
+       "dust": {
+       	"textures": {
+       		"layer0": "exnihiloadscensio:items/dust"
+       	}
+       },
        "piece": {
         "textures": {
           "layer0": "exnihiloadscensio:items/orePiece"
