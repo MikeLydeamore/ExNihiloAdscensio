@@ -43,7 +43,7 @@ public class OreRegistry {
      * @return Ore[], containing the piece, hunk and ingot if called for.
      */
     public static Ore[] registerOre(String name, Color color, ItemInfo info) {
-    	Ore[] ret = new Ore[3];
+    	Ore[] ret = new Ore[4];
     	
     	ret[0] = new Ore(name, color, info); registry.add(ret[1]);
     	ret[1] = new Ore("hunk"+StringUtils.capitalize(name), color, info);

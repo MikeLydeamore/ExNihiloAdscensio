@@ -8,9 +8,11 @@ import exnihiloadscensio.client.renderers.RenderBarrel;
 import exnihiloadscensio.client.renderers.RenderCrucible;
 import exnihiloadscensio.client.renderers.RenderInfestedLeaves;
 import exnihiloadscensio.client.renderers.RenderOrePiece;
+import exnihiloadscensio.client.renderers.RenderSieve;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
+import exnihiloadscensio.tiles.TileSieve;
 
 public class ClientProxy extends CommonProxy {
 
@@ -31,7 +33,7 @@ public class ClientProxy extends CommonProxy {
 	{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileBarrel.class, new RenderBarrel());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCrucible.class, new RenderCrucible());
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileSieve.class, new RenderSieve());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileSieve.class, new RenderSieve());
 	}
 
 	@Override

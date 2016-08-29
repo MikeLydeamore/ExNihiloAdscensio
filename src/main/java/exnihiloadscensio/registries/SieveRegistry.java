@@ -7,7 +7,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
+import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
@@ -78,6 +80,9 @@ public class SieveRegistry {
 		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 0.5f, MeshType.STRING.getID());
 		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 0.25f, MeshType.STRING.getID());
 		register(Blocks.GRAVEL.getDefaultState(), new ItemStack(Items.FLINT), 1f, MeshType.FLINT.getID());
+		
+		//Ores
+		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 1f, MeshType.FLINT.getID());
 	}
 	
 }

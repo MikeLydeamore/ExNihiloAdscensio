@@ -3,6 +3,8 @@ package exnihiloadscensio.items.ore;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
+
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.registries.OreRegistry;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -74,6 +76,9 @@ public class ItemOre extends Item {
 		Ore ore = OreRegistry.ORES.getObjectById(stack.getItemDamage());
 		String pre = "ore";
 		String name = "";
+		if (ore == null || ore.getRegistryName() == null)
+			return super.getItemStackDisplayName(stack);
+		
 		if (ore.getRegistryName().toString().contains("hunk")) {
 			pre += "hunk"; 
 			name = ore.getRegistryName().toString().replace("hunk", "");
@@ -90,7 +95,8 @@ public class ItemOre extends Item {
 			pre += "piece";
 			name = ore.getRegistryName().toString();
 		}
-        return ("" + I18n.translateToLocal(pre+".name")).trim();
+		name = name.substring(name.indexOf(":")+1, name.length());
+        return (StringUtils.capitalize(name) + " " +I18n.translateToLocal(pre+".name")).trim();
     }
 
 }

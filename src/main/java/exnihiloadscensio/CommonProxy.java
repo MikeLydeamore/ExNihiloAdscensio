@@ -25,7 +25,7 @@ public class CommonProxy {
 
 	public final ItemFMLRegistryWrapper<Ore> getFoodRegistryWrapper() {
 		if (oreRegistryWrapper == null)
-			oreRegistryWrapper = new ItemFMLRegistryWrapper<Ore>(OreRegistry.ORES, ENItems.ores).setDefaultPrefix("ores");
+			oreRegistryWrapper = new ItemFMLRegistryWrapper<Ore>(OreRegistry.ORES, ENItems.ores).setDefaultPrefix(ExNihiloAdscensio.MODID);
 		return oreRegistryWrapper;
 	}
 
