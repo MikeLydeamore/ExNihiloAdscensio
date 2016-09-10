@@ -50,7 +50,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 	{
 		if (mode == null || mode.getName().equals("fluid")) {
 			ItemStack stack = player.getHeldItemMainhand();
-			if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 				IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 				FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, false);
 				int amount = this.getTank().fill(drainStack, false);

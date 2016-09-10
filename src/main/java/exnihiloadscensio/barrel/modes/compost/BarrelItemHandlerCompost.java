@@ -45,11 +45,13 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 		BarrelModeCompost mode = (BarrelModeCompost) this.barrel.getMode();
 		if (mode != null && mode.getProgress() >= 1)
 		{
-			if (!simulate)
+			ItemStack ret = super.extractItem(slot, amount, simulate);
+			if (!simulate) {
 				mode.removeItem(barrel);
-			barrel.setMode("null");
-			PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
-			return super.extractItem(slot, amount, simulate);
+				barrel.setMode("null");
+				PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
+			}
+			return ret;
 		}
 		
 		return null;

@@ -51,8 +51,8 @@ public class ExNihiloAdscensio {
 		configDirectory.mkdirs();
 		Config.doNormalConfig(new File(configDirectory.getAbsolutePath()+"/ExNihiloAdscensio.cfg"));
 		
-		OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
-		
+		//OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
+		OreRegistry.registerDefaults();
 		ENItems.init();
 		ENBlocks.init();
 		proxy.initModels();
