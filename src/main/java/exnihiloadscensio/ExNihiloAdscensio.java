@@ -51,7 +51,7 @@ public class ExNihiloAdscensio {
 		configDirectory.mkdirs();
 		Config.doNormalConfig(new File(configDirectory.getAbsolutePath()+"/ExNihiloAdscensio.cfg"));
 		
-		OreRegistry.registerDefaults();
+		OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
 		
 		ENItems.init();
 		ENBlocks.init();
@@ -95,7 +95,7 @@ public class ExNihiloAdscensio {
 		
 		CrucibleRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrucibleRegistry.json"));
 		
-		SieveRegistry.registerDefaults();
+		SieveRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/SieveRegistry.json"));
 		
 		Recipes.init();
 		OreRegistry.doRecipes();

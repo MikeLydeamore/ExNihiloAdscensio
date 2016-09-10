@@ -91,7 +91,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 			return mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override

@@ -51,8 +51,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 
 		public static MeshType getMeshTypeByID(int meta) {
 			switch (meta) {
-			case 0:
-
+			case 1:
 				return STRING;
 			case 2:
 				return FLINT;
@@ -113,7 +112,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 			return true;
 		}
 
-		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+		return true;
 	}
 
 	@Override

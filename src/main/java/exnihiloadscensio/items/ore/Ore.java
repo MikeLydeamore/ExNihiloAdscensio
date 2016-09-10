@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
 public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 	
+	@Getter
 	private String name;
 	@Getter
 	private Color color;

@@ -1,12 +1,21 @@
 package exnihiloadscensio.registries;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
+import exnihiloadscensio.json.CustomItemInfoJson;
+import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.init.Items;
@@ -45,7 +54,7 @@ public class OreRegistry {
     public static Ore[] registerOre(String name, Color color, ItemInfo info) {
     	Ore[] ret = new Ore[4];
     	
-    	ret[0] = new Ore(name, color, info); registry.add(ret[1]);
+    	ret[0] = new Ore(name, color, info); registry.add(ret[0]);
     	ret[1] = new Ore("hunk"+StringUtils.capitalize(name), color, info);
     	ret[2] = new Ore("dust"+StringUtils.capitalize(name), color, info);
     	if (info == null)
@@ -80,5 +89,47 @@ public class OreRegistry {
     		}
     	}
     }
+    
+    private static Gson gson;
+
+	public static void loadJson(File file)
+	{
+		gson = new GsonBuilder().setPrettyPrinting()
+				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
+		if (file.exists())
+		{
+			try 
+			{
+				FileReader fr = new FileReader(file);
+				ArrayList<Ore> gsonInput = gson.fromJson(fr, new TypeToken<ArrayList<Ore>>(){}.getType());
+				
+				registry = gsonInput;
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			registerDefaults();
+			saveJson(file);
+		}
+	}
+	
+	public static void saveJson(File file)
+	{
+		try
+		{
+			FileWriter fw = new FileWriter(file);
+			gson.toJson(registry, fw);
+			
+			fw.close();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -88,7 +88,7 @@ public class BlockCrucible extends Block {
 		if (te != null)
 			return te.onBlockActivated(heldItem, player);
 		else
-			return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+			return true;
 	}
 	
 	@Override

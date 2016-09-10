@@ -180,7 +180,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 			PacketHandler.sendNBTUpdate(this);
 			return true;
 		}
-		return false;
+		return true;
 	}
 	
 	@Override

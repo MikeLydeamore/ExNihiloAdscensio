@@ -18,6 +18,10 @@ tile.blockCrucible.0.name=Unfired Crucible
 tile.blockCrucible.1.name=Crucible
 
 tile.blockSieve.name=Sieve
+item.itemMesh.1.name=String Mesh
+item.itemMesh.2.name=Flint Stiffened Mesh
+item.itemMesh.3.name=Iron Stiffened Mesh
+item.itemMesh.4.name=Diamond Stiffened Mesh
 
 orepiece.name=Ore Piece
 orehunk.name=Ore Chunk
