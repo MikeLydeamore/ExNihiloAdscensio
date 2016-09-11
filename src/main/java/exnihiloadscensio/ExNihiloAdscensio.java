@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLModIdMappingEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,74 +34,58 @@ import exnihiloadscensio.registries.SieveRegistry;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
 public class ExNihiloAdscensio {
-	
+
 	public static final String MODID = "exnihiloadscensio";
-	
+
 	@SidedProxy(serverSide="exnihiloadscensio.CommonProxy",clientSide="exnihiloadscensio.client.ClientProxy")
 	public static CommonProxy proxy;
-	
+
 	@Instance(MODID)
 	public static ExNihiloAdscensio instance;
 
 	private static File configDirectory;
-	
+
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
 		configDirectory = new File(event.getSuggestedConfigurationFile().getParentFile().getAbsolutePath() + "/" + MODID);
 		configDirectory.mkdirs();
 		Config.doNormalConfig(new File(configDirectory.getAbsolutePath()+"/ExNihiloAdscensio.cfg"));
-		
-		//OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
-		OreRegistry.registerDefaults();
+
+		OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
+		//OreRegistry.registerDefaults();
 		ENItems.init();
 		ENBlocks.init();
 		proxy.initModels();
 		proxy.registerRenderers();
-		
-		
-		
+
+
+
 		//HammerRegistry.registerDefaults();
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());
-		
+
 		MinecraftForge.EVENT_BUS.register(new HandlerCrook());
-		
+
 		if (Config.enableBarrels)
 		{
 			BarrelModeRegistry.registerDefaults();
 		}
-		
+
 		PacketHandler.initPackets();
 	}
-	
+
 	@EventHandler
 	public static void init(FMLInitializationEvent event)
 	{
 		proxy.registerColorHandlers();
 	}
-	
+
 	@EventHandler
 	public static void postInit(FMLPostInitializationEvent event)
 	{
-		//CompostRegistry.registerDefaults();
-		CompostRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CompostRegistry.json"));
-		
-		HammerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HammerRegistry.json"));
-		
-		FluidBlockTransformerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidBlockTransformerRegistry.json"));
-		
-		FluidOnTopRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidOnTopRegistry.json"));
-		
-		HeatRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HeatRegistry.json"));
-		
-		CrucibleRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrucibleRegistry.json"));
-		
-		SieveRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/SieveRegistry.json"));
-		
 		Recipes.init();
-		OreRegistry.doRecipes();
 	}
-	
+
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")
 	{
 		@Override
@@ -110,5 +95,27 @@ public class ExNihiloAdscensio {
 			return Items.STRING;
 		}
 	};
+
+	@EventHandler
+	public static void modMapping(FMLModIdMappingEvent event) {
+		CompostRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CompostRegistry.json"));
+
+		HammerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HammerRegistry.json"));
+
+		FluidBlockTransformerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidBlockTransformerRegistry.json"));
+
+		FluidOnTopRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidOnTopRegistry.json"));
+
+		HeatRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HeatRegistry.json"));
+
+		CrucibleRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrucibleRegistry.json"));
+
+		SieveRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/SieveRegistry.json"));
+
+		OreRegistry.purgeRecipes();
+		OreRegistry.doRecipes();
+		proxy.fixModels();
+	}
+
 
 }

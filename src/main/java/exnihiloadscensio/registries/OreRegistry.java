@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -15,32 +19,62 @@ import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
 import exnihiloadscensio.json.CustomItemInfoJson;
+import exnihiloadscensio.json.CustomOreJson;
 import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class OreRegistry {
 	
 	public static final int INVALID_ID = Short.MAX_VALUE - 1;
-    public static FMLControlledNamespacedRegistry<Ore> ORES;
+    public static FMLControlledNamespacedRegistry<Ore> ORES = (FMLControlledNamespacedRegistry<Ore>) new RegistryBuilder<Ore>()
+            .setName(new ResourceLocation(ExNihiloAdscensio.MODID, "ores"))
+            .setIDRange(0, INVALID_ID - 1)
+            .setType(Ore.class)
+            .create(); 
     
     private static ArrayList<Ore> registry = new ArrayList<Ore>();
+    private static HashSet<String> oreDicts = new HashSet<String>();
     
     public static void registerDefaults() {
-    	ORES = (FMLControlledNamespacedRegistry<Ore>) new RegistryBuilder<Ore>()
-                .setName(new ResourceLocation(ExNihiloAdscensio.MODID, "ores"))
-                .setIDRange(0, INVALID_ID - 1)
-                .setType(Ore.class)
-                .create(); 
     	
     	registerOre("gold", new Color("FFFF00"), new ItemInfo(Items.GOLD_INGOT, 0));
     	registerOre("iron", new Color("BF8040"), new ItemInfo(Items.IRON_INGOT, 0));
+    	
+    	if (OreDictionary.getOres("oreCopper").size() > 0) {
+    		registerOre("copper", new Color("FF9933"), null);
+    	}
+    	if (OreDictionary.getOres("oreTin").size() > 0) {
+    		registerOre("tin", new Color("E6FFF2"), null);
+    	}
+    	if (OreDictionary.getOres("oreAluminium").size() > 0 || OreDictionary.getOres("oreAluminum").size() > 0) {
+    		registerOre("aluminium", new Color("BFBFBF"), null);
+    	}
+    	if (OreDictionary.getOres("oreLead").size() > 0) {
+    		registerOre("lead", new Color("330066"), null);
+    	}
+    	if (OreDictionary.getOres("oreSilver").size() > 0) {
+    		registerOre("silver", new Color("F2F2F2"), null);
+    	}
+    	if (OreDictionary.getOres("oreNickel").size() > 0) {
+    		registerOre("nickel", new Color("FFFFCC"), null);
+    	}
+    	if (OreDictionary.getOres("oreArdite").size() > 0) {
+    		registerOre("ardite", new Color("FF751A"), null);
+    	}
+    	if (OreDictionary.getOres("oreCobalt").size() > 0) {
+    		registerOre("cobalt", new Color("3333FF"), null);
+    	}
     }
     
     /**
@@ -57,16 +91,35 @@ public class OreRegistry {
     	ret[0] = new Ore(name, color, info); registry.add(ret[0]);
     	ret[1] = new Ore("hunk"+StringUtils.capitalize(name), color, info);
     	ret[2] = new Ore("dust"+StringUtils.capitalize(name), color, info);
-    	if (info == null)
+    	if (info == null) {
     		ret[3] = new Ore("ingot"+StringUtils.capitalize(name), color, info);
-    		
+    		oreDicts.add("ingot"+StringUtils.capitalize(name));
+    	}	
     	return ret;
+    }
+    
+    public static void registerFromRegistry() {
+    	for (Ore ore : registry) {
+    		String name = ore.getName();
+    		Color color = ore.getColor();
+    		ItemInfo info = ore.getResult();
+    		new Ore("hunk"+StringUtils.capitalize(name), color, info);
+    		new Ore("dust"+StringUtils.capitalize(name), color, info);
+    		if (info == null) {
+        		new Ore("ingot"+StringUtils.capitalize(name), color, info);
+        		oreDicts.add("ingot"+StringUtils.capitalize(name));
+    		}
+    	}
     }
     
     public static void doRecipes() {
     	for (Ore ore : ORES.getValues()) {
+    		if (ore.getRegistryName().toString().contains("ingot")) {
+    			String[] name = ore.getRegistryName().toString().split(":");
+    			OreDictionary.registerOre("ingot"+StringUtils.capitalize(name[1]), ItemOre.getStack(ore));
+    			continue;
+    		}
     		if (ore.getRegistryName().toString().contains("hunk") ||
-    				ore.getRegistryName().toString().contains("ingot") ||
     				ore.getRegistryName().toString().contains("dust"))
     			continue;
     		
@@ -90,12 +143,45 @@ public class OreRegistry {
     	}
     }
     
+    public static void doOreDict() {
+
+    }
+    
+    private static boolean state;
+
+    public static void purgeRecipes() {
+        if (!state) {
+            Set<IRecipe> toRemoveCrafting = new HashSet<IRecipe>();
+            for (IRecipe recipe : CraftingManager.getInstance().getRecipeList())
+                if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() instanceof ItemOre)
+                    toRemoveCrafting.add(recipe);
+
+            Set<Map.Entry<ItemStack, ItemStack>> toRemoveSmelting = new HashSet<Map.Entry<ItemStack, ItemStack>>();
+            for (Map.Entry<ItemStack, ItemStack> smelting : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
+                if (smelting.getKey() != null && smelting.getKey().getItem() instanceof ItemOre)
+                    toRemoveSmelting.add(smelting);
+
+                if (smelting.getValue() != null && smelting.getValue().getItem() instanceof ItemOre)
+                    toRemoveSmelting.add(smelting);
+            }
+            
+            for (IRecipe remove : toRemoveCrafting)
+                CraftingManager.getInstance().getRecipeList().remove(remove);
+            for (Map.Entry<ItemStack, ItemStack> remove : toRemoveSmelting)
+                FurnaceRecipes.instance().getSmeltingList().remove(remove.getKey());
+            state = true;
+        } else {
+            state = false;
+        }
+}
+    
     private static Gson gson;
 
 	public static void loadJson(File file)
 	{
 		gson = new GsonBuilder().setPrettyPrinting()
-				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
+				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson())
+				.registerTypeAdapter(Ore.class, new CustomOreJson()).create();
 		if (file.exists())
 		{
 			try 
@@ -104,6 +190,7 @@ public class OreRegistry {
 				ArrayList<Ore> gsonInput = gson.fromJson(fr, new TypeToken<ArrayList<Ore>>(){}.getType());
 				
 				registry = gsonInput;
+				registerFromRegistry();
 			} 
 			catch (Exception e) 
 			{

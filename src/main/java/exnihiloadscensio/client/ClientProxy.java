@@ -21,6 +21,11 @@ public class ClientProxy extends CommonProxy {
 		ENItems.initModels();
 		ENBlocks.initModels();
 	}
+	
+	@Override
+	public void fixModels() {
+		 ENItems.ores.fixModel();
+	}
 
 	@Override
 	public boolean runningOnServer()

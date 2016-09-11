@@ -20,6 +20,8 @@ public class CommonProxy {
 	{
 
 	}
+	
+	public void fixModels() {}
 
 	public void registerColorHandlers() {}
 
