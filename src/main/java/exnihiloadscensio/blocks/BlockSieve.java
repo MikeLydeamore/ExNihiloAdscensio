@@ -12,6 +12,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -113,6 +114,22 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 		}
 
 		return true;
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	{
+		TileSieve te = (TileSieve) world.getTileEntity(pos);
+		if(te != null)
+		{
+			if(te.getMeshStack() != null)
+			{
+				EntityItem ei = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), te.getMeshStack());
+				world.spawnEntityInWorld(ei);
+			}
+		}
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
