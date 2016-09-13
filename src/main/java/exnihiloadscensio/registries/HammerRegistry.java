@@ -84,13 +84,13 @@ public class HammerRegistry {
 	 */
 	public static void addHammerRecipe(IBlockState state, ItemStack reward, int miningLevel, float chance, float fortuneChance)
 	{
-		ArrayList<HammerReward> list = map.get(state);
+		ItemInfo ii = new ItemInfo(state);
+		ArrayList<HammerReward> list = map.get(ii);
 		if (list == null)
 		{
 			list = new ArrayList<HammerReward>();
 		}
 		list.add(new HammerReward(reward, miningLevel, chance, fortuneChance));
-		ItemInfo ii = new ItemInfo(state);
 		map.put(ii, list);
 	}
 	
