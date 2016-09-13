@@ -130,6 +130,8 @@ public class OreRegistry {
     		if (ore.getRegistryName().toString().contains("ingot")) {
     			String[] name = ore.getRegistryName().toString().split(":");
     			OreDictionary.registerOre("ingot"+StringUtils.capitalize(name[1]), ItemOre.getStack(ore));
+    			if (name[1].contains("aluminium"))
+    				OreDictionary.registerOre("ingotAluminum", ItemOre.getStack(ore));
     			continue;
     		}
     		if (ore.getRegistryName().toString().contains("hunk") ||
