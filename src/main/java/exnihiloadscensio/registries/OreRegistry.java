@@ -98,6 +98,8 @@ public class OreRegistry {
     		if (ore.isRegisterIngot()) {
     			smeltingResult = new ItemStack(ore, 1, 3);
     			OreDictionary.registerOre("ingot"+StringUtils.capitalize(ore.getOre().getName()), smeltingResult);
+    			if (ore.getOre().getName().contains("aluminium"))
+    				OreDictionary.registerOre("ingotAluminum", smeltingResult);
     		}
     		else
     			smeltingResult = ore.getOre().getResult().getItemStack();
