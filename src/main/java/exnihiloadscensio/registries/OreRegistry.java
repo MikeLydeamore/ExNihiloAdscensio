@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,77 +13,57 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import exnihiloadscensio.ExNihiloAdscensio;
-import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
-import exnihiloadscensio.items.ore.OreSiftable;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.json.CustomOreJson;
-import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.RegistryBuilder;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class OreRegistry {
-	
-	public static final int INVALID_ID = Short.MAX_VALUE - 1;
-    public static FMLControlledNamespacedRegistry<Ore> ORES = (FMLControlledNamespacedRegistry<Ore>) new RegistryBuilder<Ore>()
-            .setName(new ResourceLocation(ExNihiloAdscensio.MODID, "ores"))
-            .setIDRange(0, INVALID_ID - 1)
-            .setType(Ore.class)
-            .create(); 
     
     private static ArrayList<Ore> registry = new ArrayList<Ore>();
+    @Getter
+    private static HashSet<ItemOre> itemOreRegistry = new HashSet<ItemOre>();
     private static HashSet<String> oreDicts = new HashSet<String>();
     
     public static void registerDefaults() {
-    	HashMap<BlockInfo, ArrayList<OreSiftable>> defaultDrop = new HashMap<BlockInfo, ArrayList<OreSiftable>>();
-    	ArrayList<OreSiftable> defaultSiftables = new ArrayList<OreSiftable>();
-    	defaultSiftables.add(new OreSiftable(MeshType.FLINT.getID(), 0.2f));
-    	defaultSiftables.add(new OreSiftable(MeshType.IRON.getID(), 0.2f));
-    	defaultSiftables.add(new OreSiftable(MeshType.DIAMOND.getID(), 0.1f));
-    	
-    	defaultDrop.put(new BlockInfo(Blocks.GRAVEL.getDefaultState()), defaultSiftables);
-    	
-    	registerOre("gold", new Color("FFFF00"), new ItemInfo(Items.GOLD_INGOT, 0), defaultDrop);
-    	registerOre("iron", new Color("BF8040"), new ItemInfo(Items.IRON_INGOT, 0), defaultDrop);
+    	    	
+    	registerOre("gold", new Color("FFFF00"), new ItemInfo(Items.GOLD_INGOT, 0));
+    	registerOre("iron", new Color("BF8040"), new ItemInfo(Items.IRON_INGOT, 0));
     	
     	if (OreDictionary.getOres("oreCopper").size() > 0) {
-    		registerOre("copper", new Color("FF9933"), null, defaultDrop);
+    		registerOre("copper", new Color("FF9933"), null);
     	}
     	if (OreDictionary.getOres("oreTin").size() > 0) {
-    		registerOre("tin", new Color("E6FFF2"), null, defaultDrop);
+    		registerOre("tin", new Color("E6FFF2"), null);
     	}
     	if (OreDictionary.getOres("oreAluminium").size() > 0 || OreDictionary.getOres("oreAluminum").size() > 0) {
-    		registerOre("aluminium", new Color("BFBFBF"), null, defaultDrop);
+    		registerOre("aluminium", new Color("BFBFBF"), null);
     	}
     	if (OreDictionary.getOres("oreLead").size() > 0) {
-    		registerOre("lead", new Color("330066"), null, defaultDrop);
+    		registerOre("lead", new Color("330066"), null);
     	}
     	if (OreDictionary.getOres("oreSilver").size() > 0) {
-    		registerOre("silver", new Color("F2F2F2"), null, defaultDrop);
+    		registerOre("silver", new Color("F2F2F2"), null);
     	}
     	if (OreDictionary.getOres("oreNickel").size() > 0) {
-    		registerOre("nickel", new Color("FFFFCC"), null, defaultDrop);
+    		registerOre("nickel", new Color("FFFFCC"), null);
     	}
     	if (OreDictionary.getOres("oreArdite").size() > 0) {
-    		registerOre("ardite", new Color("FF751A"), null, defaultDrop);
+    		registerOre("ardite", new Color("FF751A"), null);
     	}
     	if (OreDictionary.getOres("oreCobalt").size() > 0) {
-    		registerOre("cobalt", new Color("3333FF"), null, defaultDrop);
+    		registerOre("cobalt", new Color("3333FF"), null);
     	}
     }
     
@@ -95,132 +73,48 @@ public class OreRegistry {
      * @param color Color for the pieces
      * @param info Final result for the process. If null, an ingot is generated. Otherwise, the hunk will be
      * smelted into this.
-     * @param drops HashMap containing the information for the ore piece to drop.
-     * @return Ore[], containing the piece, hunk and ingot if called for.
+     * @return Ore, containing the base Ore object.
      */
-    public static Ore[] registerOre(String name, Color color, ItemInfo info, HashMap<BlockInfo, ArrayList<OreSiftable>> drops) {
-    	Ore[] ret = new Ore[4];
-    	
-    	ret[0] = new Ore(name, color, info, drops); registry.add(ret[0]);
-    	ret[1] = new Ore("hunk"+StringUtils.capitalize(name), color, info, null);
-    	ret[2] = new Ore("dust"+StringUtils.capitalize(name), color, info, null);
-    	if (info == null) {
-    		ret[3] = new Ore("ingot"+StringUtils.capitalize(name), color, info, null);
-    		oreDicts.add("ingot"+StringUtils.capitalize(name));
-    	}	
-    	return ret;
+    public static Ore registerOre(String name, Color color, ItemInfo info) {
+    	Ore ore = new Ore(name, color, info);
+    	registry.add(ore);
+    	itemOreRegistry.add(new ItemOre(ore));
+    	return new Ore(name, color, info);
+
     }
     
     public static void registerFromRegistry() {
     	for (Ore ore : registry) {
-    		String name = ore.getName();
-    		Color color = ore.getColor();
-    		ItemInfo info = ore.getResult();
-    		new Ore("hunk"+StringUtils.capitalize(name), color, info, null);
-    		new Ore("dust"+StringUtils.capitalize(name), color, info, null);
-    		if (info == null) {
-        		new Ore("ingot"+StringUtils.capitalize(name), color, info, null);
-        		oreDicts.add("ingot"+StringUtils.capitalize(name));
-    		}
+    		itemOreRegistry.add(new ItemOre(ore));
     	}
     }
     
     public static void doRecipes() {
-    	for (Ore ore : ORES.getValues()) {
-    		if (ore.getRegistryName().toString().contains("ingot")) {
-    			String[] name = ore.getRegistryName().toString().split(":");
-    			OreDictionary.registerOre("ingot"+StringUtils.capitalize(name[1]), ItemOre.getStack(ore));
-    			if (name[1].contains("aluminium"))
-    				OreDictionary.registerOre("ingotAluminum", ItemOre.getStack(ore));
-    			continue;
+    	for (ItemOre ore : itemOreRegistry) {
+    		//Piece to Chunk
+    		GameRegistry.addRecipe(new ItemStack(ore, 1, 1), new Object[] {"xx","xx", 'x', new ItemStack(ore, 1, 0)});
+    		//Chunk to ingot. Also Oredicting.
+    		ItemStack smeltingResult;
+    		if (ore.isRegisterIngot()) {
+    			smeltingResult = new ItemStack(ore, 1, 3);
+    			OreDictionary.registerOre("ingot"+StringUtils.capitalize(ore.getOre().getName()), smeltingResult);
     		}
-    		if (ore.getRegistryName().toString().contains("hunk") ||
-    				ore.getRegistryName().toString().contains("dust"))
-    			continue;
-    		
-    		String[] name = ore.getRegistryName().toString().split(":");
-    		ItemStack in = ItemOre.getStack(ore);
-    		
-    		Ore resultOre = ORES.getValue(new ResourceLocation(name[0]+":hunk"+StringUtils.capitalize(name[1])));
-    		ItemStack result = ItemOre.getStack(resultOre);
-    		
-    		GameRegistry.addShapedRecipe(result, new Object[] {"xx","xx", 'x', in});
-    		
-    		if (ore.getResult() == null) {
-    			Ore smeltingResultOre = ORES.getValue(new ResourceLocation(name[0]+":ingot"+StringUtils.capitalize(name[1])));
-    			ItemStack smeltingResult = ItemOre.getStack(smeltingResultOre);
-    			GameRegistry.addSmelting(result, smeltingResult, 0.7f);
-    		}
-    		else {
-    			ItemStack smeltingResult = ore.getResult().getItemStack();
-    			GameRegistry.addSmelting(result, smeltingResult, 0.7f);
-    		}
-    		
-    		if (ore.getDrop() != null && ore.getDrop().keySet().size() > 0) {
-    			for (BlockInfo block : ore.getDrop().keySet()) {
-    				ArrayList<OreSiftable> siftable = ore.getDrop().get(block);
-    				for (OreSiftable sift : siftable) {
-    					SieveRegistry.register(block, new Siftable(new ItemInfo(ItemOre.getStack(ore)), sift.getChance(), sift.getMeshLevel()));
-    				}
-    			}
-    		}
+    		else
+    			smeltingResult = ore.getOre().getResult().getItemStack();
+    		FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(ore, 1, 1), smeltingResult, 0.7f);
+    	}
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public static void initModels() {
+    	for (ItemOre ore : itemOreRegistry) {
+    		ore.initModel();
     	}
     }
     
     public static void doOreDict() {
 
     }
-    
-    private static boolean state;
-
-    public static void purgeRecipes() {
-        if (!state) {
-            Set<IRecipe> toRemoveCrafting = new HashSet<IRecipe>();
-            for (IRecipe recipe : CraftingManager.getInstance().getRecipeList())
-                if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() instanceof ItemOre)
-                    toRemoveCrafting.add(recipe);
-
-            Set<Map.Entry<ItemStack, ItemStack>> toRemoveSmelting = new HashSet<Map.Entry<ItemStack, ItemStack>>();
-            for (Map.Entry<ItemStack, ItemStack> smelting : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
-                if (smelting.getKey() != null && smelting.getKey().getItem() instanceof ItemOre)
-                    toRemoveSmelting.add(smelting);
-
-                if (smelting.getValue() != null && smelting.getValue().getItem() instanceof ItemOre)
-                    toRemoveSmelting.add(smelting);
-            }
-            
-            HashMap<BlockInfo, ArrayList<Siftable>> toRemoveSifting = new HashMap<BlockInfo, ArrayList<Siftable>>();
-            for (BlockInfo info : SieveRegistry.getRegistry().keySet()) {
-            	for (Siftable drop : SieveRegistry.getDrops(info)) {
-            		if (drop.getDrop().getItem() instanceof ItemOre) {
-            			ArrayList<Siftable> siftable;
-            			if (!toRemoveSifting.containsKey(info))
-            				siftable = new ArrayList<Siftable>();
-            			else
-            				siftable = toRemoveSifting.get(info);
-            			
-            			siftable.add(drop);
-            			toRemoveSifting.put(info, siftable);
-            		}
-            	}
-            }
-            
-            for (IRecipe remove : toRemoveCrafting)
-                CraftingManager.getInstance().getRecipeList().remove(remove);
-            for (Map.Entry<ItemStack, ItemStack> remove : toRemoveSmelting)
-                FurnaceRecipes.instance().getSmeltingList().remove(remove.getKey());
-            for (BlockInfo info : toRemoveSifting.keySet()) {
-            	ArrayList<Siftable> oldDrops = SieveRegistry.getDrops(info);
-            	for (Siftable siftableToRemove : toRemoveSifting.get(info)) {
-            		oldDrops.remove(siftableToRemove);
-            	}
-            	SieveRegistry.getRegistry().put(info, oldDrops);
-            }
-            state = true;
-        } else {
-            state = false;
-        }
-}
     
     private static Gson gson;
 

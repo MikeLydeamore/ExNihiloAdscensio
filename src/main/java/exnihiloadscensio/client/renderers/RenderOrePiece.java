@@ -14,7 +14,7 @@ public class RenderOrePiece implements IItemColor {
 			return 0;
 		
 		if (stack.getItem() instanceof ItemOre) {
-			Ore ore = OreRegistry.ORES.getObjectById(stack.getItemDamage());
+			Ore ore = ((ItemOre) stack.getItem()).getOre();
 			return ore.getColor().toInt();
 		}
 		return 0;

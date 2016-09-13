@@ -20,6 +20,7 @@ import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;
+import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.Compostable;
@@ -140,13 +141,11 @@ public class SieveRegistry {
 		
 		
 		//Ores
-		/*register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 0.2f, MeshType.FLINT.getID());
-		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 0.2f, MeshType.IRON.getID());
-		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 0.1f, MeshType.DIAMOND.getID());
-		
-		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("gold"), 0.05f, MeshType.IRON.getID());
-		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("gold"), 0.1f, MeshType.DIAMOND.getID());
-		*/
+		for (ItemOre ore : OreRegistry.getItemOreRegistry()) {
+			register(Blocks.GRAVEL.getDefaultState(), new ItemStack(ore, 1, 0), 0.2f, MeshType.FLINT.getID());
+			register(Blocks.GRAVEL.getDefaultState(), new ItemStack(ore, 1, 0), 0.2f, MeshType.IRON.getID());
+			register(Blocks.GRAVEL.getDefaultState(), new ItemStack(ore, 1, 0), 0.1f, MeshType.DIAMOND.getID());
+		}
 	}
 	
 	private static Gson gson;

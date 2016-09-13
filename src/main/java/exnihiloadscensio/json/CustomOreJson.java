@@ -29,7 +29,6 @@ public class CustomOreJson implements JsonDeserializer<Ore>, JsonSerializer<Ore>
 		obj.addProperty("name", src.getName());
 		obj.add("color", context.serialize(src.getColor(), Color.class));
 		obj.add("result", context.serialize(src.getResult(), ItemInfo.class));
-		obj.add("drop", context.serialize(src.getDrop(), new HashMap<BlockInfo, ArrayList<OreSiftable>>().getClass()));
 		
 		return obj;
 	}
@@ -43,13 +42,7 @@ public class CustomOreJson implements JsonDeserializer<Ore>, JsonSerializer<Ore>
 		Color color = context.deserialize(json.getAsJsonObject().get("color"), Color.class);
 		ItemInfo result = context.deserialize(json.getAsJsonObject().get("result"), ItemInfo.class);
 		
-		Type type = new TypeToken<HashMap<String, ArrayList<OreSiftable>>>(){}.getType();
-		HashMap<String, ArrayList<OreSiftable>> dropString = context.deserialize(json.getAsJsonObject().get("drop"), type);
-		HashMap<BlockInfo, ArrayList<OreSiftable>> drop = new HashMap<BlockInfo, ArrayList<OreSiftable>>();
-		for (String s : dropString.keySet()) {
-			drop.put(new BlockInfo(s), dropString.get(s));
-		}
-		return new Ore(name, color, result, drop);
+		return new Ore(name, color, result);
 	}
 
 }

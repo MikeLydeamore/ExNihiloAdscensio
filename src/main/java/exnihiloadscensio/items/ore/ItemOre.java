@@ -3,6 +3,8 @@ package exnihiloadscensio.items.ore;
 import java.util.List;
 import java.util.Locale;
 
+import lombok.Getter;
+
 import org.apache.commons.lang3.StringUtils;
 
 import exnihiloadscensio.ExNihiloAdscensio;
@@ -20,99 +22,62 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemOre extends Item {
 
-	public ItemOre() {
+	@Getter
+	private boolean registerIngot;
+	
+	@Getter
+	private Ore ore;
+	
+	public ItemOre(Ore ore) {
 		super();
 
-		setUnlocalizedName(ExNihiloAdscensio.MODID + ".ore");
-		setRegistryName("itemOre");
+		this.ore = ore;
+		registerIngot = ore.getResult() == null;
+		setUnlocalizedName(ExNihiloAdscensio.MODID + ".ore."+ore.getName());
+		setRegistryName("itemOre"+StringUtils.capitalize(ore.getName()));
 		setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		setHasSubtypes(true);
 		GameRegistry.<Item>register(this);
 	}
 
-	@Override
-	public String getUnlocalizedName(ItemStack stack) {
-		Ore ore = getOre(stack);
-		return ore == null ? super.getUnlocalizedName(stack) : super.getUnlocalizedName(stack) + "." + ore.getRegistryName().getResourcePath().toLowerCase(Locale.ENGLISH);
-	}
-
-	public Ore getOre(ItemStack stack) {
-		return OreRegistry.ORES.getObjectById(stack.getItemDamage());
-	}
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-		for (Ore ore : OreRegistry.ORES.getValues())
-			subItems.add(getStack(ore));
-	}
-
-	public static ItemStack getStack(Ore ore, int amount) {
-		return ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack(ore.getRegistryName(), amount);
-	}
-
-	public static ItemStack getStack(Ore ore) {
-		return getStack(ore, 1);
+		subItems.add(new ItemStack(this, 1, 0)); //Piece
+		subItems.add(new ItemStack(this, 1, 1)); //Chunk
+		subItems.add(new ItemStack(this, 1, 2)); //Dust
+		if (registerIngot)
+			subItems.add(new ItemStack(this, 1, 3)); //Ingot
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void initModel()	{
-		for (Ore ore : OreRegistry.ORES.getValues()) {
-			String variant = "type=";
-			if (ore.getRegistryName().toString().contains("hunk"))
-				variant += "hunk";
-			else if (ore.getRegistryName().toString().contains("ingot"))
-				variant += "ingot";
-			else if (ore.getRegistryName().toString().contains("dust"))
-				variant += "dust";
-			else
-				variant += "piece";
 
-			ModelLoader.setCustomModelResourceLocation(this, OreRegistry.ORES.getId(ore), new ModelResourceLocation("exnihiloadscensio:itemOre", variant));
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void fixModel() {
-		for (Ore ore : OreRegistry.ORES.getValues()) {
-			String variant = "type=";
-			if (ore.getRegistryName().toString().contains("hunk"))
-				variant += "hunk";
-			else if (ore.getRegistryName().toString().contains("ingot"))
-				variant += "ingot";
-			else if (ore.getRegistryName().toString().contains("dust"))
-				variant += "dust";
-			else
-				variant += "piece";
-			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(this, OreRegistry.ORES.getId(ore), new ModelResourceLocation("exnihiloadscensio:itemOre", variant));
-		}
+		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=piece"));
+		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=hunk"));
+		ModelLoader.setCustomModelResourceLocation(this, 2, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=dust"));
+		if (registerIngot)
+			ModelLoader.setCustomModelResourceLocation(this, 3, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=ingot"));
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		Ore ore = OreRegistry.ORES.getObjectById(stack.getItemDamage());
-		String pre = "ore";
-		String name = "";
-		if (ore == null || ore.getRegistryName() == null)
-			return super.getItemStackDisplayName(stack);
-
-		if (ore.getRegistryName().toString().contains("hunk")) {
-			pre += "hunk"; 
-			name = ore.getRegistryName().toString().replace("hunk", "");
+		String name = ore.getName();
+		String pre = "";
+		switch (stack.getItemDamage()) {
+		case 0:
+			pre = "orepiece";
+			break;
+		case 1:
+			pre = "orehunk";
+			break;
+		case 2:
+			pre = "oredust";
+			break;
+		case 3:
+			pre = "oreingot";
+			break;
 		}
-		else if (ore.getRegistryName().toString().contains("ingot")) {
-			pre += "ingot";
-			name = ore.getRegistryName().toString().replace("ingot", "");
-		}
-		else if (ore.getRegistryName().toString().contains("dust")) {
-			pre += "dust";
-			name = ore.getRegistryName().toString().replace("dust", "");
-		}
-		else {
-			pre += "piece";
-			name = ore.getRegistryName().toString();
-		}
-		name = name.substring(name.indexOf(":")+1, name.length());
 		return (StringUtils.capitalize(name) + " " +I18n.translateToLocal(pre+".name")).trim();
 	}
 

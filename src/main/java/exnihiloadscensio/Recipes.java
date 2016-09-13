@@ -34,7 +34,7 @@ public class Recipes {
 		GameRegistry.addShapelessRecipe(ItemResource.getResourceStack("porcelain_clay"), new ItemStack(Items.CLAY_BALL), new ItemStack(Items.DYE, 1, 15));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.sieve, new Object[] {"x x","xyx","z z", 'z', "plankWood", 'y', "slabWood", 'z', "stickWood"}));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 1), new Object[] {"xxx","xxx","xxx","xxx", 'x', Items.STRING}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 1), new Object[] {"xxx","xxx","xxx", 'x', Items.STRING}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 2), new Object[] {"x x","xyx","x x", 'x', Items.FLINT, 'y', new ItemStack(ENItems.mesh, 1, 1)}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 3), new Object[] {"x x","xyx","x x", 'x', Items.IRON_INGOT, 'y', new ItemStack(ENItems.mesh, 1, 2)}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 4), new Object[] {"x x","xyx","x x", 'x', Items.DIAMOND, 'y', new ItemStack(ENItems.mesh, 1, 3)}));

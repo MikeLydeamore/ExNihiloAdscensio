@@ -4,6 +4,7 @@ import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.tools.CrookBase;
 import exnihiloadscensio.items.tools.HammerBase;
+import exnihiloadscensio.registries.OreRegistry;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,8 +23,6 @@ public class ENItems {
 	public static ItemMesh mesh;
 	
 	public static ItemResource resources;
-	
-	public static ItemOre ores;
 	
 	public static void init()
 	{
@@ -53,8 +52,6 @@ public class ENItems {
 		
 		resources = new ItemResource();
 		
-		ores = new ItemOre();
-		
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -73,7 +70,7 @@ public class ENItems {
 		
 		resources.initModel();
 		
-		ores.initModel();
+		OreRegistry.initModels();
 	}
 	
 	

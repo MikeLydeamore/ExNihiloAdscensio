@@ -7,8 +7,6 @@ import exnihiloadscensio.registries.OreRegistry;
 
 public class CommonProxy {
 
-	private ItemFMLRegistryWrapper<Ore> oreRegistryWrapper;
-
 	public void initModels() {}
 
 	public boolean runningOnServer()
@@ -24,11 +22,5 @@ public class CommonProxy {
 	public void fixModels() {}
 
 	public void registerColorHandlers() {}
-
-	public final ItemFMLRegistryWrapper<Ore> getFoodRegistryWrapper() {
-		if (oreRegistryWrapper == null)
-			oreRegistryWrapper = new ItemFMLRegistryWrapper<Ore>(OreRegistry.ORES, ENItems.ores).setDefaultPrefix(ExNihiloAdscensio.MODID);
-		return oreRegistryWrapper;
-	}
 
 }

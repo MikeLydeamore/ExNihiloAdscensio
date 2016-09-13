@@ -10,6 +10,8 @@ import exnihiloadscensio.client.renderers.RenderInfestedLeaves;
 import exnihiloadscensio.client.renderers.RenderOrePiece;
 import exnihiloadscensio.client.renderers.RenderSieve;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.items.ore.ItemOre;
+import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileSieve;
@@ -20,11 +22,6 @@ public class ClientProxy extends CommonProxy {
 	{
 		ENItems.initModels();
 		ENBlocks.initModels();
-	}
-	
-	@Override
-	public void fixModels() {
-		 ENItems.ores.fixModel();
 	}
 
 	@Override
@@ -45,7 +42,8 @@ public class ClientProxy extends CommonProxy {
 	public void registerColorHandlers()
 	{
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new RenderInfestedLeaves(), ENBlocks.infestedLeaves);
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new RenderOrePiece(), ENItems.ores);
+		int size = OreRegistry.getItemOreRegistry().size();
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new RenderOrePiece(), OreRegistry.getItemOreRegistry().toArray(new ItemOre[size]));
 	}
 
 
