@@ -26,9 +26,11 @@ import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
+import lombok.Getter;
 
 public class SieveRegistry {
 
+	@Getter
 	private static HashMap<BlockInfo, ArrayList<Siftable>> registry = new HashMap<BlockInfo, ArrayList<Siftable>>();
 	
 	public static void register(BlockInfo block, ItemInfo drop, float chance, int meshLevel) {
@@ -138,12 +140,13 @@ public class SieveRegistry {
 		
 		
 		//Ores
-		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 0.2f, MeshType.FLINT.getID());
+		/*register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 0.2f, MeshType.FLINT.getID());
 		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 0.2f, MeshType.IRON.getID());
 		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("iron"), 0.1f, MeshType.DIAMOND.getID());
 		
 		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("gold"), 0.05f, MeshType.IRON.getID());
 		register(Blocks.GRAVEL.getDefaultState(), ExNihiloAdscensio.proxy.getFoodRegistryWrapper().getStack("gold"), 0.1f, MeshType.DIAMOND.getID());
+		*/
 	}
 	
 	private static Gson gson;
