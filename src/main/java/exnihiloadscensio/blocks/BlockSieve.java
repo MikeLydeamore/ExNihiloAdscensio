@@ -153,17 +153,15 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		List<ItemStack>  ret = super.getDrops(world, pos, state, fortune); 
-		
-		TileSieve te = (TileSieve) world.getTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
 		if (te != null) {
-			if (te.getMeshStack() != null) {
-				ret.add(te.getMeshStack().copy());
-			}
+			TileSieve sieve = (TileSieve) te;
+			if (sieve.getMeshStack() != null)
+				Util.dropItemInWorld(sieve, null, sieve.getMeshStack(), 0.02f);
 		}
 		
-		return ret;
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
