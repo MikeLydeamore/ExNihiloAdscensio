@@ -13,6 +13,7 @@ import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -27,6 +28,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -50,19 +52,10 @@ public class TileBarrel extends TileEntity implements ITickable {
 	{
 		if (mode == null || mode.getName().equals("fluid")) {
 			ItemStack stack = player.getHeldItemMainhand();
-			if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-				IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-				FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, false);
-				int amount = this.getTank().fill(drainStack, false);
-				
-				if (amount > 0) {
-					handler.drain(Fluid.BUCKET_VOLUME, true);
-					this.getTank().fill(drainStack, true);
-					this.setMode("fluid");
-					PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("fluid", pos), this);
-					return true;
-				}
-			}
+			boolean result = FluidUtil.interactWithFluidHandler(stack, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side), player);
+			
+			if (result)
+				return true;
 		}
 		if (mode == null)
 		{
@@ -88,7 +81,8 @@ public class TileBarrel extends TileEntity implements ITickable {
 		}
 		else
 		{
-			return mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
+			mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
+			return true;
 		}
 
 		return true;
