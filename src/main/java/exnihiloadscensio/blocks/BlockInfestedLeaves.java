@@ -2,11 +2,12 @@ package exnihiloadscensio.blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import exnihiloadscensio.config.Config;
+import exnihiloadscensio.items.tools.ICrook;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.util.Util;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -68,6 +69,11 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	{
 		return new ArrayList<ItemStack>();
 	}
+	
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		
+	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
@@ -76,7 +82,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 		{
 			TileInfestedLeaves leaves = (TileInfestedLeaves) world.getTileEntity(pos);
 
-			if (leaves != null)
+			if (leaves != null && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ICrook)
 			{
 				if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance)
 					Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);

@@ -17,6 +17,7 @@ public class ItemResource extends Item {
 	
 	public static final String STONES = "stones";
 	public static final String PORCELAIN_CLAY = "porcelain_clay";
+	public static final String SILKWORM = "silkworm";
 	private static ArrayList<String> names = new ArrayList<String>();
 	
 	public ItemResource() {

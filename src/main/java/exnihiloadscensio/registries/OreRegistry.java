@@ -122,7 +122,7 @@ public class OreRegistry {
 
 	public static void loadJson(File file)
 	{
-		gson = new GsonBuilder().setPrettyPrinting()
+		gson = new GsonBuilder().setPrettyPrinting()	
 				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson())
 				.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson())
 				.registerTypeAdapter(Ore.class, new CustomOreJson()).create();

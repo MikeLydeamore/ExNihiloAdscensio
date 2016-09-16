@@ -15,6 +15,11 @@
         "textures": {
           "layer0": "exnihiloadscensio:items/porcelainClay"
         }
+       },
+       "silkworm": {
+        "textures": {
+          "layer0": "exnihiloadscensio:items/silkworm"
+        }
        }
      }
   }
