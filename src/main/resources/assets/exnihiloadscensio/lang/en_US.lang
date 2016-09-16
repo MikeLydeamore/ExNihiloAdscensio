@@ -9,6 +9,7 @@ item.crookBone.name=Bone Crook
 
 item.itemMaterial.stones.name=Stones
 item.itemMaterial.porcelain_clay.name=Porcelain Clay
+item.itemMaterial.silkworm.name=Silkworm
 
 tile.blockDust.name=Dust
 
