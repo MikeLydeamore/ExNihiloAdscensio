@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,6 +47,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	
 	public TileCrucible() {
 		tank = new FluidTank(4*Fluid.BUCKET_VOLUME);
+		tank.setCanFill(false);
 		itemHandler = new CrucibleItemHandler(); itemHandler.setTe(this);
 	}
 
@@ -84,9 +86,9 @@ public class TileCrucible extends TileEntity implements ITickable {
 			}
 			//Check if the tank can take the fluid.
 			FluidStack fStack = new FluidStack(fluidToFill, getHeatRate());
-			int fillAmount = tank.fill(fStack, false);
+			int fillAmount = tank.fillInternal(fStack, false);
 			if (fillAmount > 0) {
-				tank.fill(fStack, true);
+				tank.fillInternal(fStack, true);
 				solidAmount -= getHeatRate(); //Moving items into the "meltable" slot is handled earlier.
 				PacketHandler.sendNBTUpdate(this);
 			}
@@ -161,11 +163,8 @@ public class TileCrucible extends TileEntity implements ITickable {
 		
 		//Bucketing out the fluid.
 		if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-			IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			FluidStack fluid = tank.drain(Fluid.BUCKET_VOLUME, false);
-			int amount = handler.fill(fluid, true);
-			if (amount != 0) {
-				tank.drain(Fluid.BUCKET_VOLUME, true);
+			boolean result = FluidUtil.interactWithFluidHandler(stack, tank, player);
+			if (result) {
 				PacketHandler.sendNBTUpdate(this);
 			}
 			return true;
