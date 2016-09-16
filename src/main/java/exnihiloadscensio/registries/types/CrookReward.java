@@ -1,4 +1,4 @@
-package exnihiloadscensio.registries;
+package exnihiloadscensio.registries.types;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,6 +2,7 @@ package exnihiloadscensio.handlers;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import exnihiloadscensio.items.tools.ICrook;
 import exnihiloadscensio.registries.CrookRegistry;
-import exnihiloadscensio.registries.CrookReward;
+import exnihiloadscensio.registries.types.CrookReward;
 
 public class HandlerCrook {
 
@@ -27,11 +28,12 @@ public class HandlerCrook {
 		if (event.isSilkTouching())
 			return;
 
-		ItemStack held = event.getHarvester().getHeldItem(EnumHand.MAIN_HAND);
+		ItemStack held = event.getHarvester().getHeldItemMainhand();
 		if (!isCrook(held))
 			return;
 		
 		ArrayList<CrookReward> rewards = CrookRegistry.getRewards(event.getState());
+		
 		if (rewards != null && rewards.size() > 0)
 		{
 			event.getDrops().clear();

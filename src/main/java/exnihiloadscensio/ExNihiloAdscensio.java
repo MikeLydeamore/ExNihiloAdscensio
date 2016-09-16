@@ -24,6 +24,7 @@ import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.CompostRegistry;
+import exnihiloadscensio.registries.CrookRegistry;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.registries.FluidOnTopRegistry;
@@ -75,6 +76,12 @@ public class ExNihiloAdscensio {
 	public static void init(FMLInitializationEvent event)
 	{
 		proxy.registerColorHandlers();
+	}
+
+	@EventHandler
+	public static void postInit(FMLPostInitializationEvent event)
+	{
+		Recipes.init();
 		
 		CompostRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CompostRegistry.json"));
 
@@ -89,14 +96,10 @@ public class ExNihiloAdscensio {
 		CrucibleRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrucibleRegistry.json"));
 
 		SieveRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/SieveRegistry.json"));
+		
+		CrookRegistry.registerDefaults();
 
 		OreRegistry.doRecipes();
-	}
-
-	@EventHandler
-	public static void postInit(FMLPostInitializationEvent event)
-	{
-		Recipes.init();
 	}
 
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")
