@@ -7,7 +7,7 @@ public class BlockDust extends BlockBase {
 	public BlockDust()
 	{
 		super(Material.SAND, "blockDust");
-		
+		this.setHardness(1.2f);		
 	}
 
 }
