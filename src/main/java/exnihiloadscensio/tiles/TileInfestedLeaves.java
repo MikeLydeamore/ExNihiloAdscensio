@@ -24,7 +24,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable {
 		
 		if (!worldObj.isRemote && progress < 1)
 		{
-			progress += 1.0/200;
+			progress += 1.0/600;
 			this.markDirty();
 			
 			if (progress > 1)
