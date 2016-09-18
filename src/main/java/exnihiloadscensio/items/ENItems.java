@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.seeds.ItemSeedBase;
-import exnihiloadscensio.items.seeds.ItemSeedBirch;
 import exnihiloadscensio.items.tools.CrookBase;
 import exnihiloadscensio.items.tools.HammerBase;
 import exnihiloadscensio.registries.OreRegistry;
