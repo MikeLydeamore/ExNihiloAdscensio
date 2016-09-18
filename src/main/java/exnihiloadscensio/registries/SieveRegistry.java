@@ -21,6 +21,7 @@ import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.items.ore.ItemOre;
+import exnihiloadscensio.items.seeds.ItemSeedBase;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.Compostable;
@@ -145,6 +146,11 @@ public class SieveRegistry {
 			register(Blocks.GRAVEL.getDefaultState(), new ItemStack(ore, 1, 0), 0.2f, MeshType.FLINT.getID());
 			register(Blocks.GRAVEL.getDefaultState(), new ItemStack(ore, 1, 0), 0.2f, MeshType.IRON.getID());
 			register(Blocks.GRAVEL.getDefaultState(), new ItemStack(ore, 1, 0), 0.1f, MeshType.DIAMOND.getID());
+		}
+		
+		//Seeds
+		for (ItemSeedBase seed : ENItems.itemSeeds) {
+			register(Blocks.DIRT.getDefaultState(), new ItemStack(seed), 0.05f, MeshType.STRING.getID());
 		}
 	}
 	
