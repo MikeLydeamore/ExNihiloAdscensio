@@ -11,6 +11,15 @@ item.itemMaterial.stones.name=Stones
 item.itemMaterial.porcelain_clay.name=Porcelain Clay
 item.itemMaterial.silkworm.name=Silkworm
 
+item.itemSeedBirch.name=Birch Seed
+item.itemSeedOak.name=Oak Seed
+item.itemSeedJungle.name=Jungle Seed
+item.itemSeedAcacia.name=Acacia Seed
+item.itemSeedSpruce.name=Spruce Seed
+item.itemSeedCarrot.name=Carrot Seeds
+item.itemSeedPotato.name=Potato Seeds
+item.itemSeedSugarcane.name=Sugarcane Seed
+
 tile.blockDust.name=Dust
 
 tile.blockBarrel.name=Wooden Barrel
