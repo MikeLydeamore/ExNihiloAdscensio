@@ -4,6 +4,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import exnihiloadscensio.ExNihiloAdscensio;
+import exnihiloadscensio.fluid.FluidWitchWater;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
@@ -16,6 +17,9 @@ public class ENBlocks {
 	public static BlockInfestedLeaves infestedLeaves;
 	public static BlockCrucible crucible;
 	public static BlockSieve sieve;
+	
+	public static FluidWitchWater fluidWitchwater;
+	public static BlockFluidWitchwater blockWitchwater;
 
 	public static void init()
 	{
@@ -37,6 +41,9 @@ public class ENBlocks {
 		sieve = new BlockSieve();
 		sieve.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		GameRegistry.registerTileEntity(TileSieve.class, "blockSieve");
+		
+		fluidWitchwater = new FluidWitchWater();
+		blockWitchwater = new BlockFluidWitchwater();
 	}
 
 	@SideOnly(Side.CLIENT)
