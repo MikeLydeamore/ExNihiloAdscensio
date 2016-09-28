@@ -11,6 +11,8 @@ item.itemMaterial.stones.name=Stones
 item.itemMaterial.porcelain_clay.name=Porcelain Clay
 item.itemMaterial.silkworm.name=Silkworm
 
+item.silkwormCooked.name=Cooked Silkworm
+
 item.itemSeedBirch.name=Birch Seed
 item.itemSeedOak.name=Oak Seed
 item.itemSeedJungle.name=Jungle Seed

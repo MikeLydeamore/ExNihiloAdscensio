@@ -38,6 +38,8 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 2), new Object[] {"x x","xyx","x x", 'x', Items.FLINT, 'y', new ItemStack(ENItems.mesh, 1, 1)}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 3), new Object[] {"x x","xyx","x x", 'x', Items.IRON_INGOT, 'y', new ItemStack(ENItems.mesh, 1, 2)}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 4), new Object[] {"x x","xyx","x x", 'x', Items.DIAMOND, 'y', new ItemStack(ENItems.mesh, 1, 3)}));
+		
+		FurnaceRecipes.instance().addSmeltingRecipe(ItemResource.getResourceStack("silkworm"), new ItemStack(ENItems.cookedSilkworm), 0.7f);
 	}
 
 }

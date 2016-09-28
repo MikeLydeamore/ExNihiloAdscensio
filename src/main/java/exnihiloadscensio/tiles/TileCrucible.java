@@ -124,8 +124,12 @@ public class TileCrucible extends TileEntity implements ITickable {
 		}
 		
 		double fluidProportion = ((double) tank.getFluidAmount()) / tank.getCapacity();
-		if (fluidProportion > solidProportion)
+		if (fluidProportion > solidProportion) {
+			if (tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluid().getFluid().getBlock() == null)
+				return null;
+			
 			return Util.getTextureFromBlockState(tank.getFluid().getFluid().getBlock().getDefaultState());
+		}
 		else {
 			if (currentItem != null) {
 				IBlockState block = Block.getBlockFromItem(currentItem.getItem())

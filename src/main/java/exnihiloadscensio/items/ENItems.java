@@ -28,6 +28,7 @@ public class ENItems {
 	public static ItemMesh mesh;
 	
 	public static ItemResource resources;
+	public static ItemCookedSilkworm cookedSilkworm;
 	
 	public static ArrayList<ItemSeedBase> itemSeeds = new ArrayList<ItemSeedBase>();
 	
@@ -59,6 +60,8 @@ public class ENItems {
 		
 		resources = new ItemResource();
 		
+		cookedSilkworm = new ItemCookedSilkworm();
+		
 		itemSeeds.add(new ItemSeedBase("oak", Blocks.SAPLING.getStateFromMeta(0), Blocks.DIRT.getDefaultState()));
 		itemSeeds.add(new ItemSeedBase("spruce", Blocks.SAPLING.getStateFromMeta(1), Blocks.DIRT.getDefaultState()));
 		itemSeeds.add(new ItemSeedBase("birch", Blocks.SAPLING.getStateFromMeta(2), Blocks.DIRT.getDefaultState()));
@@ -87,6 +90,8 @@ public class ENItems {
 		mesh.initModel();
 		
 		resources.initModel();
+		
+		cookedSilkworm.initModel();
 		
 		OreRegistry.initModels();
 		
