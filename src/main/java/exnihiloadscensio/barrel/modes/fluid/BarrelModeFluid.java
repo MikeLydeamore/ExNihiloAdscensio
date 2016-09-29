@@ -62,8 +62,7 @@ public class BarrelModeFluid implements IBarrelMode {
 	public boolean isTriggerFluidStack(FluidStack stack) {
 		if (stack == null)
 			return false;
-		return stack.getFluid().equals(FluidRegistry.WATER) ||
-				stack.getFluid().equals(FluidRegistry.LAVA);
+		return true;
 	}
 
 	@Override
