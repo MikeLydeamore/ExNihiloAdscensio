@@ -100,7 +100,7 @@ public class ExNihiloAdscensio {
 
 		SieveRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/SieveRegistry.json"));
 		
-		CrookRegistry.registerDefaults();
+		CrookRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrookRegistry.json"));
 
 		OreRegistry.doRecipes();
 		

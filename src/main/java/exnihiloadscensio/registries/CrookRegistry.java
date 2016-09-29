@@ -1,12 +1,23 @@
 package exnihiloadscensio.registries;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;
+import exnihiloadscensio.json.CustomBlockInfoJson;
+import exnihiloadscensio.json.CustomItemStackJson;
 import exnihiloadscensio.registries.types.CrookReward;
 import exnihiloadscensio.util.BlockInfo;
+import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -49,6 +60,57 @@ public class CrookRegistry {
 		for (int i = 0 ; i < 16 ; i++) {
 			addCrookRecipe(new BlockInfo(Blocks.LEAVES, i), ItemResource.getResourceStack(ItemResource.SILKWORM), 0.1f, 0f);
 			addCrookRecipe(new BlockInfo(Blocks.LEAVES2, i), ItemResource.getResourceStack(ItemResource.SILKWORM), 0.1f, 0f);
+		}
+	}
+	
+	private static Gson gson = new GsonBuilder().setPrettyPrinting()
+			.registerTypeAdapter(ItemStack.class, new CustomItemStackJson())
+			.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson())
+			.create();
+
+	public static void loadJson(File file)	{
+		
+		if (file.exists())
+		{
+			try 
+			{
+				FileReader fr = new FileReader(file);
+				HashMap<String, ArrayList<CrookReward>> gsonInput = gson.fromJson(fr, new TypeToken<HashMap<String, ArrayList<CrookReward>>>(){}.getType());
+				
+				Iterator<String> it = gsonInput.keySet().iterator();
+				
+				while (it.hasNext())
+				{
+					String s = (String) it.next();
+					BlockInfo stack = new BlockInfo(s);
+					map.put(stack, gsonInput.get(s));
+				}
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			registerDefaults();
+			saveJson(file);
+		}
+	}
+	
+	public static void saveJson(File file)
+	{
+		try
+		{
+			FileWriter fw = new FileWriter(file);
+
+			gson.toJson(map, fw);
+			
+			fw.close();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
 		}
 	}
 
