@@ -2,9 +2,27 @@ package exnihiloadscensio.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -17,6 +35,78 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 		this.setRegistryName("witchwater");
 		this.setUnlocalizedName("witchwater");
 		GameRegistry.<Block>register(this);
+	}
+	
+	@Override
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+		
+		if (world.isRemote)
+			return;
+		
+		if (entity.isDead)
+			return;
+		
+		if (entity instanceof EntitySkeleton) {
+			
+			EntitySkeleton skeleton = (EntitySkeleton) entity;
+			if (skeleton.getSkeletonType() == SkeletonType.NORMAL) {
+				skeleton.setSkeletonType(SkeletonType.WITHER);
+				skeleton.setHealth(skeleton.getMaxHealth());
+				
+				return;
+			}
+		}
+		
+		if (entity instanceof EntityCreeper) {
+			EntityCreeper creeper = (EntityCreeper) entity;
+			if (!creeper.getPowered()) {
+				creeper.onStruckByLightning(null);
+				creeper.setHealth(creeper.getMaxHealth());
+				
+				return;
+			}
+		}
+		
+		if (entity instanceof EntitySpider && !(entity instanceof EntityCaveSpider)) {
+			EntitySpider spider = (EntitySpider) entity;
+			spider.setDead();
+			
+			EntityCaveSpider caveSpider = new EntityCaveSpider(world);
+			caveSpider.setLocationAndAngles(spider.posX, spider.posY, spider.posZ, spider.rotationYaw, spider.rotationPitch);
+			caveSpider.renderYawOffset = spider.renderYawOffset;
+			caveSpider.setHealth(caveSpider.getMaxHealth());
+			
+			world.spawnEntityInWorld(caveSpider);
+			
+			return;
+		}
+		
+		if (entity instanceof EntitySquid) {
+			EntitySquid squid = (EntitySquid) entity;
+			squid.setDead();
+			
+			EntityGhast ghast = new EntityGhast(world);
+			ghast.setLocationAndAngles(squid.posX, squid.posY, squid.posZ, squid.rotationYaw, squid.rotationPitch);
+			ghast.renderYawOffset = squid.renderYawOffset;
+			ghast.setHealth(ghast.getMaxHealth());
+			
+			world.spawnEntityInWorld(ghast);
+			
+			return;
+		}
+		
+		if (entity instanceof EntityAnimal) {
+			((EntityAnimal) entity).onStruckByLightning(null);
+			return;
+		}
+		
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 210, 0));
+			player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 210, 2));
+			player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 210, 0));
+			player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 210, 0));
+		}
 	}
 
 }
