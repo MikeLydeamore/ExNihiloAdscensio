@@ -1,5 +1,6 @@
 package exnihiloadscensio.blocks;
 
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,6 +45,8 @@ public class ENBlocks {
 		
 		fluidWitchwater = new FluidWitchWater();
 		blockWitchwater = new BlockFluidWitchwater();
+		boolean result = FluidRegistry.addBucketForFluid(fluidWitchwater);
+		
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -53,6 +56,8 @@ public class ENBlocks {
 		barrelWood.initModel();
 		sieve.initModel();
 		crucible.initModel();
+		
+		fluidWitchwater.initModel();
 	}
 
 }

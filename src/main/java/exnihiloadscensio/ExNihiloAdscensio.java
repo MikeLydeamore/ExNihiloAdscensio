@@ -49,7 +49,11 @@ public class ExNihiloAdscensio {
 	public static ExNihiloAdscensio instance;
 
 	private static File configDirectory;
-
+	
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
+	
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
@@ -59,6 +63,8 @@ public class ExNihiloAdscensio {
 
 		OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
 
+		FluidRegistry.enableUniversalBucket();
+		
 		ENItems.init();
 		ENBlocks.init();
 		proxy.initModels();
