@@ -1,5 +1,7 @@
 package exnihiloadscensio.barrel.modes.compost;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import exnihiloadscensio.barrel.IBarrelMode;
@@ -185,6 +187,11 @@ public class BarrelModeCompost implements IBarrelMode {
 	public String getName()
 	{
 		return "compost";
+	}
+	
+	@Override
+	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
+		return currenttip;
 	}
 
 	@Override

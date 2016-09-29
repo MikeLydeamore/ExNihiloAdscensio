@@ -1,5 +1,7 @@
 package exnihiloadscensio.barrel.modes.fluid;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -68,6 +70,16 @@ public class BarrelModeFluid implements IBarrelMode {
 	@Override
 	public String getName() {
 		return "fluid";
+	}
+	
+	@Override
+	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
+		if (barrel.getTank().getFluid() != null) {
+			currenttip.add(barrel.getTank().getFluid().getLocalizedName());
+			currenttip.add("Amount: "+String.valueOf(barrel.getTank().getFluidAmount())+"mb");
+		}
+		
+		return currenttip;
 	}
 
 	@Override

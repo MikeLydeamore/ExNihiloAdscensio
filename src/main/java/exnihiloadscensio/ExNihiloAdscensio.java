@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLModIdMappingEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -79,6 +80,8 @@ public class ExNihiloAdscensio {
 	public static void init(FMLInitializationEvent event)
 	{
 		proxy.registerColorHandlers();
+		
+		FMLInterModComms.sendMessage("Waila", "register", "exnihiloadscensio.compatibility.CompatWaila.callbackRegister");
 	}
 
 	@EventHandler

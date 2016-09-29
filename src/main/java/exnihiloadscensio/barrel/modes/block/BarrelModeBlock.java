@@ -1,5 +1,7 @@
 package exnihiloadscensio.barrel.modes.block;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.Block;
@@ -64,6 +66,11 @@ public class BarrelModeBlock implements IBarrelMode {
 	@Override
 	public String getName() {
 		return "block";
+	}
+	
+	@Override
+	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
+		return currenttip;
 	}
 
 	@Override

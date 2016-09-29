@@ -1,5 +1,7 @@
 package exnihiloadscensio.barrel;
 
+import java.util.List;
+
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import net.minecraft.block.state.IBlockState;
@@ -46,5 +48,7 @@ public interface IBarrelMode {
 	public FluidTank getFluidHandler(TileBarrel barrel);
 	
 	public boolean canFillWithFluid(TileBarrel barrel);
+	
+	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip);
 
 }
