@@ -39,7 +39,10 @@ public class ItemMesh extends Item {
 	@SideOnly(Side.CLIENT)
 	public void initModel()
 	{
-		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation("itemMesh", "mesh=string"));
+		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation("exnihiloadscensio:itemMeshString"));
+		ModelLoader.setCustomModelResourceLocation(this, 2, new ModelResourceLocation("exnihiloadscensio:itemMeshFlint"));
+		ModelLoader.setCustomModelResourceLocation(this, 3, new ModelResourceLocation("exnihiloadscensio:itemMeshIron"));
+		ModelLoader.setCustomModelResourceLocation(this, 4, new ModelResourceLocation("exnihiloadscensio:itemMeshDiamond"));
 	}
 
 }

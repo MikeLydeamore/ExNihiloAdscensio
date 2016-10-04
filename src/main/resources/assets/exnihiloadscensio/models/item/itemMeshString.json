@@ -1,0 +1,74 @@
+{
+    "textures": {
+        "mesh": "blocks/wool_colored_white"
+    },
+ 	"name": "itemMesh",
+ 	"elements": [
+        {   
+        	"from": [ 3, 0, 0],
+            "to": [ 5, 16, 0],
+            "faces": {
+                "up":    { "texture": "#mesh"},
+                "north": { "texture": "#mesh"},
+                "south": { "texture": "#mesh"},
+                "west":  { "texture": "#mesh"},
+                "east":  { "texture": "#mesh"}
+            }
+        },
+        {   
+        	"from": [ 7, 0, 0],
+            "to": [ 9, 16, 0],
+            "faces": {
+                "up":    { "texture": "#mesh"},
+                "north": { "texture": "#mesh"},
+                "south": { "texture": "#mesh"},
+                "west":  { "texture": "#mesh"},
+                "east":  { "texture": "#mesh"}
+            }
+        },
+        {   
+        	"from": [ 11, 0, 0],
+            "to": [ 13, 16, 0],
+            "faces": {
+                "up":    { "texture": "#mesh"},
+                "north": { "texture": "#mesh"},
+                "south": { "texture": "#mesh"},
+                "west":  { "texture": "#mesh"},
+                "east":  { "texture": "#mesh"}
+            }
+        },
+        {   
+        	"from": [ 0, 3, 0],
+            "to": [ 16, 5, 0],
+            "faces": {
+                "up":    { "texture": "#mesh"},
+                "north": { "texture": "#mesh"},
+                "south": { "texture": "#mesh"},
+                "west":  { "texture": "#mesh"},
+                "east":  { "texture": "#mesh"}
+            }
+        },
+        {   
+        	"from": [ 0, 7, 0],
+            "to": [ 16, 9, 0],
+            "faces": {
+                "up":    { "texture": "#mesh"},
+                "north": { "texture": "#mesh"},
+                "south": { "texture": "#mesh"},
+                "west":  { "texture": "#mesh"},
+                "east":  { "texture": "#mesh"}
+            }
+        },
+        {   
+        	"from": [ 0, 11, 0],
+            "to": [ 16, 13, 0],
+            "faces": {
+                "up":    { "texture": "#mesh"},
+                "north": { "texture": "#mesh"},
+                "south": { "texture": "#mesh"},
+                "west":  { "texture": "#mesh"},
+                "east":  { "texture": "#mesh"}
+            }
+        }
+    ]
+}

@@ -1,14 +1,19 @@
 {
 	"forge_marker": 1,
 	"defaults": {
+		"model": "exnihiloadscensio:item/itemMeshString",
+		"textures": {
+        	"mesh": "blocks/wool_colored_cyan"
+    	}
   	},
 	"variants": {
     	"mesh": {
     		"string": {
-    			"submodel": {
-    				"mesh1": { "model": "exnihiloadscensio:block/meshBase"},
-    				"mesh2": { "model": "exnihiloadscensio:block/meshBase", "y": 90}
-  				}
+    		},
+  			"flint": {
+  			},
+  			"iron": {},
+  			"diamond": {}
   			}
     	}
   	}
