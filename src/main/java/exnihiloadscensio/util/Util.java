@@ -1,5 +1,7 @@
 package exnihiloadscensio.util;
 
+import java.util.ArrayList;
+
 import exnihiloadscensio.texturing.Color;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -8,8 +10,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import scala.actors.threadpool.Arrays;
 
 public class Util {
 	
@@ -66,6 +71,22 @@ public class Util {
 	public static TextureAtlasSprite getTextureFromBlockState(IBlockState state) {
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
 		.getTexture(state);
+	}
+	
+	public static boolean isSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world) {
+
+		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
+		for (int xShift = -1 ; xShift <= 1 ; xShift++) {
+			for (int zShift = -1 ; zShift <= 1 ; zShift++) {
+				BlockPos checkPos = pos.add(xShift, 0, zShift);
+				BlockInfo checkBlock = new BlockInfo(world.getBlockState(checkPos));
+				if (blockList.contains(checkBlock))
+					return true;				
+			}
+		}
+		
+		
+		return false;
 	}
 
 }

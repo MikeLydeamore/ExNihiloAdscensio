@@ -90,7 +90,7 @@ public class HammerRegistry {
 		{
 			list = new ArrayList<HammerReward>();
 		}
-		list.add(new HammerReward(reward, miningLevel, chance, fortuneChance));
+		list.add(new HammerReward(reward, miningLevel, chance, fortuneChance));	
 		map.put(ii, list);
 	}
 	

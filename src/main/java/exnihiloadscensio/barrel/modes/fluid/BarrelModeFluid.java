@@ -158,6 +158,9 @@ public class BarrelModeFluid implements IBarrelMode {
 
 				barrel.getMode().addItem(info.getItemStack(), barrel);
 			}
+			
+			//Fluid transforming time!
+			
 		}
 	}
 
