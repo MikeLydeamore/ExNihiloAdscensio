@@ -191,6 +191,14 @@ public class BarrelModeCompost implements IBarrelMode {
 	
 	@Override
 	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
+		if (compostState != null)
+			currenttip.add("Composting "+compostState.getBlock().getLocalizedName());
+		if (progress == 0) {
+			currenttip.add(Math.round(fillAmount*100)+"% full");
+		}
+		else {
+			currenttip.add(Math.round(progress*100)+"% complete");
+		}
 		return currenttip;
 	}
 
