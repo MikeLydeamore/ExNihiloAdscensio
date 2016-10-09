@@ -1,5 +1,6 @@
 package exnihiloadscensio.barrel.modes.transform;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import exnihiloadscensio.barrel.IBarrelMode;
@@ -10,6 +11,7 @@ import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.Util;
+import lombok.Setter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,24 +25,24 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
+import scala.actors.threadpool.Arrays;
 
 public class BarrelModeFluidTransform implements IBarrelMode {
 
+	@Setter
 	private FluidStack inputStack, outputStack;
-	private BlockInfo transformingBlock;
-	private byte progress = 0;
+	private float progress = 0;
+	@Setter
 	private FluidTransformer transformer;
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		NBTTagCompound inputTag = inputStack.writeToNBT(new NBTTagCompound());
 		NBTTagCompound outputTag = outputStack.writeToNBT(new NBTTagCompound());
-		NBTTagCompound blockTag = transformingBlock.writeToNBT(new NBTTagCompound());
 
 		tag.setTag("inputTag", inputTag);
 		tag.setTag("outputTag", outputTag);
-		tag.setTag("blockTag", blockTag);
-		tag.setByte("progress", progress);
+		tag.setFloat("progress", progress);
 	}
 
 	@Override
@@ -53,12 +55,8 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 			NBTTagCompound outputTag = (NBTTagCompound) tag.getTag("outputTag");
 			outputStack = FluidStack.loadFluidStackFromNBT(outputTag);
 		}
-		if (tag.hasKey("blockTag")) {
-			NBTTagCompound blockTag = (NBTTagCompound) tag.getTag("blockTag");
-			transformingBlock = BlockInfo.readFromNBT(blockTag);
-		}
 		if (tag.hasKey("progress")) {
-			progress = tag.getByte("progress");
+			progress = tag.getFloat("progress");
 		}
 
 	}
@@ -86,19 +84,24 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 
 	@Override
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
-		if (transformer == null)
-			return null;
-		
-		if (progress < 50) {
+		if (progress < 0.5) {
+			if (inputStack == null)
+				return Util.getTextureFromBlockState(FluidRegistry.WATER.getBlock().getDefaultState());
 			return Util.getTextureFromBlockState(inputStack.getFluid().getBlock().getDefaultState());
 		}
-		else
-			return Util.getTextureFromBlockState(FluidRegistry.getFluid(transformer.getOutputFluid()).getBlock().getDefaultState());
+		else {
+			if (outputStack == null)
+				return Util.getTextureFromBlockState(FluidRegistry.WATER.getBlock().getDefaultState());
+			return Util.getTextureFromBlockState(outputStack.getFluid().getBlock().getDefaultState());
+		}
 	}
 
 	@Override
 	public Color getColorForRender() {
-		return Util.whiteColor;
+		if (progress < 0.5) {
+			return Color.average(Util.whiteColor, Util.blackColor, (float) (progress/0.5));
+		}
+		return Color.average(Util.blackColor, Util.whiteColor, (float) ((progress-0.5)/0.5));
 	}
 
 	@Override
@@ -111,16 +114,37 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 		if (transformer == null) {
 			transformer = FluidTransformRegistry.getFluidTransformer(inputStack.getFluid().getName());
 		}
-		if (Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos(), barrel.getWorld())) {
-			if (progress < 100) {
-				progress++;
-				if (barrel.getWorld().rand.nextDouble() < 0.05) {
-					//Spawn a block!
+		if (transformer == null)
+			return;
+		if (progress < 1) {
+			int numberOfBlocks = Util.getNumSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld());
+			if (numberOfBlocks > 0) {
+				progress += numberOfBlocks * 1.0 / transformer.getDuration();
+
+				if (barrel.getWorld().rand.nextDouble() < 1) {
+					boolean spawned = false;
+					ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(transformer.getTransformingBlocks()));
+					for (int xShift = -1 ; xShift <= 1 ; xShift++) {
+						for (int zShift = -1 ; zShift <= 1 ; zShift++) {
+							if (!spawned) {
+								BlockPos testPos = barrel.getPos().add(xShift, -1, zShift);
+								if (blockList.contains(new BlockInfo(barrel.getWorld().getBlockState(testPos)))
+										&& barrel.getWorld().isAirBlock(testPos.add(0, 1, 0))) {
+									BlockInfo[] toSpawn = transformer.getBlocksToSpawn();
+									if (toSpawn != null) {
+										barrel.getWorld().setBlockState(testPos.add(0, 1, 0), toSpawn[barrel.getWorld().rand.nextInt(toSpawn.length)].getBlockState());
+										spawned = true;
+									}
+								}
+							}
+						}
+					}
 				}
 			}
+			PacketHandler.sendNBTUpdate(barrel);
 		}
-		
-		if (progress == 100) {
+
+		if (progress >= 1) {
 			barrel.setMode("fluid");
 			FluidTank tank = barrel.getMode().getFluidHandler(barrel);
 			Fluid fluid = FluidRegistry.getFluid(transformer.getOutputFluid());
@@ -151,6 +175,7 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 
 	@Override
 	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
+		currenttip.add("Transforming: "+Math.round(progress*100)+"%");
 		return currenttip;
 	}
 

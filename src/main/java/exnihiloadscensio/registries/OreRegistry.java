@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
-import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,6 +20,7 @@ import exnihiloadscensio.json.CustomOreJson;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
+import lombok.Getter;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -34,8 +34,6 @@ public class OreRegistry {
     private static ArrayList<Ore> registry = new ArrayList<Ore>();
     @Getter
     private static HashSet<ItemOre> itemOreRegistry = new HashSet<ItemOre>();
-    private static HashSet<String> oreDicts = new HashSet<String>();
-    
     public static void registerDefaults() {
     	    	
     	registerOre("gold", new Color("FFFF00"), new ItemInfo(Items.GOLD_INGOT, 0));

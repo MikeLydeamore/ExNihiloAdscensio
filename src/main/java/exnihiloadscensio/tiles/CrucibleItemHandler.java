@@ -1,7 +1,7 @@
 package exnihiloadscensio.tiles;
 
-import lombok.Setter;
 import exnihiloadscensio.registries.CrucibleRegistry;
+import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 

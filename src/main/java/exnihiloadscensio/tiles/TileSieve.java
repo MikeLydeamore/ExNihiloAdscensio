@@ -3,12 +3,12 @@ package exnihiloadscensio.tiles;
 import java.util.ArrayList;
 import java.util.Random;
 
-import lombok.Getter;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.Util;
+import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;

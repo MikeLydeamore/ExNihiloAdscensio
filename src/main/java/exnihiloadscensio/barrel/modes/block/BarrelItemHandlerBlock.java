@@ -1,9 +1,9 @@
 package exnihiloadscensio.barrel.modes.block;
 
-import lombok.Setter;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.tiles.TileBarrel;
+import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 

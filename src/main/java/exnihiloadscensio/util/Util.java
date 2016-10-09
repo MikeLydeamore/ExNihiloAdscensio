@@ -19,6 +19,7 @@ import scala.actors.threadpool.Arrays;
 public class Util {
 	
 	public static Color whiteColor = new Color(1f, 1f, 1f, 1f);
+	public static Color blackColor = new Color(0f, 0f, 0f, 1f);
 	public static Color greenColor = new Color(0f, 1f, 0f, 1f);
 	
 	public static void dropItemInWorld(TileEntity source, EntityPlayer player, ItemStack stack, double speedfactor) 
@@ -75,6 +76,7 @@ public class Util {
 	
 	public static boolean isSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world) {
 
+		@SuppressWarnings("unchecked")
 		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
 		for (int xShift = -1 ; xShift <= 1 ; xShift++) {
 			for (int zShift = -1 ; zShift <= 1 ; zShift++) {
@@ -87,6 +89,24 @@ public class Util {
 		
 		
 		return false;
+	}
+	
+	public static int getNumSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world) {
+		
+		int ret = 0;
+		@SuppressWarnings("unchecked")
+		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
+		for (int xShift = -1 ; xShift <= 1 ; xShift++) {
+			for (int zShift = -1 ; zShift <= 1 ; zShift++) {
+				BlockPos checkPos = pos.add(xShift, 0, zShift);
+				BlockInfo checkBlock = new BlockInfo(world.getBlockState(checkPos));
+				if (blockList.contains(checkBlock))
+					ret++;				
+			}
+		}
+		
+		
+		return ret;
 	}
 
 }

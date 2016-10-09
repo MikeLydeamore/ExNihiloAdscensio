@@ -11,13 +11,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemStackJson;
 import exnihiloadscensio.registries.types.CrookReward;
 import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

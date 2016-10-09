@@ -3,14 +3,14 @@ package exnihiloadscensio.handlers;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import exnihiloadscensio.items.tools.IHammer;
+import exnihiloadscensio.registries.HammerRegistry;
+import exnihiloadscensio.registries.HammerReward;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import exnihiloadscensio.items.tools.IHammer;
-import exnihiloadscensio.registries.HammerRegistry;
-import exnihiloadscensio.registries.HammerReward;
 
 public class HandlerHammer {
 	

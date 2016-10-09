@@ -2,8 +2,24 @@ package exnihiloadscensio;
 
 import java.io.File;
 
+import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.config.Config;
+import exnihiloadscensio.handlers.HandlerCrook;
+import exnihiloadscensio.handlers.HandlerHammer;
+import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.networking.PacketHandler;
+import exnihiloadscensio.registries.BarrelModeRegistry;
+import exnihiloadscensio.registries.CompostRegistry;
+import exnihiloadscensio.registries.CrookRegistry;
+import exnihiloadscensio.registries.CrucibleRegistry;
+import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
+import exnihiloadscensio.registries.FluidOnTopRegistry;
+import exnihiloadscensio.registries.FluidTransformRegistry;
+import exnihiloadscensio.registries.HammerRegistry;
+import exnihiloadscensio.registries.HeatRegistry;
+import exnihiloadscensio.registries.OreRegistry;
+import exnihiloadscensio.registries.SieveRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,23 +35,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import exnihiloadscensio.blocks.ENBlocks;
-import exnihiloadscensio.config.Config;
-import exnihiloadscensio.handlers.HandlerCrook;
-import exnihiloadscensio.handlers.HandlerHammer;
-import exnihiloadscensio.items.ENItems;
-import exnihiloadscensio.networking.PacketHandler;
-import exnihiloadscensio.registries.BarrelModeRegistry;
-import exnihiloadscensio.registries.CompostRegistry;
-import exnihiloadscensio.registries.CrookRegistry;
-import exnihiloadscensio.registries.CrucibleRegistry;
-import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
-import exnihiloadscensio.registries.FluidOnTopRegistry;
-import exnihiloadscensio.registries.HammerRegistry;
-import exnihiloadscensio.registries.HeatRegistry;
-import exnihiloadscensio.registries.OreRegistry;
-import exnihiloadscensio.registries.SieveRegistry;
-import exnihiloadscensio.util.ItemInfo;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
 public class ExNihiloAdscensio {
@@ -113,7 +112,7 @@ public class ExNihiloAdscensio {
 
 		OreRegistry.doRecipes();
 		
-		FluidBlockTransformerRegistry.register(FluidRegistry.getFluid("rocket_fuel"), new ItemInfo(Blocks.DIRT.getDefaultState()), new ItemInfo(Blocks.BEACON.getDefaultState()));
+		FluidTransformRegistry.loadJson(new File(configDirectory.getAbsolutePath()+"/FluidTransformRegistry.json"));
 	}
 
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")

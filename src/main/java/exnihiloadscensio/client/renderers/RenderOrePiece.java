@@ -2,7 +2,6 @@ package exnihiloadscensio.client.renderers;
 
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
-import exnihiloadscensio.registries.OreRegistry;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 

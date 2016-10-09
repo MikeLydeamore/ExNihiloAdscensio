@@ -1,7 +1,5 @@
 package exnihiloadscensio.client;
 
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import exnihiloadscensio.CommonProxy;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.client.renderers.RenderBarrel;
@@ -15,6 +13,8 @@ import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileSieve;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy {
 

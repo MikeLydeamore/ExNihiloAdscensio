@@ -1,15 +1,11 @@
 package exnihiloadscensio.items.ore;
 
 import java.util.List;
-import java.util.Locale;
-
-import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
 
 import exnihiloadscensio.ExNihiloAdscensio;
-import exnihiloadscensio.registries.OreRegistry;
-import net.minecraft.client.Minecraft;
+import lombok.Getter;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

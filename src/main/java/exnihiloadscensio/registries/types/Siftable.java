@@ -1,8 +1,8 @@
 package exnihiloadscensio.registries.types;
 
+import exnihiloadscensio.util.ItemInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import exnihiloadscensio.util.ItemInfo;
 
 @AllArgsConstructor
 public class Siftable {

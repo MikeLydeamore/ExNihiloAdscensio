@@ -2,6 +2,18 @@ package exnihiloadscensio.barrel.modes.fluid;
 
 import java.util.List;
 
+import exnihiloadscensio.barrel.BarrelFluidHandler;
+import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.barrel.modes.transform.BarrelModeFluidTransform;
+import exnihiloadscensio.networking.MessageBarrelModeUpdate;
+import exnihiloadscensio.networking.PacketHandler;
+import exnihiloadscensio.registries.FluidOnTopRegistry;
+import exnihiloadscensio.registries.FluidTransformRegistry;
+import exnihiloadscensio.registries.types.FluidTransformer;
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -25,15 +37,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
-import exnihiloadscensio.barrel.BarrelFluidHandler;
-import exnihiloadscensio.barrel.IBarrelMode;
-import exnihiloadscensio.networking.MessageBarrelModeUpdate;
-import exnihiloadscensio.networking.PacketHandler;
-import exnihiloadscensio.registries.FluidOnTopRegistry;
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.tiles.TileBarrel;
-import exnihiloadscensio.util.ItemInfo;
-import exnihiloadscensio.util.Util;
 
 public class BarrelModeFluid implements IBarrelMode {
 
@@ -160,6 +163,21 @@ public class BarrelModeFluid implements IBarrelMode {
 			}
 			
 			//Fluid transforming time!
+			if (FluidTransformRegistry.containsKey(barrel.getTank().getFluid().getFluid().getName())) {
+				FluidTransformer transformer = FluidTransformRegistry.getFluidTransformer(barrel.getTank().getFluid().getFluid().getName());
+				
+				if (Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld())) {
+					//Time to start the process.
+					FluidStack fstack = tank.getFluid();
+					tank.setFluid(null);
+					barrel.setMode("fluidTransform");
+					((BarrelModeFluidTransform) barrel.getMode()).setTransformer(transformer);
+					((BarrelModeFluidTransform) barrel.getMode()).setInputStack(fstack);
+					((BarrelModeFluidTransform) barrel.getMode()).setOutputStack(FluidRegistry.getFluidStack(transformer.getOutputFluid(), 1000));
+					PacketHandler.sendNBTUpdate(barrel);
+					
+				}
+			}
 			
 		}
 	}

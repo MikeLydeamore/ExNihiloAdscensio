@@ -1,8 +1,6 @@
 package exnihiloadscensio.json;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -11,13 +9,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.items.ore.Ore;
-import exnihiloadscensio.items.ore.OreSiftable;
-import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 
 public class CustomOreJson implements JsonDeserializer<Ore>, JsonSerializer<Ore> {

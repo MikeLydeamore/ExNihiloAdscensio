@@ -1,7 +1,6 @@
 package exnihiloadscensio.networking;
 
 import exnihiloadscensio.tiles.TileBarrel;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;

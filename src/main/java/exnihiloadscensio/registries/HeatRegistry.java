@@ -10,11 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.util.BlockInfo;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 public class HeatRegistry {
 	

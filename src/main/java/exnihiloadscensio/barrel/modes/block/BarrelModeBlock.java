@@ -2,6 +2,13 @@ package exnihiloadscensio.barrel.modes.block;
 
 import java.util.List;
 
+import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.networking.MessageBarrelModeUpdate;
+import exnihiloadscensio.networking.PacketHandler;
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.Block;
@@ -19,13 +26,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
-import exnihiloadscensio.barrel.IBarrelMode;
-import exnihiloadscensio.networking.MessageBarrelModeUpdate;
-import exnihiloadscensio.networking.PacketHandler;
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.tiles.TileBarrel;
-import exnihiloadscensio.util.ItemInfo;
-import exnihiloadscensio.util.Util;
 
 public class BarrelModeBlock implements IBarrelMode {
 
@@ -70,6 +70,8 @@ public class BarrelModeBlock implements IBarrelMode {
 	
 	@Override
 	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
+		if (handler.getStackInSlot(0) != null)
+			currenttip.add(handler.getStackInSlot(0).getDisplayName());
 		return currenttip;
 	}
 

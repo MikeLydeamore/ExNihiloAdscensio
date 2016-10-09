@@ -1,7 +1,5 @@
 package exnihiloadscensio.blocks;
 
-import java.util.List;
-
 import exnihiloadscensio.items.ItemMesh;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.tiles.TileSieve;
@@ -19,7 +17,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockSieve extends BlockBase implements ITileEntityProvider {

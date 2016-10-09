@@ -2,8 +2,6 @@ package exnihiloadscensio.barrel.modes.compost;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
@@ -15,6 +13,8 @@ import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

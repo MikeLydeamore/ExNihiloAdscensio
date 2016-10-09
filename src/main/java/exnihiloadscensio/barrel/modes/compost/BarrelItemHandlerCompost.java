@@ -1,10 +1,10 @@
 package exnihiloadscensio.barrel.modes.compost;
 
-import lombok.Setter;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
+import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 

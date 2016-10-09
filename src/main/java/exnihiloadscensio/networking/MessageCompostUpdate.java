@@ -1,5 +1,8 @@
 package exnihiloadscensio.networking;
 
+import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.tiles.TileBarrel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
@@ -7,9 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.tiles.TileBarrel;
 
 public class MessageCompostUpdate implements IMessage {
 	

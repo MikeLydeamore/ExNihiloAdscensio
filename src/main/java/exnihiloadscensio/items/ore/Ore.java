@@ -1,16 +1,9 @@
 package exnihiloadscensio.items.ore;
 
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.util.ItemInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.ItemInfo;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
 @EqualsAndHashCode
 public class Ore {

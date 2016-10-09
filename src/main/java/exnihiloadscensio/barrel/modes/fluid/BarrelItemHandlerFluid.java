@@ -1,11 +1,11 @@
 package exnihiloadscensio.barrel.modes.fluid;
 
-import lombok.Setter;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.ItemInfo;
+import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;

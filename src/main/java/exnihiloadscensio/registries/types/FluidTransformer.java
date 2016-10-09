@@ -19,10 +19,15 @@ public class FluidTransformer {
 	@Getter
 	private BlockInfo[] blocksToSpawn;
 	
-	public FluidTransformer(String inputFluid, String outputFluid, BlockInfo[] transformingBlocks, BlockInfo[] blocksToSpawn) {
+	@Getter
+	private int duration;
+	
+	public FluidTransformer(String inputFluid, String outputFluid, int duration, BlockInfo[] transformingBlocks, BlockInfo[] blocksToSpawn) {
 		this.inputFluid = inputFluid;
 		this.outputFluid = outputFluid;
 		this.transformingBlocks = transformingBlocks;
+		this.blocksToSpawn = blocksToSpawn;
+		this.duration = duration;
 	}
 
 }

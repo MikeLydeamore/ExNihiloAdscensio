@@ -9,17 +9,18 @@ import java.util.Iterator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+import exnihiloadscensio.json.CustomItemInfoJson;
+import exnihiloadscensio.registries.types.Compostable;
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import exnihiloadscensio.json.CustomItemInfoJson;
-import exnihiloadscensio.registries.types.Compostable;
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.util.ItemInfo;
-import exnihiloadscensio.util.Util;
 
 public class CompostRegistry {
 
