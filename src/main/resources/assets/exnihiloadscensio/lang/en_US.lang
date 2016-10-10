@@ -21,6 +21,7 @@ item.itemSeedSpruce.name=Spruce Seed
 item.itemSeedCarrot.name=Carrot Seeds
 item.itemSeedPotato.name=Potato Seeds
 item.itemSeedSugarcane.name=Sugarcane Seed
+item.itemSeedCactus.name=Cactus Seed
 
 tile.blockDust.name=Dust
 
@@ -41,3 +42,5 @@ oredust.name=Ore Dust
 oreingot.name=Ingot
 
 fluid.witchwater=Witchwater
+
+jei.sieve.dropChance=Drop Chance
