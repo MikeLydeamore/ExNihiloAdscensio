@@ -95,6 +95,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 				//Removing a mesh.
 				Util.dropItemInWorld(te, player, te.getMeshStack(), 0.02f);
 				te.setMesh(null);
+				PacketHandler.sendNBTUpdate(te);
 				world.setBlockState(pos, state.withProperty(MESH, MeshType.NONE));
 				
 				return true;

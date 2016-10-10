@@ -159,6 +159,8 @@ public class TileSieve extends TileEntity {
 		
 		if (tag.hasKey("mesh"))
 			meshStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mesh"));
+		else
+			meshStack = null;
 		
 		progress = tag.getByte("progress");
 		

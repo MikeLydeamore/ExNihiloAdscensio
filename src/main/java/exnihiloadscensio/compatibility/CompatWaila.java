@@ -3,11 +3,14 @@ package exnihiloadscensio.compatibility;
 import java.util.List;
 
 import exnihiloadscensio.blocks.BlockBarrel;
+import exnihiloadscensio.blocks.BlockSieve;
 import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.tiles.TileSieve;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,6 +42,12 @@ public class CompatWaila implements IWailaDataProvider {
 			if (barrel.getMode() != null)
 				currenttip = barrel.getMode().getWailaTooltip(barrel, currenttip);
 		}
+		if (accessor.getBlock() instanceof BlockSieve) {
+			TileSieve sieve = (TileSieve) accessor.getTileEntity();
+			if (sieve.getMeshStack() != null) {
+				currenttip.add("Mesh: "+I18n.format("item.itemMesh."+sieve.getMeshStack().getItemDamage()+".name"));
+			}
+		}
 		return currenttip;
 	}
 
@@ -58,6 +67,7 @@ public class CompatWaila implements IWailaDataProvider {
 	public static void callbackRegister(IWailaRegistrar registrar) {
 		CompatWaila instance = new CompatWaila();
 		registrar.registerBodyProvider(instance, BlockBarrel.class);
+		registrar.registerBodyProvider(instance, BlockSieve.class);
 	}
 
 }
