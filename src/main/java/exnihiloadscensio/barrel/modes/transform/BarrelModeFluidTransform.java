@@ -121,7 +121,7 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 			if (numberOfBlocks > 0) {
 				progress += numberOfBlocks * 1.0 / transformer.getDuration();
 
-				if (barrel.getWorld().rand.nextDouble() < 0.05) {
+				if (barrel.getWorld().rand.nextDouble() < 0.005) {
 					boolean spawned = false;
 					ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(transformer.getTransformingBlocks()));
 					for (int xShift = -1 ; xShift <= 1 ; xShift++) {

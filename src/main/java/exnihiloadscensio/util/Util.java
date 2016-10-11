@@ -1,6 +1,7 @@
 package exnihiloadscensio.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import exnihiloadscensio.texturing.Color;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +15,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
 public class Util {
 	
@@ -76,7 +76,6 @@ public class Util {
 	
 	public static boolean isSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world) {
 
-		@SuppressWarnings("unchecked")
 		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
 		for (int xShift = -1 ; xShift <= 1 ; xShift++) {
 			for (int zShift = -1 ; zShift <= 1 ; zShift++) {
@@ -94,7 +93,6 @@ public class Util {
 	public static int getNumSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world) {
 		
 		int ret = 0;
-		@SuppressWarnings("unchecked")
 		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
 		for (int xShift = -1 ; xShift <= 1 ; xShift++) {
 			for (int zShift = -1 ; zShift <= 1 ; zShift++) {
