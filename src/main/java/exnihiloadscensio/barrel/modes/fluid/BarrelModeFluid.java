@@ -74,14 +74,14 @@ public class BarrelModeFluid implements IBarrelMode {
 	public String getName() {
 		return "fluid";
 	}
-	
+
 	@Override
 	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
 		if (barrel.getTank().getFluid() != null) {
 			currenttip.add(barrel.getTank().getFluid().getLocalizedName());
 			currenttip.add("Amount: "+String.valueOf(barrel.getTank().getFluidAmount())+"mb");
 		}
-		
+
 		return currenttip;
 	}
 
@@ -100,11 +100,13 @@ public class BarrelModeFluid implements IBarrelMode {
 			return true;
 		}
 
-		ItemStack stack2 = getHandler(barrel).insertItem(0, stack, true);
-		if (!ItemStack.areItemStacksEqual(stack, stack2)) {
-			getHandler(barrel).insertItem(0, stack, false);
-			stack.stackSize--;
-			return true;
+		if (stack != null) {
+			ItemStack stack2 = getHandler(barrel).insertItem(0, stack, true);
+			if (!ItemStack.areItemStacksEqual(stack, stack2)) {
+				getHandler(barrel).insertItem(0, stack, false);
+				stack.stackSize--;
+				return true;
+			}
 		}
 		return false;
 	}
@@ -137,7 +139,7 @@ public class BarrelModeFluid implements IBarrelMode {
 			FluidTank tank = barrel.getTank();
 			if (tank.getFluid().amount != tank.getCapacity())
 				return;
-			
+
 			Fluid fluidInBarrel = tank.getFluid().getFluid();
 
 			BlockPos barrelPos = barrel.getPos();
@@ -161,11 +163,11 @@ public class BarrelModeFluid implements IBarrelMode {
 
 				barrel.getMode().addItem(info.getItemStack(), barrel);
 			}
-			
+
 			//Fluid transforming time!
 			if (FluidTransformRegistry.containsKey(barrel.getTank().getFluid().getFluid().getName())) {
 				FluidTransformer transformer = FluidTransformRegistry.getFluidTransformer(barrel.getTank().getFluid().getFluid().getName());
-				
+
 				if (Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld())) {
 					//Time to start the process.
 					FluidStack fstack = tank.getFluid();
@@ -175,10 +177,10 @@ public class BarrelModeFluid implements IBarrelMode {
 					((BarrelModeFluidTransform) barrel.getMode()).setInputStack(fstack);
 					((BarrelModeFluidTransform) barrel.getMode()).setOutputStack(FluidRegistry.getFluidStack(transformer.getOutputFluid(), 1000));
 					PacketHandler.sendNBTUpdate(barrel);
-					
+
 				}
 			}
-			
+
 		}
 	}
 
