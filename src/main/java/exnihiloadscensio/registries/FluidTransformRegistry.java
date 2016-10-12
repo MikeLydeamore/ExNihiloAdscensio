@@ -54,6 +54,9 @@ public class FluidTransformRegistry {
 				ArrayList<FluidTransformer> gsonInput = gson.fromJson(fr, new TypeToken<ArrayList<FluidTransformer>>(){}.getType());
 				
 				registry = gsonInput;
+				for (FluidTransformer transformer : registry) {
+					registryInternal.put(transformer.getInputFluid(), transformer);
+				}
 			} 
 			catch (Exception e) 
 			{
