@@ -20,6 +20,16 @@
         "textures": {
           "layer0": "exnihiloadscensio:items/silkworm"
         }
+       },
+       "ancient_spores": {
+        "textures": {
+          "layer0": "exnihiloadscensio:items/ancientSpores"
+        }
+       },
+       "grass_seeds": {
+        "textures": {
+          "layer0": "exnihiloadscensio:items/grassSeeds"
+        }
        }
      }
   }

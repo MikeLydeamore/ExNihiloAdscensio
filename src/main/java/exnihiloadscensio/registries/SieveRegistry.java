@@ -150,6 +150,9 @@ public class SieveRegistry {
 		for (ItemSeedBase seed : ENItems.itemSeeds) {
 			register(Blocks.DIRT.getDefaultState(), new ItemStack(seed), 0.05f, MeshType.STRING.getID());
 		}
+		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack(ItemResource.ANCIENT_SPORES), 0.05f, MeshType.STRING.getID());
+		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack(ItemResource.GRASS_SEEDS), 0.05f, MeshType.STRING.getID());
+		
 	}
 	
 	private static Gson gson;

@@ -27,6 +27,9 @@ public class ItemResource extends Item {
 	public static final String STONES = "stones";
 	public static final String PORCELAIN_CLAY = "porcelain_clay";
 	public static final String SILKWORM = "silkworm";
+	public static final String ANCIENT_SPORES = "ancient_spores";
+	public static final String GRASS_SEEDS = "grass_seeds";
+	
 	private static ArrayList<String> names = new ArrayList<String>();
 
 	public ItemResource() {
@@ -41,6 +44,8 @@ public class ItemResource extends Item {
 		names.add(0, STONES);
 		names.add(1, PORCELAIN_CLAY);
 		names.add(2, SILKWORM);
+		names.add(3, ANCIENT_SPORES);
+		names.add(4, GRASS_SEEDS);
 	}
 
 	@Override
@@ -60,6 +65,16 @@ public class ItemResource extends Item {
 			IBlockState state = world.getBlockState(pos);
 			if (state != null && state.getBlock() != null && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2)) {
 				world.setBlockState(pos, ENBlocks.infestedLeaves.getDefaultState());
+				stack.stackSize--;
+				return EnumActionResult.SUCCESS;
+			}
+		}
+		if (stack.getItemDamage() == names.indexOf(ANCIENT_SPORES) || stack.getItemDamage() == names.indexOf(GRASS_SEEDS)) {
+			IBlockState state = world.getBlockState(pos);
+			if (state != null && state.getBlock() != null && state.getBlock() == Blocks.DIRT) {
+				IBlockState transformTo = stack.getItemDamage() == names.indexOf(ANCIENT_SPORES) ? Blocks.MYCELIUM.getDefaultState() : Blocks.GRASS.getDefaultState();
+				world.setBlockState(pos, transformTo);
+				stack.stackSize--;
 				return EnumActionResult.SUCCESS;
 			}
 		}
