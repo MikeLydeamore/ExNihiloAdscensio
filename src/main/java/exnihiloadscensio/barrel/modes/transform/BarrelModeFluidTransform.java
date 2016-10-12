@@ -112,7 +112,7 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 	@Override
 	public void update(TileBarrel barrel) {
 		if (transformer == null) {
-			transformer = FluidTransformRegistry.getFluidTransformer(inputStack.getFluid().getName());
+			transformer = FluidTransformRegistry.getFluidTransformer(inputStack.getFluid().getName(), outputStack.getFluid().getName());
 		}
 		if (transformer == null)
 			return;
@@ -131,7 +131,7 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 								if (blockList.contains(new BlockInfo(barrel.getWorld().getBlockState(testPos)))
 										&& barrel.getWorld().isAirBlock(testPos.add(0, 1, 0))) {
 									BlockInfo[] toSpawn = transformer.getBlocksToSpawn();
-									if (toSpawn != null) {
+									if (toSpawn != null && toSpawn.length > 0) {
 										barrel.getWorld().setBlockState(testPos.add(0, 1, 0), toSpawn[barrel.getWorld().rand.nextInt(toSpawn.length)].getBlockState());
 										spawned = true;
 									}

@@ -1,5 +1,6 @@
 package exnihiloadscensio.barrel.modes.fluid;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import exnihiloadscensio.barrel.BarrelFluidHandler;
@@ -166,18 +167,19 @@ public class BarrelModeFluid implements IBarrelMode {
 
 			//Fluid transforming time!
 			if (FluidTransformRegistry.containsKey(barrel.getTank().getFluid().getFluid().getName())) {
-				FluidTransformer transformer = FluidTransformRegistry.getFluidTransformer(barrel.getTank().getFluid().getFluid().getName());
-
-				if (Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld())) {
-					//Time to start the process.
-					FluidStack fstack = tank.getFluid();
-					tank.setFluid(null);
-					barrel.setMode("fluidTransform");
-					((BarrelModeFluidTransform) barrel.getMode()).setTransformer(transformer);
-					((BarrelModeFluidTransform) barrel.getMode()).setInputStack(fstack);
-					((BarrelModeFluidTransform) barrel.getMode()).setOutputStack(FluidRegistry.getFluidStack(transformer.getOutputFluid(), 1000));
-					PacketHandler.sendNBTUpdate(barrel);
-
+				ArrayList<FluidTransformer> transformers = FluidTransformRegistry.getFluidTransformers(barrel.getTank().getFluid().getFluid().getName());
+				for (FluidTransformer transformer : transformers) {
+					if (Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld())) {
+						//Time to start the process.
+						FluidStack fstack = tank.getFluid();
+						tank.setFluid(null);
+						barrel.setMode("fluidTransform");
+						((BarrelModeFluidTransform) barrel.getMode()).setTransformer(transformer);
+						((BarrelModeFluidTransform) barrel.getMode()).setInputStack(fstack);
+						((BarrelModeFluidTransform) barrel.getMode()).setOutputStack(FluidRegistry.getFluidStack(transformer.getOutputFluid(), 1000));
+						PacketHandler.sendNBTUpdate(barrel);
+						break;
+					}
 				}
 			}
 

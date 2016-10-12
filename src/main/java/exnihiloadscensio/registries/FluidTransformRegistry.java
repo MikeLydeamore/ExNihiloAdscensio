@@ -19,19 +19,37 @@ public class FluidTransformRegistry {
 	
 	private static ArrayList<FluidTransformer> registry = new ArrayList<FluidTransformer>();
 	
-	private static HashMap<String, FluidTransformer> registryInternal = new HashMap<String, FluidTransformer>();
+	private static HashMap<String, ArrayList<FluidTransformer>> registryInternal = new HashMap<String, ArrayList<FluidTransformer>>();
 	
 	public static void register(String inputFluid, String outputFluid, int duration, BlockInfo[] transformingBlocks, BlockInfo[] blocksToSpawn) {
 		FluidTransformer transformer = new FluidTransformer(inputFluid, outputFluid, duration, transformingBlocks, blocksToSpawn);
 		registry.add(transformer);
-		registryInternal.put(inputFluid, transformer);
+		ArrayList<FluidTransformer> list;
+		if (registryInternal.containsKey(inputFluid))
+			list = registryInternal.get(inputFluid);
+		else
+			list = new ArrayList<FluidTransformer>();
+		list.add(transformer);
+		registryInternal.put(inputFluid, list);
+	}
+	
+	public static void register(FluidTransformer transformer) {
+		register(transformer.getInputFluid(), transformer.getOutputFluid(), transformer.getDuration(), transformer.getTransformingBlocks(), transformer.getBlocksToSpawn());
 	}
 	
 	public static boolean containsKey(String inputFluid) {
 		return registryInternal.containsKey(inputFluid);
 	}
 	
-	public static FluidTransformer getFluidTransformer(String inputFluid) {
+	public static FluidTransformer getFluidTransformer(String inputFluid, String outputFluid) {
+		for (FluidTransformer transformer : registry) {
+			if (transformer.getInputFluid().equals(inputFluid) && transformer.getOutputFluid().equals(outputFluid))
+					return transformer;
+		}
+		return null;
+	}
+	
+	public static ArrayList<FluidTransformer> getFluidTransformers(String inputFluid) {
 		return registryInternal.get(inputFluid);
 	}
 	
@@ -53,9 +71,8 @@ public class FluidTransformRegistry {
 				FileReader fr = new FileReader(file);
 				ArrayList<FluidTransformer> gsonInput = gson.fromJson(fr, new TypeToken<ArrayList<FluidTransformer>>(){}.getType());
 				
-				registry = gsonInput;
-				for (FluidTransformer transformer : registry) {
-					registryInternal.put(transformer.getInputFluid(), transformer);
+				for (FluidTransformer transformer : gsonInput) {
+					register(transformer);
 				}
 			} 
 			catch (Exception e) 
