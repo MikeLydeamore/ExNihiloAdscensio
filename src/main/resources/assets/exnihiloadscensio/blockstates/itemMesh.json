@@ -1,20 +1,17 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-		"model": "exnihiloadscensio:item/itemMeshString",
-		"textures": {
-        	"mesh": "blocks/wool_colored_cyan"
-    	}
-  	},
-	"variants": {
-    	"mesh": {
-    		"string": {
-    		},
-  			"flint": {
-  			},
-  			"iron": {},
-  			"diamond": {}
-  			}
-    	}
-  	}
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloadscensio:item/itemMeshString",
+        "textures": {
+            "mesh": "blocks/wool_colored_cyan"
+        }
+    },
+    "variants": {
+        "mesh": {
+            "string": {},
+            "flint": {},
+            "iron": {},
+            "diamond": {}
+        }
+    }
 }

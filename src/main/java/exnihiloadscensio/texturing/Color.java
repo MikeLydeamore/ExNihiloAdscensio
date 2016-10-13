@@ -58,12 +58,15 @@ public class Color {
 
 	public static Color average(Color colorA, Color colorB, float percentage)
 	{
-		float avgR = colorA.r + (colorB.r - colorA.r) * percentage;
-		float avgG = colorA.g + (colorB.g - colorA.g) * percentage;
-		float avgB = colorA.b + (colorB.b - colorA.b) * percentage;
-		float avgA = colorA.a + (colorB.a - colorA.a) * percentage;
+	    float opposite = 1 - percentage;
+	    //Gamma correction
 
-		return new Color(avgR, avgG, avgB, avgA);
+        float averageR = (float) Math.sqrt((colorA.r * colorA.r) * (opposite) + (colorB.r * colorB.r) * (percentage));
+        float averageG = (float) Math.sqrt((colorA.g * colorA.g) * (opposite) + (colorB.r * colorB.g) * (percentage));
+        float averageB = (float) Math.sqrt((colorA.b * colorA.b) * (opposite) + (colorB.r * colorB.b) * (percentage));
+	    float averageA = colorA.a * opposite + colorB.a * percentage;
+        
+		return new Color(averageR, averageG, averageB, averageA);
 	}
 
 }

@@ -1,11 +1,15 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-		"model": "forge:fluid"
-	},
-	"variants": {
-		"witchwater": [{
-			"custom": { "fluid": "witchwater" }
-		}]
-	}
+    "forge_marker": 1,
+    "defaults": {
+        "model": "forge:fluid"
+    },
+    "variants": {
+        "witchwater": [
+            {
+                "custom": {
+                    "fluid": "witchwater"
+                }
+            }
+        ]
+    }
 }

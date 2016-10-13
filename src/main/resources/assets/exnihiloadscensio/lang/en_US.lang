@@ -32,6 +32,8 @@ tile.blockBarrel.name=Wooden Barrel
 tile.blockCrucible.0.name=Unfired Crucible
 tile.blockCrucible.1.name=Crucible
 
+tile.blockInfestedLeaves.name=Infested Leaves
+
 tile.blockSieve.name=Sieve
 item.itemMesh.1.name=String Mesh
 item.itemMesh.2.name=Flint Stiffened Mesh
@@ -46,3 +48,5 @@ oreingot.name=Ingot
 fluid.witchwater=Witchwater
 
 jei.sieve.dropChance=Drop Chance
+
+itemGroup.exNihilo=Ex Nihilo

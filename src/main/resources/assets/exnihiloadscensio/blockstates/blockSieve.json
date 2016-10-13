@@ -1,37 +1,45 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-		"model": "exnihiloadscensio:blockSieve"
-	},
-	"variants": {
-    	"mesh": {
-    		"none": {},
-    		"string": {
-    			"submodel": {
-    				"mesh1": { "model": "exnihiloadscensio:meshString"},
-    				"mesh2": { "model": "exnihiloadscensio:meshString", "y": 90}
-  				}
-  			},
-    		"flint": {
-    			"submodel": {
-    				"mesh1": { "model": "exnihiloadscensio:meshFlint"},
-    				"mesh2": { "model": "exnihiloadscensio:meshFlint", "y": 90}
-  				}
-  			},
-    		"iron": {
-    			"submodel": {
-    				"mesh1": { "model": "exnihiloadscensio:meshIron"},
-    				"mesh2": { "model": "exnihiloadscensio:meshIron", "y": 90}
-  				}
-  			},
-    		"diamond": {
-    			"submodel": {
-    				"mesh1": { "model": "exnihiloadscensio:meshDiamond"},
-    				"mesh2": { "model": "exnihiloadscensio:meshDiamond", "y": 90}
-  				}
-  			}
-    	},
-    	"normal": [{}],
-    	"inventory": [{}]
-  	}
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloadscensio:blockSieve"
+    },
+    "variants": {
+        "mesh": {
+            "none": {},
+            "string": {
+                "submodel": {
+                    "mesh": {
+                        "model": "exnihiloadscensio:meshString"
+                    }
+                }
+            },
+            "flint": {
+                "submodel": {
+                    "mesh": {
+                        "model": "exnihiloadscensio:meshFlint"
+                    }
+                }
+            },
+            "iron": {
+                "submodel": {
+                    "mesh": {
+                        "model": "exnihiloadscensio:meshIron"
+                    }
+                }
+            },
+            "diamond": {
+                "submodel": {
+                    "mesh": {
+                        "model": "exnihiloadscensio:meshDiamond"
+                    }
+                }
+            }
+        },
+        "normal": [
+            {}
+        ],
+        "inventory": [
+            {}
+        ]
+    }
 }

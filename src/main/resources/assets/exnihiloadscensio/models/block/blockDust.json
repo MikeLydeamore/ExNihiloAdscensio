@@ -1,6 +1,6 @@
 {
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "exnihiloadscensio:blocks/blockDust"
-  }
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "exnihiloadscensio:blocks/blockDust"
+    }
 }
