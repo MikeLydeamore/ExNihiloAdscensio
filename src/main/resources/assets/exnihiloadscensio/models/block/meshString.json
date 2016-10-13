@@ -1,6 +1,0 @@
-{
-	"parent": "exnihiloadscensio:block/meshBase",
- 	"textures": {
-        "texture": "blocks/wool_colored_white"
-    }
-}

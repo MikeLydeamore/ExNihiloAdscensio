@@ -57,6 +57,8 @@ public class ENBlocks {
 		sieve.initModel();
 		crucible.initModel();
 		
+		infestedLeaves.initModel();
+		
 		fluidWitchwater.initModel();
 	}
 
