@@ -1,0 +1,16 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloadscensio:blockInfestedLeaves"
+    },
+    "variants": {
+        "decayable": {
+            "true": {},
+            "false": {}
+        },
+        "check_decay": {
+            "true": {},
+            "false": {}
+        }
+    }
+}

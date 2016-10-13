@@ -1,0 +1,36 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "type": {
+            "stones": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/stones"
+                }
+            },
+            "porcelain_clay": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/porcelainClay"
+                }
+            },
+            "silkworm": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/silkworm"
+                }
+            },
+            "ancient_spores": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/ancientSpores"
+                }
+            },
+            "grass_seeds": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/grassSeeds"
+                }
+            }
+        }
+    }
+}

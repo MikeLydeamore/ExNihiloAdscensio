@@ -1,0 +1,6 @@
+{
+    "parent": "exnihiloadscensio:block/meshBase",
+    "textures": {
+        "texture": "minecraft:blocks/wool_colored_silver"
+    }
+}
