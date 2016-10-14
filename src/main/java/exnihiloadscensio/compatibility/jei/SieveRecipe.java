@@ -94,9 +94,4 @@ public class SieveRecipe implements IRecipeWrapper {
 	public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
 		return false;
 	}
-	
-	private boolean doesListContain(ItemInfo info) {
-		return false;
-	}
-
 }

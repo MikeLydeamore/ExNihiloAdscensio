@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import exnihiloadscensio.entities.ProjectileStone;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -51,9 +50,6 @@ public class RenderProjectileStone extends Render<ProjectileStone>
         double minV = (double) texture.getMinV();
         double maxV = (double) texture.getMaxV();
 
-        double pixelU = (maxU - minU) / 16.0;
-        double pixelV = (maxV - minV) / 16.0;
-        
         this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
@@ -92,14 +88,14 @@ public class RenderProjectileStone extends Render<ProjectileStone>
         double xUMin = minU + (maxU - minU) * (xMin + 8.0) / 16.0;
         double xUMax = minU + (maxU - minU) * (xMax + 8.0) / 16.0;
         
-        double yUMin = minU + (maxU - minU) * (yMin + 8.0) / 16.0;
-        double yUMax = minU + (maxU - minU) * (yMax + 8.0) / 16.0;
+        //double yUMin = minU + (maxU - minU) * (yMin + 8.0) / 16.0;
+        //double yUMax = minU + (maxU - minU) * (yMax + 8.0) / 16.0;
         
         double zUMin = minU + (maxU - minU) * (zMin + 8.0) / 16.0;
         double zUMax = minU + (maxU - minU) * (zMax + 8.0) / 16.0;
         
-        double xVMin = minV + (maxV - minV) * (xMin + 8.0) / 16.0;
-        double xVMax = minV + (maxV - minV) * (xMax + 8.0) / 16.0;
+        //double xVMin = minV + (maxV - minV) * (xMin + 8.0) / 16.0;
+        //double xVMax = minV + (maxV - minV) * (xMax + 8.0) / 16.0;
         
         double yVMin = minV + (maxV - minV) * (yMin + 8.0) / 16.0;
         double yVMax = minV + (maxV - minV) * (yMax + 8.0) / 16.0;

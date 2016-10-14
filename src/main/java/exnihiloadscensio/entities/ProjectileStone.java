@@ -1,6 +1,5 @@
 package exnihiloadscensio.entities;
 
-import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;

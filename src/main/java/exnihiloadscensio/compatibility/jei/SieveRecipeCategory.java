@@ -1,6 +1,5 @@
 package exnihiloadscensio.compatibility.jei;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.HashMultiset;
@@ -22,7 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 
 public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 
