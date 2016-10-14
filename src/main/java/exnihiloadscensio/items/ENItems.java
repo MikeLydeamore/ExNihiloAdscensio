@@ -31,7 +31,8 @@ public class ENItems {
 	
 	public static ArrayList<ItemSeedBase> itemSeeds = new ArrayList<ItemSeedBase>();
 	
-	public static void init()
+	@SuppressWarnings("deprecation")
+    public static void init()
 	{
 		hammerWood = new HammerBase("hammerWood", 64, ToolMaterial.WOOD);
 		hammerWood.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
@@ -61,15 +62,15 @@ public class ENItems {
 		
 		cookedSilkworm = new ItemCookedSilkworm();
 		
-		itemSeeds.add(new ItemSeedBase("oak", Blocks.SAPLING.getStateFromMeta(0), Blocks.DIRT.getDefaultState()));
-		itemSeeds.add(new ItemSeedBase("spruce", Blocks.SAPLING.getStateFromMeta(1), Blocks.DIRT.getDefaultState()));
-		itemSeeds.add(new ItemSeedBase("birch", Blocks.SAPLING.getStateFromMeta(2), Blocks.DIRT.getDefaultState()));
-		itemSeeds.add(new ItemSeedBase("jungle", Blocks.SAPLING.getStateFromMeta(3), Blocks.DIRT.getDefaultState()));
-		itemSeeds.add(new ItemSeedBase("acacia", Blocks.SAPLING.getStateFromMeta(4), Blocks.DIRT.getDefaultState()));
-		itemSeeds.add(new ItemSeedBase("cactus", Blocks.CACTUS.getDefaultState(), Blocks.SAND.getDefaultState()).setPlantType(EnumPlantType.Desert));
-		itemSeeds.add(new ItemSeedBase("sugarcane", Blocks.REEDS.getDefaultState(), Blocks.SAND.getDefaultState()).setPlantType(EnumPlantType.Beach));
-		itemSeeds.add(new ItemSeedBase("carrot", Blocks.CARROTS.getDefaultState(), Blocks.FARMLAND.getDefaultState()).setPlantType(EnumPlantType.Crop));
-		itemSeeds.add(new ItemSeedBase("potato", Blocks.POTATOES.getDefaultState(), Blocks.FARMLAND.getDefaultState()).setPlantType(EnumPlantType.Crop));
+		itemSeeds.add(new ItemSeedBase("oak", Blocks.SAPLING.getStateFromMeta(0)));
+		itemSeeds.add(new ItemSeedBase("spruce", Blocks.SAPLING.getStateFromMeta(1)));
+		itemSeeds.add(new ItemSeedBase("birch", Blocks.SAPLING.getStateFromMeta(2)));
+		itemSeeds.add(new ItemSeedBase("jungle", Blocks.SAPLING.getStateFromMeta(3)));
+		itemSeeds.add(new ItemSeedBase("acacia", Blocks.SAPLING.getStateFromMeta(4)));
+		itemSeeds.add(new ItemSeedBase("cactus", Blocks.CACTUS.getDefaultState()).setPlantType(EnumPlantType.Desert));
+		itemSeeds.add(new ItemSeedBase("sugarcane", Blocks.REEDS.getDefaultState()).setPlantType(EnumPlantType.Beach));
+		itemSeeds.add(new ItemSeedBase("carrot", Blocks.CARROTS.getDefaultState()).setPlantType(EnumPlantType.Crop));
+		itemSeeds.add(new ItemSeedBase("potato", Blocks.POTATOES.getDefaultState()).setPlantType(EnumPlantType.Crop));
 		
 		
 	}
@@ -97,6 +98,4 @@ public class ENItems {
 		for (ItemSeedBase seed : itemSeeds)
 			seed.initModel();
 	}
-	
-	
 }

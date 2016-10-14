@@ -45,8 +45,7 @@ public class ENBlocks {
 		
 		fluidWitchwater = new FluidWitchWater();
 		blockWitchwater = new BlockFluidWitchwater();
-		boolean result = FluidRegistry.addBucketForFluid(fluidWitchwater);
-		
+		FluidRegistry.addBucketForFluid(fluidWitchwater);
 	}
 
 	@SideOnly(Side.CLIENT)
