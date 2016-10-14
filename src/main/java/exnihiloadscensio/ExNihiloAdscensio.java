@@ -4,6 +4,7 @@ import java.io.File;
 
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.config.Config;
+import exnihiloadscensio.entities.ENEntities;
 import exnihiloadscensio.handlers.HandlerCrook;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
@@ -66,6 +67,7 @@ public class ExNihiloAdscensio {
 		
 		ENItems.init();
 		ENBlocks.init();
+		ENEntities.init();
 		proxy.initModels();
 		proxy.registerRenderers();
 
