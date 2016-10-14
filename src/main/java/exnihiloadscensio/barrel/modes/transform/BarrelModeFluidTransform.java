@@ -85,12 +85,12 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 	@Override
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
 		if (progress < 0.5) {
-			if (inputStack == null)
+			if (inputStack == null || inputStack.getFluid().getBlock() == null)
 				return Util.getTextureFromBlockState(FluidRegistry.WATER.getBlock().getDefaultState());
 			return Util.getTextureFromBlockState(inputStack.getFluid().getBlock().getDefaultState());
 		}
 		else {
-			if (outputStack == null)
+			if (outputStack == null || outputStack.getFluid().getBlock() == null)
 				return Util.getTextureFromBlockState(FluidRegistry.WATER.getBlock().getDefaultState());
 			return Util.getTextureFromBlockState(outputStack.getFluid().getBlock().getDefaultState());
 		}
