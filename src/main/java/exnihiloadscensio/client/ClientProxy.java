@@ -7,6 +7,8 @@ import exnihiloadscensio.client.renderers.RenderCrucible;
 import exnihiloadscensio.client.renderers.RenderInfestedLeaves;
 import exnihiloadscensio.client.renderers.RenderOrePiece;
 import exnihiloadscensio.client.renderers.RenderSieve;
+import exnihiloadscensio.client.renderers.RenderProjectileStone;
+import exnihiloadscensio.entities.ProjectileStone;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.registries.OreRegistry;
@@ -15,6 +17,8 @@ import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileSieve;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 
@@ -36,6 +40,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileBarrel.class, new RenderBarrel());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCrucible.class, new RenderCrucible());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSieve.class, new RenderSieve());
+		RenderingRegistry.registerEntityRenderingHandler(ProjectileStone.class, new RenderProjectileStone.Factory());
 	}
 
 	@Override
