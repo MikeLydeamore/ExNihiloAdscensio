@@ -128,5 +128,19 @@ public class HammerRegistry {
 		addHammerRecipe(Blocks.SAND.getDefaultState(), new ItemStack(ENBlocks.dust), 0, 1f, 0f);
 	}
 
-
+	//Legacy
+	@Deprecated
+	public static ArrayList<HammerReward> getRewards(IBlockState state, int miningLevel)
+    {
+        List<HammerReward> mapList = map.getOrDefault(new ItemInfo(state), Collections.EMPTY_LIST);
+        ArrayList<HammerReward> ret = new ArrayList<HammerReward>();
+        
+        for (HammerReward reward : mapList)
+        {
+            if (reward.getMiningLevel() <= miningLevel)
+                ret.add(reward);
+        }
+        
+        return ret;
+    }
 }
