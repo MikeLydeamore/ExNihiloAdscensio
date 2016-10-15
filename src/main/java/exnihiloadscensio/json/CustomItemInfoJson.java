@@ -11,33 +11,29 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import exnihiloadscensio.util.ItemInfo;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraft.item.Item;
 
-public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSerializer<ItemInfo> {
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public JsonElement serialize(ItemInfo src, Type typeOfSrc,
-			JsonSerializationContext context) {
-		
-		JsonObject obj = new JsonObject();
-		obj.addProperty("name", GameData.getItemRegistry().getNameForObject(src.getItem()).toString());
-		obj.addProperty("meta", src.getMeta());
-		return obj;
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public ItemInfo deserialize(JsonElement json, Type typeOfT,
-			JsonDeserializationContext context) throws JsonParseException {
-		
-		JsonHelper helper = new JsonHelper(json);
-
+public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSerializer<ItemInfo>
+{
+    @Override
+    public JsonElement serialize(ItemInfo src, Type typeOfSrc, JsonSerializationContext context)
+    {
+        JsonObject obj = new JsonObject();
+        
+        obj.addProperty("name", src.getItem().getRegistryName().toString());
+        obj.addProperty("meta", src.getMeta());
+        
+        return obj;
+    }
+    
+    @Override
+    public ItemInfo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+    {
+        JsonHelper helper = new JsonHelper(json);
+        
         String name = helper.getString("name");
         int meta = helper.getNullableInteger("meta", 0);
-
-        return new ItemInfo(GameData.getItemRegistry().containsKey(new ResourceLocation(name)) ? GameData.getItemRegistry().getObject(new ResourceLocation(name)) : null, meta);
-	}
-
+        
+        return new ItemInfo(Item.getByNameOrId(name), meta);
+    }
 }

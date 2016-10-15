@@ -6,12 +6,14 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
+import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;
@@ -169,13 +171,22 @@ public class SieveRegistry {
 				FileReader fr = new FileReader(file);
 				HashMap<String, ArrayList<Siftable>> gsonInput = gson.fromJson(fr, new TypeToken<HashMap<String, ArrayList<Siftable>>>(){}.getType());
 				
-				Iterator<String> it = gsonInput.keySet().iterator();
-				
-				while (it.hasNext())
+				for(Map.Entry<String, ArrayList<Siftable>> input : gsonInput.entrySet())
 				{
-					String s = (String) it.next();
-					BlockInfo stack = new BlockInfo(s);
-					registry.put(stack, gsonInput.get(s));
+				    BlockInfo block = new BlockInfo(input.getKey());
+				    
+				    if(block.getBlock() == null)
+				    {
+				        ExNihiloAdscensio.instance.logger.error("Block not found: " + input.getKey());
+				    }
+				    
+				    for(Siftable entry : input.getValue())
+				    {
+				        if(entry.getDrop().getItem() == null)
+				        {
+				            ExNihiloAdscensio.instance.logger.error("");
+				        }
+				    }
 				}
 			} 
 			catch (Exception e) 

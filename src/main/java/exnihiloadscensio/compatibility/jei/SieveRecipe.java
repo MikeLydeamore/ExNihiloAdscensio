@@ -31,7 +31,7 @@ public class SieveRecipe implements IRecipeWrapper {
 		
 		if (drops != null && drops.size() > 0) {
 			for (Siftable siftable : drops) {
-				if (siftable.getMeshLevel() != mesh.getID())
+				if (siftable.getDrop().getItem() == null || siftable.getMeshLevel() != mesh.getID())
 					continue;
 				ItemInfo drop = siftable.getDrop();
 				boolean found = false;

@@ -3,8 +3,10 @@ package exnihiloadscensio;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import exnihiloadscensio.blocks.ENBlocks;
-import exnihiloadscensio.compatibility.tconstruct.ModifierSmashing;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.entities.ENEntities;
 import exnihiloadscensio.handlers.HandlerCrook;
@@ -39,8 +41,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.modifiers.Modifier;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
 public class ExNihiloAdscensio {
@@ -54,6 +54,8 @@ public class ExNihiloAdscensio {
 	public static ExNihiloAdscensio instance;
 
 	private static File configDirectory;
+	
+	public Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
 	
 	static {
 		FluidRegistry.enableUniversalBucket();
