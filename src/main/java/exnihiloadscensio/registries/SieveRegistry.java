@@ -175,18 +175,7 @@ public class SieveRegistry {
 				{
 				    BlockInfo block = new BlockInfo(input.getKey());
 				    
-				    if(block.getBlock() == null)
-				    {
-				        ExNihiloAdscensio.instance.logger.error("Block not found: " + input.getKey());
-				    }
-				    
-				    for(Siftable entry : input.getValue())
-				    {
-				        if(entry.getDrop().getItem() == null)
-				        {
-				            ExNihiloAdscensio.instance.logger.error("");
-				        }
-				    }
+				    registry.put(block, input.getValue());
 				}
 			} 
 			catch (Exception e) 

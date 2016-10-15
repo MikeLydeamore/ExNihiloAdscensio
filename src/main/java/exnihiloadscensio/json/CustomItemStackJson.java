@@ -10,6 +10,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import exnihiloadscensio.ExNihiloAdscensio;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameData;
@@ -25,7 +26,15 @@ public class CustomItemStackJson implements JsonDeserializer<ItemStack>, JsonSer
         int amount = helper.getNullableInteger("amount", 1);
         int meta = helper.getNullableInteger("meta", 0);
         
-        return new ItemStack(Item.getByNameOrId(name), amount, meta);
+        Item item = Item.getByNameOrId(name);
+        
+        if(item == null)
+        {
+            ExNihiloAdscensio.instance.logger.error("Error parsing JSON: Invalid Item: " + json.toString());
+            ExNihiloAdscensio.instance.logger.error("This may result in crashing or other undefined behavior");
+        }
+        
+        return new ItemStack(item, amount, meta);
     }
     
     @Override

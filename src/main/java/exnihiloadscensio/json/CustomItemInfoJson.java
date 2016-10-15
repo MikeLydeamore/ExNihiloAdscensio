@@ -10,6 +10,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.item.Item;
 
@@ -33,7 +34,15 @@ public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSeria
         
         String name = helper.getString("name");
         int meta = helper.getNullableInteger("meta", 0);
+
+        Item item = Item.getByNameOrId(name);
         
-        return new ItemInfo(Item.getByNameOrId(name), meta);
+        if(item == null)
+        {
+            ExNihiloAdscensio.instance.logger.error("Error parsing JSON: Invalid Item: " + json.toString());
+            ExNihiloAdscensio.instance.logger.error("This may result in crashing or other undefined behavior");
+        }
+        
+        return new ItemInfo(item, meta);
     }
 }
