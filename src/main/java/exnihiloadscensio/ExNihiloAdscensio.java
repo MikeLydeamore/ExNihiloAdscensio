@@ -1,6 +1,7 @@
 package exnihiloadscensio;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.compatibility.tconstruct.ModifierSmashing;
@@ -122,10 +123,15 @@ public class ExNihiloAdscensio {
 		
 		if(Loader.isModLoaded("tconstruct"))
 		{
-		    Modifier smashingModifier = new ModifierSmashing();
-		    
-		    TinkerRegistry.registerModifier(smashingModifier);
-		    smashingModifier.addItem(ENItems.hammerDiamond);
+		    try
+            {
+                Class<?> compatClass = Class.forName("exnihiloadscensio.compatibility.tconstruct.CompatTConstruct");
+                compatClass.getMethod("postInit").invoke(null);
+            }
+            catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+            {
+                e.printStackTrace();
+            }
 		}
 	}
 
