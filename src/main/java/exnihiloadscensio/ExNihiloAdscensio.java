@@ -3,6 +3,7 @@ package exnihiloadscensio;
 import java.io.File;
 
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.compatibility.tconstruct.ModifierSmashing;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.entities.ENEntities;
 import exnihiloadscensio.handlers.HandlerCrook;
@@ -25,6 +26,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -36,6 +38,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.library.modifiers.Modifier;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
 public class ExNihiloAdscensio {
@@ -115,6 +119,14 @@ public class ExNihiloAdscensio {
 		OreRegistry.doRecipes();
 		
 		FluidTransformRegistry.loadJson(new File(configDirectory.getAbsolutePath()+"/FluidTransformRegistry.json"));
+		
+		if(Loader.isModLoaded("tconstruct"))
+		{
+		    Modifier smashingModifier = new ModifierSmashing();
+		    
+		    TinkerRegistry.registerModifier(smashingModifier);
+		    smashingModifier.addItem(ENItems.hammerDiamond);
+		}
 	}
 
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")
