@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.entities.ENEntities;
 import exnihiloadscensio.handlers.HandlerCrook;
@@ -128,15 +129,7 @@ public class ExNihiloAdscensio {
 		
 		if(Loader.isModLoaded("tconstruct"))
 		{
-		    try
-            {
-                Class<?> compatClass = Class.forName("exnihiloadscensio.compatibility.tconstruct.CompatTConstruct");
-                compatClass.getMethod("postInit").invoke(null);
-            }
-            catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
-            {
-                e.printStackTrace();
-            }
+			CompatTConstruct.postInit();
 		}
 	}
 
