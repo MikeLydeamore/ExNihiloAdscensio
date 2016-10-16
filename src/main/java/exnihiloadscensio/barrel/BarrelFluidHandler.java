@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.MessageFluidUpdate;
 import exnihiloadscensio.networking.PacketHandler;
+import exnihiloadscensio.registries.BarrelLiquidBlacklistRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import exnihiloadscensio.tiles.TileBarrel;
@@ -35,6 +36,9 @@ public class BarrelFluidHandler extends FluidTank {
     
     @Override
     public boolean canFillFluidType(FluidStack fluid) {
+        if(BarrelLiquidBlacklistRegistry.isBlacklisted(barrel.getTier(), fluid.getFluid().getName()))
+            return false;
+        
     	for (IBarrelMode mode : BarrelModeRegistry.getModes(TriggerType.FLUID))	{
     		if (mode.isTriggerFluidStack(fluid))
     			return true;

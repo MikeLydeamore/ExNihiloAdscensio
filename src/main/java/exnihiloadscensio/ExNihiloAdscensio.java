@@ -13,6 +13,7 @@ import exnihiloadscensio.handlers.HandlerCrook;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.networking.PacketHandler;
+import exnihiloadscensio.registries.BarrelLiquidBlacklistRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.registries.CrookRegistry;
@@ -64,11 +65,12 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
-		configDirectory = new File(event.getSuggestedConfigurationFile().getParentFile().getAbsolutePath() + "/" + MODID);
+		configDirectory = event.getModConfigurationDirectory();
 		configDirectory.mkdirs();
-		Config.doNormalConfig(new File(configDirectory.getAbsolutePath()+"/ExNihiloAdscensio.cfg"));
+		
+		Config.doNormalConfig(new File(configDirectory, "ExNihiloAdscensio.cfg"));
 
-		OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
+		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
 
 		FluidRegistry.enableUniversalBucket();
 		
@@ -103,25 +105,27 @@ public class ExNihiloAdscensio {
 	{
 		Recipes.init();
 		
-		CompostRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CompostRegistry.json"));
+		CompostRegistry.loadJson(new File(configDirectory, "CompostRegistry.json"));
 
-		HammerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HammerRegistry.json"));
+		HammerRegistry.loadJson(new File(configDirectory, "HammerRegistry.json"));
 
-		FluidBlockTransformerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidBlockTransformerRegistry.json"));
+		FluidBlockTransformerRegistry.loadJson(new File(configDirectory, "FluidBlockTransformerRegistry.json"));
 
-		FluidOnTopRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidOnTopRegistry.json"));
+		FluidOnTopRegistry.loadJson(new File(configDirectory, "FluidOnTopRegistry.json"));
 
-		HeatRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HeatRegistry.json"));
+		HeatRegistry.loadJson(new File(configDirectory, "HeatRegistry.json"));
 
-		CrucibleRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrucibleRegistry.json"));
+		CrucibleRegistry.loadJson(new File(configDirectory, "CrucibleRegistry.json"));
 
-		SieveRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/SieveRegistry.json"));
+		SieveRegistry.loadJson(new File(configDirectory, "SieveRegistry.json"));
 		
-		CrookRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrookRegistry.json"));
+		CrookRegistry.loadJson(new File(configDirectory, "CrookRegistry.json"));
 
 		OreRegistry.doRecipes();
 		
-		FluidTransformRegistry.loadJson(new File(configDirectory.getAbsolutePath()+"/FluidTransformRegistry.json"));
+		FluidTransformRegistry.loadJson(new File(configDirectory, "FluidTransformRegistry.json"));
+		
+		BarrelLiquidBlacklistRegistry.loadJson(new File(configDirectory, "BarrelLiquidBlacklistRegistry.json"));
 		
 		if(Loader.isModLoaded("tconstruct"))
 		{

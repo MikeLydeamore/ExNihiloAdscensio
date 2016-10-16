@@ -25,7 +25,10 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.crookBone, new Object[] { "xx"," x"," x", 'x', Items.BONE}));
 		
 		if (Config.enableBarrels)
-			GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelWood, new Object[] {"x x","x x", "xyx", 'x', "plankWood", 'y', "slabWood"}));
+		{
+            GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelWood, new Object[] {"x x","x x", "xyx", 'x', "plankWood", 'y', "slabWood"}));
+            GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelStone, new Object[] {"x x","x x", "xyx", 'x', "stone", 'y', "slabStone"}));
+		}
 		if (Config.enableCrucible) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new Object[] {"x x","x x","xxx", 'x', ItemResource.getResourceStack("porcelain_clay")}));
 			FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new ItemStack(ENBlocks.crucible, 1, 1), 0.7f);

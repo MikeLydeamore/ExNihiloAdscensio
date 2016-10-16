@@ -34,13 +34,21 @@ public class TileBarrel extends TileEntity implements ITickable {
 
 	@Getter
 	private IBarrelMode mode;
-
+	@Getter
 	private BarrelItemHandler itemHandler;
 	@Getter
 	private BarrelFluidHandler tank;
-
+	@Getter
+	private int tier;
+	
 	public TileBarrel()
 	{
+	    this(-1);
+	}
+	
+	public TileBarrel(int tier)
+	{
+	    this.tier = tier;
 		itemHandler = new BarrelItemHandler(this);
 		tank = new BarrelFluidHandler(this);
 	}
@@ -117,7 +125,8 @@ public class TileBarrel extends TileEntity implements ITickable {
 
 		NBTTagCompound handlerTag = itemHandler.serializeNBT();
 		tag.setTag("itemHandler", handlerTag);
-
+		tag.setInteger("barrelTier", tier);
+		
 		return super.writeToNBT(tag);
 
 	}
@@ -137,6 +146,11 @@ public class TileBarrel extends TileEntity implements ITickable {
 		if (tag.hasKey("itemHandler"))
 		{
 			itemHandler.deserializeNBT((NBTTagCompound) tag.getTag("itemHandler"));
+		}
+		
+		if(tag.hasKey("barrelTier"))
+		{
+		    tier = tag.getInteger("barrelTier");
 		}
 		super.readFromNBT(tag);
 	}
