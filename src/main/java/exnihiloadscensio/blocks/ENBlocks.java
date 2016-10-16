@@ -6,6 +6,7 @@ import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.tiles.TileSieve;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -14,7 +15,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ENBlocks {
 
-	public static BlockDust dust;
+    public static BlockBaseFalling dust;
+    public static BlockBaseFalling netherrackCrushed;
+    public static BlockBaseFalling endstoneCrushed;
     public static BlockBarrel barrelWood;
     public static BlockBarrel barrelStone;
 	public static BlockInfestedLeaves infestedLeaves;
@@ -26,9 +29,18 @@ public class ENBlocks {
 
 	public static void init()
 	{
-		dust = new BlockDust();
-		dust.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+        dust = new BlockBaseFalling(SoundType.CLOTH, "blockDust");
+        dust.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+        dust.setHardness(0.7F);
+        
+        netherrackCrushed = new BlockBaseFalling(SoundType.GROUND, "blockNetherrackCrushed");
+        netherrackCrushed.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+        netherrackCrushed.setHardness(0.7F);
 
+        endstoneCrushed = new BlockBaseFalling(SoundType.GROUND, "blockEndstoneCrushed");
+        endstoneCrushed.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+        endstoneCrushed.setHardness(0.7F);
+        
         barrelWood = new BlockBarrel(0, Material.WOOD);
         barrelWood.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
         GameRegistry.registerTileEntity(TileBarrel.class, "blockBarrel0");
@@ -58,8 +70,12 @@ public class ENBlocks {
 	public static void initModels()
 	{
 		dust.initModel();
+		netherrackCrushed.initModel();
+		endstoneCrushed.initModel();
+		
 		barrelWood.initModel();
 		barrelStone.initModel();
+		
 		sieve.initModel();
 		crucible.initModel();
 		

@@ -26,7 +26,6 @@ import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -50,7 +49,7 @@ public class ExNihiloAdscensio {
 
 	@SidedProxy(serverSide="exnihiloadscensio.CommonProxy",clientSide="exnihiloadscensio.client.ClientProxy")
 	public static CommonProxy proxy;
-
+	
 	@Instance(MODID)
 	public static ExNihiloAdscensio instance;
 
@@ -147,7 +146,7 @@ public class ExNihiloAdscensio {
 		@SideOnly(Side.CLIENT)
 		public Item getTabIconItem()
 		{
-			return Items.STRING;
+			return Item.getItemFromBlock(ENBlocks.sieve);
 		}
 	};
 

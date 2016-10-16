@@ -26,6 +26,8 @@ item.itemSeedSugarcane.name=Sugarcane Seed
 item.itemSeedCactus.name=Cactus Seed
 
 tile.blockDust.name=Dust
+tile.blockNetherrackCrushed.name=Crushed Netherrack
+tile.blockEndstoneCrushed.name=Crushed Endstone
 
 tile.blockBarrel0.name=Wooden Barrel
 tile.blockBarrel1.name=Stone Barrel

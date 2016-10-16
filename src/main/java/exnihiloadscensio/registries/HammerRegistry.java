@@ -123,9 +123,11 @@ public class HammerRegistry {
 	
 	public static void registerDefaults()
 	{
-		addHammerRecipe(Blocks.COBBLESTONE.getDefaultState(), new ItemStack(Blocks.GRAVEL), 0, 1f, 0f);
-		addHammerRecipe(Blocks.GRAVEL.getDefaultState(), new ItemStack(Blocks.SAND), 0, 1f, 0f);
-		addHammerRecipe(Blocks.SAND.getDefaultState(), new ItemStack(ENBlocks.dust), 0, 1f, 0f);
+		addHammerRecipe(Blocks.COBBLESTONE.getDefaultState(), new ItemStack(Blocks.GRAVEL, 1), 0, 1.0F, 0.0F);
+		addHammerRecipe(Blocks.GRAVEL.getDefaultState(), new ItemStack(Blocks.SAND, 1), 0, 1.0F, 0.0F);
+		addHammerRecipe(Blocks.SAND.getDefaultState(), new ItemStack(ENBlocks.dust, 1), 0, 1.0F, 0.0F);
+        addHammerRecipe(Blocks.NETHERRACK.getDefaultState(), new ItemStack(ENBlocks.netherrackCrushed, 1), 0, 1.0F, 0.0F);
+        addHammerRecipe(Blocks.END_STONE.getDefaultState(), new ItemStack(ENBlocks.endstoneCrushed, 1), 0, 1.0F, 0.0F);
 	}
 
 	//Legacy
