@@ -1,7 +1,6 @@
 package exnihiloadscensio.entities;
 
 import exnihiloadscensio.items.ENItems;
-import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +16,7 @@ import net.minecraft.world.World;
 
 public class ProjectileStone extends EntityThrowable
 {
+    @Setter
     private ItemStack stack;
     
     public ProjectileStone(World worldIn)
@@ -81,15 +81,5 @@ public class ProjectileStone extends EntityThrowable
         {
             stack = new ItemStack(ENItems.pebbles);
         }
-    }
-    
-    public synchronized ItemStack getStack()
-    {
-        return stack;
-    }
-    
-    public synchronized void setStack(ItemStack stack)
-    {
-        this.stack = stack;
     }
 }
