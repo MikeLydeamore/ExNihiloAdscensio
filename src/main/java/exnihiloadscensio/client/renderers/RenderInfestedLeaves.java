@@ -2,37 +2,28 @@ package exnihiloadscensio.client.renderers;
 
 import javax.annotation.Nullable;
 
-import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.util.Util;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.biome.BiomeColorHelper;
 
 public class RenderInfestedLeaves implements IBlockColor
 {
-    
     @Override
     public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
     {
         if (worldIn == null || pos == null)
-            return 0;
+            return Util.whiteColor.toInt();
         
-        TileInfestedLeaves te = (TileInfestedLeaves) worldIn.getTileEntity(pos);
+        TileInfestedLeaves tile = (TileInfestedLeaves) worldIn.getTileEntity(pos);
         
-        if (te != null)
+        if (tile != null)
         {
-            float progress = te.getProgress();
-            
-            Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(worldIn, pos));
-            Color white = Util.whiteColor;
-            
-            return Color.average(green, white, progress).toInt();
+            return tile.getProgress() >= 1.0F ? Util.whiteColor.toInt() : tile.getColor();
         }
         
-        return 0;
+        return Util.whiteColor.toInt();
     }
-    
 }

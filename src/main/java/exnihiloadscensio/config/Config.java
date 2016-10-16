@@ -21,6 +21,10 @@ public class Config {
 	public static double stringChance;
 	public static double stringFortuneChance;
 	
+	public static int leavesUpdateFrequency;
+	public static double leavesSpreadChance;
+	public static boolean doLeavesUpdateClient;
+	
 	public static void doNormalConfig(File file)
 	{
 		Configuration config = new Configuration(file);
@@ -35,6 +39,9 @@ public class Config {
 		compostingTicks = config.get("Composting", "ticksToFormDirt", 600).getInt();
 		
 		infestedLeavesTicks = config.get("Infested Leaves","ticksToTransform",600).getInt();
+        leavesUpdateFrequency = config.get("Infested Leaves", "leavesUpdateFrequency", 40).getInt();
+        leavesSpreadChance = config.get("Infested Leaves", "leavesSpreadChance", 0.0015).getDouble();
+        doLeavesUpdateClient = config.get("Infested Leaves", "doLeavesUpdateClient", true).getBoolean();
 		
 		stringChance = config.get("Crooking", "stringChance", 1).getDouble();
 		stringFortuneChance = config.get("Crooking", "stringFortuneChance", 1).getDouble();

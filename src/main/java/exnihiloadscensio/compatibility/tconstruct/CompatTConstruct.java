@@ -1,7 +1,6 @@
 package exnihiloadscensio.compatibility.tconstruct;
 
 import exnihiloadscensio.items.ENItems;
-import net.minecraftforge.fml.common.Loader;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 

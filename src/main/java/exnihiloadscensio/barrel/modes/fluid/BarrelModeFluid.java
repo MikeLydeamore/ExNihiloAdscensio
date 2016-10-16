@@ -82,6 +82,9 @@ public class BarrelModeFluid implements IBarrelMode {
 			currenttip.add(barrel.getTank().getFluid().getLocalizedName());
 			currenttip.add("Amount: "+String.valueOf(barrel.getTank().getFluidAmount())+"mb");
 		}
+		else {
+		    currenttip.add("Empty");
+		}
 
 		return currenttip;
 	}

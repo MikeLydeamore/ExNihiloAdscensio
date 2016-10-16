@@ -84,7 +84,8 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	}
 	
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+	{
 		
 	}
 
@@ -112,7 +113,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world,
 			BlockPos pos, int fortune) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override

@@ -57,7 +57,7 @@ dependencies
     
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     
-    //compileOnly "org.projectlombok:lombok:1.16.10"
+    compileOnly "org.projectlombok:lombok:1.16.10"
 }
 
 processResources
