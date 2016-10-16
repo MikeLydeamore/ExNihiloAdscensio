@@ -28,6 +28,8 @@ public class ENItems {
 	
 	public static ItemResource resources;
 	public static ItemCookedSilkworm cookedSilkworm;
+
+    public static ItemPebble pebbles;
 	
 	public static ArrayList<ItemSeedBase> itemSeeds = new ArrayList<ItemSeedBase>();
 	
@@ -61,6 +63,8 @@ public class ENItems {
 		resources = new ItemResource();
 		
 		cookedSilkworm = new ItemCookedSilkworm();
+
+        pebbles = new ItemPebble();
 		
 		itemSeeds.add(new ItemSeedBase("oak", Blocks.SAPLING.getStateFromMeta(0)));
 		itemSeeds.add(new ItemSeedBase("spruce", Blocks.SAPLING.getStateFromMeta(1)));
@@ -90,6 +94,7 @@ public class ENItems {
 		mesh.initModel();
 		
 		resources.initModel();
+		pebbles.initModel();
 		
 		cookedSilkworm.initModel();
 		

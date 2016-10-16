@@ -6,11 +6,11 @@
     },
     "variants": {
         "type": {
-            "stones": {
-                "textures": {
-                    "layer0": "exnihiloadscensio:items/stones"
-                }
-            },
+        	"removed": {
+        		"textures": {
+        			"layer0": "exnihiloadscensio:items/itemPebble"
+        		}
+        	},
             "porcelain_clay": {
                 "textures": {
                     "layer0": "exnihiloadscensio:items/porcelainClay"

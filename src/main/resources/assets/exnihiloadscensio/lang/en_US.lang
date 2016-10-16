@@ -7,7 +7,12 @@ item.hammerDiamond.name=Diamond Hammer
 item.crookWood.name=Wooden Crook
 item.crookBone.name=Bone Crook
 
-item.itemMaterial.stones.name=Stones
+item.itemPebble.stone.name=Stone Pebble
+item.itemPebble.granite.name=Granite Pebble
+item.itemPebble.diorite.name=Diorite Pebble
+item.itemPebble.andesite.name=Andesite Pebble
+
+item.itemMaterial.removed.name=Removed From Mod
 item.itemMaterial.porcelain_clay.name=Porcelain Clay
 item.itemMaterial.silkworm.name=Silkworm
 item.itemMaterial.grass_seeds.name=Grass Seeds

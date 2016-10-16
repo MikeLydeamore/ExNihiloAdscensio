@@ -3,6 +3,7 @@ package exnihiloadscensio.client.renderers;
 import org.lwjgl.opengl.GL11;
 
 import exnihiloadscensio.entities.ProjectileStone;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -18,8 +19,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderProjectileStone extends Render<ProjectileStone>
 {
-    private TextureAtlasSprite texture;
-    
     public RenderProjectileStone(RenderManager renderManager)
     {
         super(renderManager);
@@ -34,10 +33,7 @@ public class RenderProjectileStone extends Render<ProjectileStone>
     @Override
     public void doRender(ProjectileStone entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        if(texture == null)
-        {
-            texture = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(Blocks.STONE.getDefaultState());
-        }
+        TextureAtlasSprite texture = getTexture(Blocks.STONE.getDefaultState());
         
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer buffer = tessellator.getBuffer();
@@ -54,7 +50,7 @@ public class RenderProjectileStone extends Render<ProjectileStone>
         
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
         
-        float size = 1;
+        double size = 0.5;
         
         //bufferCuboid(buffer, 1, minU, minV, maxU, maxV, -8, -8, -8, 8, 8, 8);
         
@@ -141,6 +137,11 @@ public class RenderProjectileStone extends Render<ProjectileStone>
         buffer.pos(xMax, yMin, zMax).tex(xUMax, yVMax).normal(0, 0, 1).endVertex();
         buffer.pos(xMax, yMax, zMax).tex(xUMax, yVMin).normal(0, 0, 1).endVertex();
         buffer.pos(xMin, yMax, zMax).tex(xUMin, yVMin).normal(0, 0, 1).endVertex();
+    }
+    
+    private static TextureAtlasSprite getTexture(IBlockState state)
+    {
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
     }
     
     public static class Factory implements IRenderFactory<ProjectileStone>
