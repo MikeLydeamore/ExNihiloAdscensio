@@ -1,6 +1,10 @@
 package exnihiloadscensio;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.config.Config;
@@ -9,6 +13,7 @@ import exnihiloadscensio.handlers.HandlerCrook;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.networking.PacketHandler;
+import exnihiloadscensio.registries.BarrelLiquidBlacklistRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.registries.CrookRegistry;
@@ -21,10 +26,10 @@ import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -44,11 +49,13 @@ public class ExNihiloAdscensio {
 
 	@SidedProxy(serverSide="exnihiloadscensio.CommonProxy",clientSide="exnihiloadscensio.client.ClientProxy")
 	public static CommonProxy proxy;
-
+	
 	@Instance(MODID)
 	public static ExNihiloAdscensio instance;
 
 	private static File configDirectory;
+	
+	public Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
 	
 	static {
 		FluidRegistry.enableUniversalBucket();
@@ -57,11 +64,12 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
-		configDirectory = new File(event.getSuggestedConfigurationFile().getParentFile().getAbsolutePath() + "/" + MODID);
+		configDirectory = new File(event.getModConfigurationDirectory(), "exnihiloadscensio");
 		configDirectory.mkdirs();
-		Config.doNormalConfig(new File(configDirectory.getAbsolutePath()+"/ExNihiloAdscensio.cfg"));
+		
+		Config.doNormalConfig(new File(configDirectory, "ExNihiloAdscensio.cfg"));
 
-		OreRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/OreRegistry.json"));
+		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
 
 		FluidRegistry.enableUniversalBucket();
 		
@@ -96,25 +104,40 @@ public class ExNihiloAdscensio {
 	{
 		Recipes.init();
 		
-		CompostRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CompostRegistry.json"));
+		CompostRegistry.loadJson(new File(configDirectory, "CompostRegistry.json"));
 
-		HammerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HammerRegistry.json"));
+		HammerRegistry.loadJson(new File(configDirectory, "HammerRegistry.json"));
 
-		FluidBlockTransformerRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidBlockTransformerRegistry.json"));
+		FluidBlockTransformerRegistry.loadJson(new File(configDirectory, "FluidBlockTransformerRegistry.json"));
 
-		FluidOnTopRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/FluidOnTopRegistry.json"));
+		FluidOnTopRegistry.loadJson(new File(configDirectory, "FluidOnTopRegistry.json"));
 
-		HeatRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/HeatRegistry.json"));
+		HeatRegistry.loadJson(new File(configDirectory, "HeatRegistry.json"));
 
-		CrucibleRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrucibleRegistry.json"));
+		CrucibleRegistry.loadJson(new File(configDirectory, "CrucibleRegistry.json"));
 
-		SieveRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/SieveRegistry.json"));
+		SieveRegistry.loadJson(new File(configDirectory, "SieveRegistry.json"));
 		
-		CrookRegistry.loadJson(new File(configDirectory.getAbsolutePath() + "/CrookRegistry.json"));
+		CrookRegistry.loadJson(new File(configDirectory, "CrookRegistry.json"));
 
 		OreRegistry.doRecipes();
 		
-		FluidTransformRegistry.loadJson(new File(configDirectory.getAbsolutePath()+"/FluidTransformRegistry.json"));
+		FluidTransformRegistry.loadJson(new File(configDirectory, "FluidTransformRegistry.json"));
+		
+		BarrelLiquidBlacklistRegistry.loadJson(new File(configDirectory, "BarrelLiquidBlacklistRegistry.json"));
+		
+		if(Loader.isModLoaded("tconstruct"))
+		{
+		    try
+            {
+                Class<?> compatClass = Class.forName("exnihiloadscensio.compatibility.tconstruct.CompatTConstruct");
+                compatClass.getMethod("postInit").invoke(null);
+            }
+            catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+            {
+                e.printStackTrace();
+            }
+		}
 	}
 
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")
@@ -123,7 +146,7 @@ public class ExNihiloAdscensio {
 		@SideOnly(Side.CLIENT)
 		public Item getTabIconItem()
 		{
-			return Items.STRING;
+			return Item.getItemFromBlock(ENBlocks.sieve);
 		}
 	};
 

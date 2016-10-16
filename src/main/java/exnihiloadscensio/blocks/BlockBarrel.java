@@ -1,6 +1,7 @@
 package exnihiloadscensio.blocks;
 
 import exnihiloadscensio.tiles.TileBarrel;
+import lombok.Getter;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,10 +18,13 @@ import net.minecraft.world.World;
 public class BlockBarrel extends BlockBase implements ITileEntityProvider {
 
 	private AxisAlignedBB boundingBox = new AxisAlignedBB(0.0625f, 0, 0.0625f, 0.9375f, 1f, 0.9375f);
-
-	public BlockBarrel()
+	@Getter
+	private int tier;
+	
+	public BlockBarrel(int tier, Material material)
 	{
-		super(Material.WOOD, "blockBarrel");
+		super(material, "blockBarrel" + tier);
+        this.tier = tier;
 		this.setHardness(2.0f);
 	}
 
@@ -54,7 +58,7 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider {
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) 
 	{
-		return new TileBarrel();
+		return new TileBarrel(this.tier);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package exnihiloadscensio.blocks;
 
+import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ItemMesh;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.tiles.TileSieve;
@@ -18,6 +19,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 public class BlockSieve extends BlockBase implements ITileEntityProvider {
 
@@ -75,7 +77,11 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 	{
 		if (world.isRemote)
 			return true;
-
+		
+		// I think this should work. Let's just go with it.
+		if(player instanceof FakePlayer && !Config.fakePlayersCanSieve)
+		    return false;
+		
 		TileSieve te = (TileSieve) world.getTileEntity(pos);
 		if (te != null) {
 			if (heldItem != null && heldItem.getItem() instanceof ItemMesh) {

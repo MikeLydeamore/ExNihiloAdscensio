@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -169,13 +169,11 @@ public class SieveRegistry {
 				FileReader fr = new FileReader(file);
 				HashMap<String, ArrayList<Siftable>> gsonInput = gson.fromJson(fr, new TypeToken<HashMap<String, ArrayList<Siftable>>>(){}.getType());
 				
-				Iterator<String> it = gsonInput.keySet().iterator();
-				
-				while (it.hasNext())
+				for(Map.Entry<String, ArrayList<Siftable>> input : gsonInput.entrySet())
 				{
-					String s = (String) it.next();
-					BlockInfo stack = new BlockInfo(s);
-					registry.put(stack, gsonInput.get(s));
+				    BlockInfo block = new BlockInfo(input.getKey());
+				    
+				    registry.put(block, input.getValue());
 				}
 			} 
 			catch (Exception e) 

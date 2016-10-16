@@ -1,6 +1,7 @@
 package exnihiloadscensio.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -10,13 +11,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBase extends Block
+public class BlockBaseFalling extends BlockFalling
 {
-    public BlockBase(Material mat, String name)
+    public BlockBaseFalling(SoundType sound, String name)
     {
-        super(mat);
+        super(Material.SAND);
         setUnlocalizedName(name);
         setRegistryName(name);
+        setSoundType(sound);
         GameRegistry.register(this);
         GameRegistry.register(new ItemBlock(this).setRegistryName(name));
     }

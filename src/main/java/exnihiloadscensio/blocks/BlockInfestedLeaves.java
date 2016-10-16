@@ -40,6 +40,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 		GameRegistry.<Block>register(this);
 		GameRegistry.register(new ItemBlock(this).setRegistryName("blockInfestedLeaves"));
 		this.setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, false));
+		this.setGraphicsLevel(true);
 	}
 	
     @SideOnly(Side.CLIENT)
@@ -124,23 +125,5 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	public TileEntity createNewTileEntity(World worldIn, int meta) 
 	{
 		return new TileInfestedLeaves();
-	}
-	
-	@Override
-	public boolean isFullyOpaque(IBlockState state)
-	{
-		return false;
-	}
-	
-	@Override
-	 public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
-	
-	@Override
-	public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
     }
 }

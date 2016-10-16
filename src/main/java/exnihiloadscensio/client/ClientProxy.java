@@ -6,8 +6,8 @@ import exnihiloadscensio.client.renderers.RenderBarrel;
 import exnihiloadscensio.client.renderers.RenderCrucible;
 import exnihiloadscensio.client.renderers.RenderInfestedLeaves;
 import exnihiloadscensio.client.renderers.RenderOrePiece;
-import exnihiloadscensio.client.renderers.RenderSieve;
 import exnihiloadscensio.client.renderers.RenderProjectileStone;
+import exnihiloadscensio.client.renderers.RenderSieve;
 import exnihiloadscensio.entities.ProjectileStone;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ore.ItemOre;
@@ -17,7 +17,6 @@ import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileSieve;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {

@@ -2,7 +2,6 @@ package exnihiloadscensio.items.seeds;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,16 +21,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ItemSeedBase extends Item implements IPlantable {
 
 	private IBlockState plant;
-	private IBlockState soil;
 	private EnumPlantType type;
 	private String name;
 	
-	public ItemSeedBase(String name, IBlockState plant, IBlockState soil) {
+	public ItemSeedBase(String name, IBlockState plant) {
 		super();
 		this.setRegistryName("itemSeed" + StringUtils.capitalize(name));
 		this.setUnlocalizedName("itemSeed" + StringUtils.capitalize(name));
 		this.plant = plant;
-		this.soil = soil;
 		this.name = name;
 		type = EnumPlantType.Plains;
 		
@@ -60,9 +57,8 @@ public class ItemSeedBase extends Item implements IPlantable {
         	
         if (player.canPlayerEdit(pos, facing, stack) && player.canPlayerEdit(pos.add(0, 1, 0), facing, stack)) {
             IBlockState soil = world.getBlockState(pos);
-            Block soilBlock = soil.getBlock();
 
-            if (soil != null && soilBlock.canSustainPlant(soil, world, pos, EnumFacing.UP, this) 
+            if (soil != null && soil.getBlock().canSustainPlant(soil, world, pos, EnumFacing.UP, this) 
             		&& world.isAirBlock(pos.add(0, 1, 0)) 
             		&& this.getPlant(world, pos) != null)
             {

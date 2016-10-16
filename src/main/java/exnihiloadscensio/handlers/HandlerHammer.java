@@ -1,13 +1,10 @@
 package exnihiloadscensio.handlers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 import exnihiloadscensio.items.tools.IHammer;
 import exnihiloadscensio.registries.HammerRegistry;
-import exnihiloadscensio.registries.HammerReward;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,57 +14,33 @@ public class HandlerHammer {
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void hammer(BlockEvent.HarvestDropsEvent event)
 	{
-		if (event.getWorld().isRemote)
+		if (event.getWorld().isRemote || event.getHarvester() == null || event.isSilkTouching())
 			return;
 
-		if (event.getHarvester() == null)
-			return;
-
-		if (event.isSilkTouching())
-			return;
-
-		ItemStack held = event.getHarvester().getHeldItem(EnumHand.MAIN_HAND);
+		ItemStack held = event.getHarvester().getHeldItemMainhand();
+		
 		if (!isHammer(held))
 			return;
 		
-		int miningLevel = ((IHammer) held.getItem()).getMiningLevel(held);
-		ArrayList<HammerReward> rewards = HammerRegistry.getRewards(event.getState(), miningLevel);
+		List<ItemStack> rewards = HammerRegistry.getRewardDrops(event.getWorld().rand, event.getState(), ((IHammer) held.getItem()).getMiningLevel(held), event.getFortuneLevel());
+		
 		if (rewards != null && rewards.size() > 0)
 		{
 			event.getDrops().clear();
-			event.setDropChance(1f);
-
-			int fortune = event.getFortuneLevel();
-			Iterator<HammerReward> it = rewards.iterator();
-			while(it.hasNext())
-			{
-				HammerReward reward = it.next();
-
-				if (event.getWorld().rand.nextFloat() <= reward.getChance() + (reward.getFortuneChance() * fortune))
-				{
-					event.getDrops().add(reward.getStack().copy());
-				}
-
-			}
+			event.setDropChance(1.0F);
+			event.getDrops().addAll(rewards);
 		}
-
 	}
 
 
 	public boolean isHammer(ItemStack stack)
 	{
-		if (stack == null)
+		if (stack == null || stack.getItem() == null)
 			return false;
 		
-		if (stack.getItem() == null)
-			return false;
-
 		if (stack.getItem() instanceof IHammer)
 			return ((IHammer) stack.getItem()).isHammer(stack);
-
-		//if (stack.hasTagCompound() && stack.stackTagCompound.getBoolean("Hammered"))
-		//	return true;
-
+		
 		return false;
 	}
 
