@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -13,7 +12,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
-import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ItemResource;

@@ -13,7 +13,6 @@ import com.google.gson.JsonSerializer;
 import exnihiloadscensio.ExNihiloAdscensio;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameData;
 
 public class CustomItemStackJson implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack>
 {

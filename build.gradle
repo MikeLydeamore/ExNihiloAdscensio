@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "0.0.17"
+version = "0.0.18"
 group= "exnihiloadscensio" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloadscensio"
 
@@ -28,7 +28,7 @@ sourceCompatibility=1.8
 targetCompatibility=1.8
 
 minecraft {
-    version = "1.10.2-12.18.1.2073"
+    version = "1.10.2-12.18.2.2107"
     runDir = "run"
 	mappings = "snapshot_20160824"
 }

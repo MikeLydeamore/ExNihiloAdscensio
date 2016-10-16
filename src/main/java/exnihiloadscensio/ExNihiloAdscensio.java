@@ -65,7 +65,7 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
-		configDirectory = event.getModConfigurationDirectory();
+		configDirectory = new File(event.getModConfigurationDirectory(), "exnihiloadscensio");
 		configDirectory.mkdirs();
 		
 		Config.doNormalConfig(new File(configDirectory, "ExNihiloAdscensio.cfg"));
