@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,6 +31,8 @@ public class CompostRegistry {
 
 	public static void loadJson(File file)
 	{
+	    registry.clear();
+	    
 		gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
 		if (file.exists())
@@ -83,7 +86,7 @@ public class CompostRegistry {
 	public static void register(Item item, int meta, float value, IBlockState state, Color color)
 	{
 		ItemInfo info = new ItemInfo(item, meta);
-		Compostable compostable = new Compostable(value, color, new ItemInfo(state));
+		Compostable compostable = new Compostable(value, color, new ItemInfo(state), false);
 
 		registry.put(info, compostable);
 	}
@@ -93,19 +96,9 @@ public class CompostRegistry {
 		register(Item.getItemFromBlock(block), meta, value, state, color);
 	}
 
-	public static boolean containsItem(Item item, int meta)
-	{
-		return containsItem(new ItemInfo(item, meta));
-	}
-
 	public static Compostable getItem(Item item, int meta)
 	{
 		return getItem(new ItemInfo(item, meta));
-	}
-
-	public static boolean containsItem(ItemStack stack)
-	{
-		return containsItem(new ItemInfo(stack));
 	}
 
 	public static Compostable getItem(ItemStack stack)
@@ -113,14 +106,24 @@ public class CompostRegistry {
 		return getItem(new ItemInfo(stack));
 	}
 
+    public static Compostable getItem(ItemInfo info)
+    {
+        return registry.get(info);
+    }
+
+    public static boolean containsItem(Item item, int meta)
+    {
+        return containsItem(new ItemInfo(item, meta));
+    }
+
+    public static boolean containsItem(ItemStack stack)
+    {
+        return containsItem(new ItemInfo(stack));
+    }
+
 	public static boolean containsItem(ItemInfo info)
 	{
-		return registry.containsKey(info);
-	}
-
-	public static Compostable getItem(ItemInfo info)
-	{
-		return registry.get(info);
+	    return registry.containsKey(info);
 	}
 
 	public static void registerDefaults()

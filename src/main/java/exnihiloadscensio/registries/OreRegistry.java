@@ -120,6 +120,8 @@ public class OreRegistry {
 
 	public static void loadJson(File file)
 	{
+        itemOreRegistry.clear();
+        
 		gson = new GsonBuilder().setPrettyPrinting()	
 				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson())
 				.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson())
@@ -132,6 +134,7 @@ public class OreRegistry {
 				ArrayList<Ore> gsonInput = gson.fromJson(fr, new TypeToken<ArrayList<Ore>>(){}.getType());
 				
 				registry = gsonInput;
+				
 				registerFromRegistry();
 			} 
 			catch (Exception e) 

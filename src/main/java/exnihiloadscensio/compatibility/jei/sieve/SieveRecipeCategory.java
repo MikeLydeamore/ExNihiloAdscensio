@@ -1,4 +1,4 @@
-package exnihiloadscensio.compatibility.jei;
+package exnihiloadscensio.compatibility.jei.sieve;
 
 import java.util.List;
 
@@ -31,13 +31,14 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 	private final IDrawableStatic slotHighlight;
 	private boolean hasHighlight;
 	private int highlightX;
-	private int highlightY;
-
-	public SieveRecipeCategory(IGuiHelper helper) {
-		this.background = helper.createDrawable(texture, 0, 0, 166, 130);
-		this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
-	}
-
+    private int highlightY;
+    
+    public SieveRecipeCategory(IGuiHelper helper)
+    {
+        this.background = helper.createDrawable(texture, 0, 0, 166, 130);
+        this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
+    }
+    
 	@Override
 	public String getUid() {
 		return UID;

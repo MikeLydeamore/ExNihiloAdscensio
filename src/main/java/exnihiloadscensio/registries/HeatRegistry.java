@@ -52,6 +52,8 @@ public class HeatRegistry {
 	}
 	
 	public static void loadJson(File file) {
+        registry.clear();
+
 		gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson()).create();
 		if (file.exists())
@@ -61,8 +63,8 @@ public class HeatRegistry {
 				FileReader fr = new FileReader(file);
 				HashMap<String, Integer> gsonInput = gson.fromJson(fr, new TypeToken<HashMap<String, Integer>>(){}.getType());
 				
-				Iterator<String> it = gsonInput.keySet().iterator();
-				
+                Iterator<String> it = gsonInput.keySet().iterator();
+                
 				while (it.hasNext())
 				{
 					String s = (String) it.next();

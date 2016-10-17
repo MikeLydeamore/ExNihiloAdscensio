@@ -159,6 +159,8 @@ public class SieveRegistry {
 
 	public static void loadJson(File file)
 	{
+        registry.clear();
+        
 		gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson())
 				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();

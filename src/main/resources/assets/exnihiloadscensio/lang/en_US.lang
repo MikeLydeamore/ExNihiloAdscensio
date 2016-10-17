@@ -57,6 +57,15 @@ fluid.witchwater=Witchwater
 
 jei.sieve.dropChance=Drop Chance
 
+jei.hammer.hammerLevel=Hammer Level
+jei.hammer.hammerLevel.0=Wood
+jei.hammer.hammerLevel.1=Stone
+jei.hammer.hammerLevel.2=Iron
+jei.hammer.hammerLevel.3=Diamond
+jei.hammer.hammerLevel.4=God Tier
+
+commands.enreloadconfig.confirm=Ex Nihilo Config Reloaded
+
 itemGroup.exNihilo=Ex Nihilo
 
 modifier.exnihilo_smashing.name=Smashing

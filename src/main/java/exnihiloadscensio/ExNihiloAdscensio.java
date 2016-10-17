@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.command.CommandReloadConfig;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.entities.ENEntities;
@@ -39,6 +40,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLModIdMappingEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -53,7 +55,7 @@ public class ExNihiloAdscensio {
 	@Instance(MODID)
 	public static ExNihiloAdscensio instance;
 
-	private static File configDirectory;
+	public static File configDirectory;
 	
 	public Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
 	
@@ -102,34 +104,35 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void postInit(FMLPostInitializationEvent event)
 	{
+	    loadConfigs();
+	    
 		Recipes.init();
-		
-		CompostRegistry.loadJson(new File(configDirectory, "CompostRegistry.json"));
-
-		HammerRegistry.loadJson(new File(configDirectory, "HammerRegistry.json"));
-
-		FluidBlockTransformerRegistry.loadJson(new File(configDirectory, "FluidBlockTransformerRegistry.json"));
-
-		FluidOnTopRegistry.loadJson(new File(configDirectory, "FluidOnTopRegistry.json"));
-
-		HeatRegistry.loadJson(new File(configDirectory, "HeatRegistry.json"));
-
-		CrucibleRegistry.loadJson(new File(configDirectory, "CrucibleRegistry.json"));
-
-		SieveRegistry.loadJson(new File(configDirectory, "SieveRegistry.json"));
-		
-		CrookRegistry.loadJson(new File(configDirectory, "CrookRegistry.json"));
-
-		OreRegistry.doRecipes();
-		
-		FluidTransformRegistry.loadJson(new File(configDirectory, "FluidTransformRegistry.json"));
-		
-		BarrelLiquidBlacklistRegistry.loadJson(new File(configDirectory, "BarrelLiquidBlacklistRegistry.json"));
-		
+        OreRegistry.doRecipes();
+        
 		if(Loader.isModLoaded("tconstruct"))
 		{
 			CompatTConstruct.postInit();
 		}
+	}
+	
+	public static void loadConfigs()
+	{
+        CompostRegistry.loadJson(new File(configDirectory, "CompostRegistry.json"));
+        HammerRegistry.loadJson(new File(configDirectory, "HammerRegistry.json"));
+        FluidBlockTransformerRegistry.loadJson(new File(configDirectory, "FluidBlockTransformerRegistry.json"));
+        FluidOnTopRegistry.loadJson(new File(configDirectory, "FluidOnTopRegistry.json"));
+        HeatRegistry.loadJson(new File(configDirectory, "HeatRegistry.json"));
+        CrucibleRegistry.loadJson(new File(configDirectory, "CrucibleRegistry.json"));
+        SieveRegistry.loadJson(new File(configDirectory, "SieveRegistry.json"));
+        CrookRegistry.loadJson(new File(configDirectory, "CrookRegistry.json"));
+        FluidTransformRegistry.loadJson(new File(configDirectory, "FluidTransformRegistry.json"));
+        BarrelLiquidBlacklistRegistry.loadJson(new File(configDirectory, "BarrelLiquidBlacklistRegistry.json"));
+	}
+	
+	@EventHandler
+	public static void serverStart(FMLServerStartingEvent event)
+	{
+	    event.registerServerCommand(new CommandReloadConfig());
 	}
 
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo")
