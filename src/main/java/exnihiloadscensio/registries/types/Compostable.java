@@ -14,6 +14,4 @@ public class Compostable {
 	private Color color;
 	@Getter
 	private ItemInfo compostBlock;
-	@Getter
-	private boolean ignoreMeta;
 }

@@ -118,6 +118,7 @@ public class ExNihiloAdscensio {
 	public static void loadConfigs()
 	{
         CompostRegistry.loadJson(new File(configDirectory, "CompostRegistry.json"));
+        CompostRegistry.recommendAllFood(new File(configDirectory, "RecommendedFoodRegistry.json"));
         HammerRegistry.loadJson(new File(configDirectory, "HammerRegistry.json"));
         FluidBlockTransformerRegistry.loadJson(new File(configDirectory, "FluidBlockTransformerRegistry.json"));
         FluidOnTopRegistry.loadJson(new File(configDirectory, "FluidOnTopRegistry.json"));
