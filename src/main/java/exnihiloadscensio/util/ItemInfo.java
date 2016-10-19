@@ -85,7 +85,7 @@ public class ItemInfo
     
     public int hashCode()
     {
-        return item.hashCode();
+        return item == null ? 41 : item.hashCode();
     }
     
     public boolean equals(Object other)
@@ -96,11 +96,11 @@ public class ItemInfo
             
             if (meta == -1 || info.meta == -1)
             {
-                return item.equals(info.item);
+                return item == null ? info.item == null : item.equals(info.item);
             }
             else
             {
-                return item.equals(info.item) && meta == info.meta;
+                return  meta == info.meta && (item == null ? info.item == null : item.equals(info.item));
             }
         }
         

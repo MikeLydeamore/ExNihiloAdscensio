@@ -73,7 +73,7 @@ public class BlockInfo
     
     public int hashCode()
     {
-        return block.hashCode();
+        return block == null ? 37 : block.hashCode();
     }
     
     public boolean equals(Object other)
@@ -84,11 +84,11 @@ public class BlockInfo
             
             if (meta == -1 || info.meta == -1)
             {
-                return block.equals(info.block);
+                return block == null ? info.block == null : block.equals(info.block);
             }
             else
             {
-                return block.equals(info.block) && meta == info.meta;
+                return meta == info.meta && (block == null ? info.block == null : block.equals(info.block));
             }
         }
         
