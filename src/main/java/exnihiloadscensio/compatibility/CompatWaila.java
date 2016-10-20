@@ -3,8 +3,10 @@ package exnihiloadscensio.compatibility;
 import java.util.List;
 
 import exnihiloadscensio.blocks.BlockBarrel;
+import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import exnihiloadscensio.blocks.BlockSieve;
 import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.tiles.TileSieve;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -39,15 +41,37 @@ public class CompatWaila implements IWailaDataProvider {
 			IWailaConfigHandler config) {
 		if (accessor.getBlock() instanceof BlockBarrel) {
 			TileBarrel barrel = (TileBarrel) accessor.getTileEntity();
-			if (barrel.getMode() != null)
+			
+			if (barrel.getMode() != null) {
 				currenttip = barrel.getMode().getWailaTooltip(barrel, currenttip);
-		}
-		if (accessor.getBlock() instanceof BlockSieve) {
-			TileSieve sieve = (TileSieve) accessor.getTileEntity();
-			if (sieve.getMeshStack() != null) {
-				currenttip.add("Mesh: "+I18n.format("item.itemMesh."+sieve.getMeshStack().getItemDamage()+".name"));
 			}
 		}
+		
+		if (accessor.getBlock() instanceof BlockSieve) {
+			TileSieve sieve = (TileSieve) accessor.getTileEntity();
+			
+			if (sieve.getMeshStack() != null) {
+				currenttip.add("Mesh: " + I18n.format(sieve.getMeshStack().getUnlocalizedName() + ".name"));
+			}
+			else {
+			    currenttip.add("Mesh: None");
+			}
+		}
+		
+		if(accessor.getBlock() instanceof BlockInfestedLeaves)
+		{
+		    TileInfestedLeaves tile = (TileInfestedLeaves) accessor.getTileEntity();
+		    
+		    if(tile.getProgress() >= 1.0F)
+		    {
+		        currenttip.add("Progress: Done");
+		    }
+		    else
+		    {
+		        currenttip.add("Progress: " + Math.round(100 * tile.getProgress()) + "%");
+		    }
+		}
+		
 		return currenttip;
 	}
 
@@ -68,6 +92,7 @@ public class CompatWaila implements IWailaDataProvider {
 		CompatWaila instance = new CompatWaila();
 		registrar.registerBodyProvider(instance, BlockBarrel.class);
 		registrar.registerBodyProvider(instance, BlockSieve.class);
+		registrar.registerBodyProvider(instance, BlockInfestedLeaves.class);
 	}
 
 }

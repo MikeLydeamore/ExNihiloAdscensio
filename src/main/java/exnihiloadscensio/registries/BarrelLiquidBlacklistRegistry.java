@@ -47,6 +47,8 @@ public class BarrelLiquidBlacklistRegistry
     
     public static void loadJson(File file)
     {
+        blacklist.clear();
+        
         if(file.exists())
         {
             try

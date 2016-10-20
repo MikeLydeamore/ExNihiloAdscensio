@@ -1,4 +1,4 @@
-package exnihiloadscensio.compatibility.jei;
+package exnihiloadscensio.compatibility.jei.sieve;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,12 +68,12 @@ public class SieveRecipe implements IRecipeWrapper {
 
 	@Override
 	public List<FluidStack> getFluidInputs() {
-		return Collections.emptyList();
+		return Collections.EMPTY_LIST;
 	}
 
 	@Override
 	public List<FluidStack> getFluidOutputs() {
-		return Collections.emptyList();
+		return Collections.EMPTY_LIST;
 	}
 
 	@Override

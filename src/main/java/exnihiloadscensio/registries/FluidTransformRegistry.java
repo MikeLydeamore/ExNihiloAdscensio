@@ -62,6 +62,9 @@ public class FluidTransformRegistry {
 
 	public static void loadJson(File file)
 	{
+	    registry.clear();
+	    registryInternal.clear();
+	    
 		gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson()).create();
 		if (file.exists())

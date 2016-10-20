@@ -3,9 +3,16 @@ package exnihiloadscensio.registries;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -20,6 +27,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 
 public class CompostRegistry {
@@ -30,6 +38,8 @@ public class CompostRegistry {
 
 	public static void loadJson(File file)
 	{
+	    registry.clear();
+	    
 		gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
 		if (file.exists())
@@ -93,19 +103,9 @@ public class CompostRegistry {
 		register(Item.getItemFromBlock(block), meta, value, state, color);
 	}
 
-	public static boolean containsItem(Item item, int meta)
-	{
-		return containsItem(new ItemInfo(item, meta));
-	}
-
 	public static Compostable getItem(Item item, int meta)
 	{
 		return getItem(new ItemInfo(item, meta));
-	}
-
-	public static boolean containsItem(ItemStack stack)
-	{
-		return containsItem(new ItemInfo(stack));
 	}
 
 	public static Compostable getItem(ItemStack stack)
@@ -113,14 +113,24 @@ public class CompostRegistry {
 		return getItem(new ItemInfo(stack));
 	}
 
+    public static Compostable getItem(ItemInfo info)
+    {
+        return registry.get(info);
+    }
+
+    public static boolean containsItem(Item item, int meta)
+    {
+        return containsItem(new ItemInfo(item, meta));
+    }
+
+    public static boolean containsItem(ItemStack stack)
+    {
+        return containsItem(new ItemInfo(stack));
+    }
+
 	public static boolean containsItem(ItemInfo info)
 	{
-		return registry.containsKey(info);
-	}
-
-	public static Compostable getItem(ItemInfo info)
-	{
-		return registry.get(info);
+	    return registry.containsKey(info);
 	}
 
 	public static void registerDefaults()
@@ -211,7 +221,47 @@ public class CompostRegistry {
 		register(Items.NETHER_WART, 0, 0.10f, dirtState, new Color("FF2B52"));
 		register(Items.REEDS, 0, 0.08f, dirtState, new Color("9BFF8A"));
 		register(Items.STRING, 0, 0.04f, dirtState, Util.whiteColor);
-
 	}
-
+	
+	public static void recommendAllFood(File file)
+	{
+	    IBlockState dirt = Blocks.DIRT.getDefaultState();
+	    Color brown = new Color("7F3F0F");
+	    
+	    Map<String, Compostable> recommended = Maps.newHashMap();
+	    
+	    for(Item item : Item.REGISTRY)
+	    {
+	        if(item instanceof ItemFood)
+	        {
+	            ItemFood food = (ItemFood) item;
+	            
+	            List<ItemStack> stacks = Lists.newArrayList();
+	            food.getSubItems(food, null, stacks);
+	            
+	            for(ItemStack foodStack : stacks)
+	            {
+	                ItemInfo foodItemInfo = new ItemInfo(foodStack);
+	                
+	                if(!containsItem(foodItemInfo))
+	                {
+    	                int hungerRestored = food.getHealAmount(foodStack);
+    	                
+    	                recommended.put(foodItemInfo.toString(), new Compostable(hungerRestored * 0.025F, brown, new ItemInfo(dirt)));
+    	            }
+	            }
+	        }
+	    }
+	    
+	    String json = gson.toJson(recommended, new TypeToken<Map<String, Compostable>>(){}.getType());
+	    
+	    try
+        {
+            Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+	}
 }

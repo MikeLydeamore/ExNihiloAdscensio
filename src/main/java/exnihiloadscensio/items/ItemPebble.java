@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemPebble extends Item
 {
-    private List<String> names = Lists.newArrayList("stone", "granite", "diorite", "andesite");
+    private static List<String> names = Lists.newArrayList("stone", "granite", "diorite", "andesite");
     
     public ItemPebble()
     {
@@ -79,5 +79,9 @@ public class ItemPebble extends Item
             ModelLoader.setCustomModelResourceLocation(this, i, new ModelResourceLocation("exnihiloadscensio:itemPebble", variant));
         }
     }
-
+    
+    public static ItemStack getPebbleStack(String name)
+    {
+        return new ItemStack(ENItems.pebbles, 1, names.indexOf(name));
+    }
 }

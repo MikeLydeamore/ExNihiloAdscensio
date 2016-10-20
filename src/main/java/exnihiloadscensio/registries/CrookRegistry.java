@@ -68,6 +68,8 @@ public class CrookRegistry {
 
 	public static void loadJson(File file)	{
 		
+	    map.clear();
+	    
 		if (file.exists())
 		{
 			try 

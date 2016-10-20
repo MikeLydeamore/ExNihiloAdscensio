@@ -3,7 +3,9 @@ package exnihiloadscensio;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.items.ItemPebble;
 import exnihiloadscensio.items.ItemResource;
+import net.minecraft.block.BlockStone;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -27,13 +29,17 @@ public class Recipes {
 		if (Config.enableBarrels)
 		{
             GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelWood, new Object[] {"x x","x x", "xyx", 'x', "plankWood", 'y', "slabWood"}));
-            GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelStone, new Object[] {"x x","x x", "xyx", 'x', "stone", 'y', "slabStone"}));
+            
+            GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelStone, new Object[] {"x x","x x", "xyx", 'x', new ItemStack(Blocks.STONE), 'y', new ItemStack(Blocks.STONE_SLAB)}));
 		}
 		if (Config.enableCrucible) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new Object[] {"x x","x x","xxx", 'x', ItemResource.getResourceStack("porcelain_clay")}));
 			FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new ItemStack(ENBlocks.crucible, 1, 1), 0.7f);
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.COBBLESTONE, new Object[] {"xx","xx", 'x', ItemResource.getResourceStack("stones")}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.COBBLESTONE, new Object[] {"xx","xx", 'x', ItemPebble.getPebbleStack("stone")}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.STONE, 1, BlockStone.EnumType.GRANITE.ordinal()), new Object[] {"xx","xx", 'x', ItemPebble.getPebbleStack("granite")}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.STONE, 1, BlockStone.EnumType.DIORITE.ordinal()), new Object[] {"xx","xx", 'x', ItemPebble.getPebbleStack("diorite")}));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.STONE, 1, BlockStone.EnumType.ANDESITE.ordinal()), new Object[] {"xx","xx", 'x', ItemPebble.getPebbleStack("andesite")}));
 		GameRegistry.addShapelessRecipe(ItemResource.getResourceStack("porcelain_clay"), new ItemStack(Items.CLAY_BALL), new ItemStack(Items.DYE, 1, 15));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.sieve, new Object[] {"x x","xyx","z z", 'z', "plankWood", 'y', "slabWood", 'z', "stickWood"}));
@@ -44,5 +50,4 @@ public class Recipes {
 		
 		FurnaceRecipes.instance().addSmeltingRecipe(ItemResource.getResourceStack("silkworm"), new ItemStack(ENItems.cookedSilkworm), 0.7f);
 	}
-
 }

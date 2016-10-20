@@ -17,14 +17,15 @@ import com.google.gson.reflect.TypeToken;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.json.CustomItemStackJson;
 import exnihiloadscensio.util.ItemInfo;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public class HammerRegistry {
-	
-	private static HashMap<ItemInfo, List<HammerReward>> map = new HashMap<ItemInfo, List<HammerReward>>();
+    @Getter
+	private static HashMap<ItemInfo, List<HammerReward>> registry = new HashMap<ItemInfo, List<HammerReward>>();
 	
 	private static Gson gson = new GsonBuilder().setPrettyPrinting()
 			.registerTypeAdapter(ItemStack.class, new CustomItemStackJson())
@@ -32,7 +33,8 @@ public class HammerRegistry {
 
 	public static void loadJson(File file)
 	{
-		
+        registry.clear();
+        
 		if (file.exists())
 		{
 			try 
@@ -46,7 +48,7 @@ public class HammerRegistry {
 				{
 					String s = (String) it.next();
 					ItemInfo stack = new ItemInfo(s);
-					map.put(stack, gsonInput.get(s));
+					registry.put(stack, gsonInput.get(s));
 				}
 			} 
 			catch (Exception e) 
@@ -67,7 +69,7 @@ public class HammerRegistry {
 		{
 			FileWriter fw = new FileWriter(file);
 
-			gson.toJson(map, fw);
+			gson.toJson(registry, fw);
 			
 			fw.close();
 		} 
@@ -89,8 +91,8 @@ public class HammerRegistry {
 	{
 	    ItemInfo key = new ItemInfo(state);
 	    
-	    map.putIfAbsent(key, new ArrayList<HammerReward>());
-		map.get(key).add(new HammerReward(reward, miningLevel, chance, fortuneChance));	
+	    registry.putIfAbsent(key, new ArrayList<HammerReward>());
+		registry.get(key).add(new HammerReward(reward, miningLevel, chance, fortuneChance));	
 	}
 	
 	public static List<ItemStack> getRewardDrops(Random random, IBlockState block, int miningLevel, int fortuneLevel)
@@ -113,12 +115,12 @@ public class HammerRegistry {
 	
 	public static List<HammerReward> getRewards(IBlockState block)
 	{
-		return map.getOrDefault(new ItemInfo(block), Collections.EMPTY_LIST);
+		return registry.getOrDefault(new ItemInfo(block), Collections.EMPTY_LIST);
 	}
 	
 	public static boolean registered(Block block)
 	{
-		return map.containsKey(new ItemInfo(block.getDefaultState()));
+		return registry.containsKey(new ItemInfo(block.getDefaultState()));
 	}
 	
 	public static void registerDefaults()
@@ -134,7 +136,7 @@ public class HammerRegistry {
 	@Deprecated
 	public static ArrayList<HammerReward> getRewards(IBlockState state, int miningLevel)
     {
-        List<HammerReward> mapList = map.getOrDefault(new ItemInfo(state), Collections.EMPTY_LIST);
+        List<HammerReward> mapList = registry.getOrDefault(new ItemInfo(state), Collections.EMPTY_LIST);
         ArrayList<HammerReward> ret = new ArrayList<HammerReward>();
         
         for (HammerReward reward : mapList)

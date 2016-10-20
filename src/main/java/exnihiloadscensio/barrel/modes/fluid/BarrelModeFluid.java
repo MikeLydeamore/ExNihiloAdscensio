@@ -1,6 +1,5 @@
 package exnihiloadscensio.barrel.modes.fluid;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import exnihiloadscensio.barrel.BarrelFluidHandler;
@@ -8,6 +7,7 @@ import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.barrel.modes.transform.BarrelModeFluidTransform;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
+import exnihiloadscensio.registries.BarrelLiquidBlacklistRegistry;
 import exnihiloadscensio.registries.FluidOnTopRegistry;
 import exnihiloadscensio.registries.FluidTransformRegistry;
 import exnihiloadscensio.registries.types.FluidTransformer;
@@ -81,6 +81,9 @@ public class BarrelModeFluid implements IBarrelMode {
 		if (barrel.getTank().getFluid() != null) {
 			currenttip.add(barrel.getTank().getFluid().getLocalizedName());
 			currenttip.add("Amount: "+String.valueOf(barrel.getTank().getFluidAmount())+"mb");
+		}
+		else {
+		    currenttip.add("Empty");
 		}
 
 		return currenttip;
@@ -163,27 +166,36 @@ public class BarrelModeFluid implements IBarrelMode {
 				PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("block", barrel.getPos()), barrel);
 
 				barrel.getMode().addItem(info.getItemStack(), barrel);
+				
+				return;
 			}
-
-			//Fluid transforming time!
-			if (FluidTransformRegistry.containsKey(barrel.getTank().getFluid().getFluid().getName())) {
-				ArrayList<FluidTransformer> transformers = FluidTransformRegistry.getFluidTransformers(barrel.getTank().getFluid().getFluid().getName());
-				for (FluidTransformer transformer : transformers) {
-					if (Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld())) {
-						//Time to start the process.
-						FluidStack fstack = tank.getFluid();
-						tank.setFluid(null);
-						barrel.setMode("fluidTransform");
-						((BarrelModeFluidTransform) barrel.getMode()).setTransformer(transformer);
-						((BarrelModeFluidTransform) barrel.getMode()).setInputStack(fstack);
-						((BarrelModeFluidTransform) barrel.getMode()).setOutputStack(FluidRegistry.getFluidStack(transformer.getOutputFluid(), 1000));
-						PacketHandler.sendNBTUpdate(barrel);
-						break;
-					}
-				}
-			}
-
-		}
+            
+            // Fluid transforming time!
+            if (FluidTransformRegistry.containsKey(barrel.getTank().getFluid().getFluid().getName()))
+            {
+                List<FluidTransformer> transformers = FluidTransformRegistry.getFluidTransformers(barrel.getTank().getFluid().getFluid().getName());
+                
+                for (FluidTransformer transformer : transformers)
+                {
+                    if (!BarrelLiquidBlacklistRegistry.isBlacklisted(barrel.getTier(), transformer.getOutputFluid()) && Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld()))
+                    {
+                        // Time to start the process.
+                        FluidStack fstack = tank.getFluid();
+                        tank.setFluid(null);
+                        
+                        barrel.setMode("fluidTransform");
+                        BarrelModeFluidTransform mode = (BarrelModeFluidTransform) barrel.getMode();
+                        
+                        mode.setTransformer(transformer);
+                        mode.setInputStack(fstack);
+                        mode.setOutputStack(FluidRegistry.getFluidStack(transformer.getOutputFluid(), 1000));
+                        
+                        PacketHandler.sendNBTUpdate(barrel);
+                        break;
+                    }
+                }
+            }
+        }
 	}
 
 	@Override

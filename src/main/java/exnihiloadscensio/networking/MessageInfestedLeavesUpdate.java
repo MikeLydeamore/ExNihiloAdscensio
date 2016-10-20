@@ -2,9 +2,11 @@ package exnihiloadscensio.networking;
 
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -55,6 +57,15 @@ public class MessageInfestedLeavesUpdate implements IMessage {
 					{
 						TileInfestedLeaves te = (TileInfestedLeaves) entity;
 						te.setProgress(msg.progress);
+						
+						if(msg.progress >= 1.0F)
+						{
+						    World world = Minecraft.getMinecraft().thePlayer.worldObj;
+						    BlockPos pos = new BlockPos(msg.x, msg.y, msg.y);
+						    
+						    IBlockState state = world.getBlockState(pos);
+						    Minecraft.getMinecraft().thePlayer.worldObj.notifyBlockUpdate(pos, state, state, 3);
+						}
 					}
 				}
 			});

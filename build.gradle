@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "0.0.19"
+version = "0.0.24"
 group= "exnihiloadscensio" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloadscensio"
 
@@ -57,7 +57,7 @@ dependencies
     
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     
-    //compileOnly "org.projectlombok:lombok:1.16.10"
+    compileOnly "org.projectlombok:lombok:1.16.10"
 }
 
 processResources

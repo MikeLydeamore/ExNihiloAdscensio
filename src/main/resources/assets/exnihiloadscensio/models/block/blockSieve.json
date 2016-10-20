@@ -1,6 +1,7 @@
 {
 	"parent": "minecraft:block/block",
     "textures": {
+    	"particle": "minecraft:blocks/planks_oak",
         "texture": "minecraft:blocks/planks_oak"
     },
     "name": "blockSieve",

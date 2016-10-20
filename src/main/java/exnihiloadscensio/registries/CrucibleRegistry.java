@@ -60,6 +60,8 @@ public class CrucibleRegistry {
 	
 	public static void loadJson(File file)
 	{
+	    registry.clear();
+	    
 		gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
 		if (file.exists())

@@ -1,4 +1,4 @@
-package exnihiloadscensio.compatibility.jei;
+package exnihiloadscensio.compatibility.jei.sieve;
 
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
