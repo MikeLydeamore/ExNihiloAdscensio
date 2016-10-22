@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.items.ItemPebble;
 import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.seeds.ItemSeedBase;
@@ -93,12 +94,21 @@ public class SieveRegistry {
 	}
 	
 	public static void registerDefaults() {
-		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 1f, MeshType.STRING.getID());
-		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 1f, MeshType.STRING.getID());
-		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 0.5f, MeshType.STRING.getID());
-		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 0.5f, MeshType.STRING.getID());
-		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 0.1f, MeshType.STRING.getID());
-		register(Blocks.DIRT.getDefaultState(), ItemResource.getResourceStack("stones"), 0.1f, MeshType.STRING.getID());
+		register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("stone"), 1f, MeshType.STRING.getID());
+		register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("stone"), 1f, MeshType.STRING.getID());
+		register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("stone"), 0.5f, MeshType.STRING.getID());
+		register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("stone"), 0.5f, MeshType.STRING.getID());
+		register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("stone"), 0.1f, MeshType.STRING.getID());
+		register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("stone"), 0.1f, MeshType.STRING.getID());
+
+        register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("granite"), 0.5f, MeshType.STRING.getID());
+        register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("granite"), 0.1f, MeshType.STRING.getID());
+
+        register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("diorite"), 0.5f, MeshType.STRING.getID());
+        register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("diorite"), 0.1f, MeshType.STRING.getID());
+
+        register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("andesite"), 0.5f, MeshType.STRING.getID());
+        register(Blocks.DIRT.getDefaultState(), ItemPebble.getPebbleStack("andesite"), 0.1f, MeshType.STRING.getID());
 		
 		register(Blocks.DIRT.getDefaultState(), new ItemInfo(Items.WHEAT_SEEDS, 0), 0.7f, MeshType.STRING.getID());
 		register(Blocks.DIRT.getDefaultState(), new ItemInfo(Items.MELON_SEEDS, 0), 0.35f, MeshType.STRING.getID());

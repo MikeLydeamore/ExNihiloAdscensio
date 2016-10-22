@@ -23,6 +23,30 @@ public class ItemMesh extends Item {
 	}
 	
 	@Override
+	public int getItemEnchantability(ItemStack stack)
+	{
+	    switch(stack.getMetadata())
+	    {
+	        case 1:
+	            return 15;
+	        case 2:
+	            return 7;
+	        case 3:
+	            return 14;
+	        case 4:
+	            return 10;
+	        default:
+	            return 0;
+	    }
+	}
+	
+	@Override
+	public boolean isItemTool(ItemStack stack)
+	{
+	    return true;
+	}
+	
+	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 	    return super.getUnlocalizedName() + "." + stack.getItemDamage();
 	}
