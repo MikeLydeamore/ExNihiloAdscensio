@@ -5,8 +5,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -86,7 +89,42 @@ public class SieveRegistry {
 	public static ArrayList<Siftable> getDrops(ItemStack block) {
 		return getDrops(new BlockInfo(block));
 	}
-	
+    
+    public static List<ItemStack> getRewardDrops(Random random, IBlockState block, int meshLevel, int fortuneLevel)
+    {
+        if (block == null)
+        {
+            return null;
+        }
+        
+        List<Siftable> siftables = getDrops(new BlockInfo(block));
+        
+        if (siftables == null)
+        {
+            return null;
+        }
+        
+        List<ItemStack> drops = Lists.newArrayList();
+        
+        for (Siftable siftable : siftables)
+        {
+            if (meshLevel == siftable.getMeshLevel())
+            {
+                int triesWithFortune = Math.max(random.nextInt(fortuneLevel + 2), 1);
+                
+                for (int i = 0; i < triesWithFortune; i++)
+                {
+                    if (random.nextDouble() < siftable.getChance())
+                    {
+                        drops.add(siftable.getDrop().getItemStack());
+                    }
+                }
+            }
+        }
+        
+        return drops;
+    }
+    
 	public static boolean canBeSifted(ItemStack stack) {
 		if (stack == null)
 			return false;

@@ -1,6 +1,6 @@
 package exnihiloadscensio.tiles;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import exnihiloadscensio.networking.PacketHandler;
@@ -102,35 +102,11 @@ public class TileSieve extends TileEntity {
         
         if (progress >= 100)
         {
-            // Time to drop!
-            ArrayList<Siftable> siftables = SieveRegistry.getDrops(currentStack);
+            List<ItemStack> drops = SieveRegistry.getRewardDrops(rand, currentStack.getBlockState(), meshStack.getMetadata(), fortune);
             
-            if (siftables == null || siftables.size() == 0)
+            if(drops != null)
             {
-                // Probably shouldn't happen, but weird shit always does.
-                resetSieve();
-                return;
-            }
-            
-            int meshLevel = meshStack.getItemDamage();
-            
-            for (Siftable siftable : siftables)
-            {
-                if (meshLevel != siftable.getMeshLevel())
-                {
-                    continue;
-                }
-                
-                int triesWithFortune = Math.max(rand.nextInt(fortune + 2), 1);
-                
-                for(int i = 0; i < triesWithFortune; i++)
-                {
-                    if (rand.nextDouble() < siftable.getChance())
-                    {
-                        ItemStack dropStack = siftable.getDrop().getItemStack();
-                        Util.dropItemInWorld(this, player, dropStack, 0.02d);
-                    }
-                }
+                drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
             }
             
             resetSieve();
