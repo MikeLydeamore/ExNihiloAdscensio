@@ -50,6 +50,11 @@
                 "textures": {
                     "layer0": "exnihiloadscensio:items/seedSugarcane"
                 }
+            },
+            "darkoak": {
+            	"textures": {
+            		"layer0": "exnihiloadscensio:items/seedDarkOak"
+            	}
             }
         }
     }
