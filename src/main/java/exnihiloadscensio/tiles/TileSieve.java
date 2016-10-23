@@ -1,6 +1,6 @@
 package exnihiloadscensio.tiles;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import exnihiloadscensio.networking.PacketHandler;
@@ -11,7 +11,9 @@ import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -84,34 +86,32 @@ public class TileSieve extends TileEntity {
 		
 		return false;
 	}
-	
-	public void doSieving(EntityPlayer player) {
-		if (currentStack == null)
-			return;
-		
-		progress += 10;
-		PacketHandler.sendNBTUpdate(this);
-		
-		if (progress >= 100) {
-			//Time to drop!
-			ArrayList<Siftable> siftables = SieveRegistry.getDrops(currentStack);
-			if (siftables == null || siftables.size() == 0) {
-				//Probably shouldn't happen, but weird shit always does.
-				resetSieve();
-				return;
-			}
-			int meshLevel = meshStack.getItemDamage();
-			for (Siftable siftable : siftables) {
-				if (meshLevel != siftable.getMeshLevel())
-					continue;
-				if (rand.nextDouble() < siftable.getChance()) {
-					ItemStack dropStack = siftable.getDrop().getItemStack();
-					Util.dropItemInWorld(this, player, dropStack, 0.02d);
-				}
-			}
-			resetSieve();
-		}
-	}
+    
+    public void doSieving(EntityPlayer player)
+    {
+        if (currentStack == null)
+        {
+            return;
+        }
+        
+        int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
+        int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
+        
+        progress += 10 + 5 * efficiency;
+        PacketHandler.sendNBTUpdate(this);
+        
+        if (progress >= 100)
+        {
+            List<ItemStack> drops = SieveRegistry.getRewardDrops(rand, currentStack.getBlockState(), meshStack.getMetadata(), fortune);
+            
+            if(drops != null)
+            {
+                drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
+            }
+            
+            resetSieve();
+        }
+    }
 	
 	private void resetSieve() {
 		progress = 0;

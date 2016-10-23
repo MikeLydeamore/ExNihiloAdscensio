@@ -29,6 +29,7 @@ item.itemSeedCarrot.name=Carrot Seeds
 item.itemSeedPotato.name=Potato Seeds
 item.itemSeedSugarcane.name=Sugarcane Seed
 item.itemSeedCactus.name=Cactus Seed
+item.itemSeedDarkOak.name=Dark Oak Seed
 
 tile.blockDust.name=Dust
 tile.blockNetherrackCrushed.name=Crushed Netherrack

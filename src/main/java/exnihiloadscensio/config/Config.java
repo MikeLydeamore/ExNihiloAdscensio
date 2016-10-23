@@ -25,6 +25,8 @@ public class Config {
 	public static double leavesSpreadChance;
 	public static boolean doLeavesUpdateClient;
 	
+	public static boolean enableBarrelTransformLighting;
+	
 	public static void doNormalConfig(File file)
 	{
 		Configuration config = new Configuration(file);
@@ -43,6 +45,8 @@ public class Config {
         leavesSpreadChance = config.get("Infested Leaves", "leavesSpreadChance", 0.0015).getDouble();
         doLeavesUpdateClient = config.get("Infested Leaves", "doLeavesUpdateClient", true).getBoolean();
 		
+        enableBarrelTransformLighting = config.get("Misc", "enableBarrelTransformLighting", true).getBoolean();
+        
 		stringChance = config.get("Crooking", "stringChance", 1).getDouble();
 		stringFortuneChance = config.get("Crooking", "stringFortuneChance", 1).getDouble();
 		

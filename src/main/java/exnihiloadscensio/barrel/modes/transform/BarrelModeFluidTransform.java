@@ -12,6 +12,7 @@ import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.Util;
+import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -29,10 +30,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class BarrelModeFluidTransform implements IBarrelMode {
 
-	@Setter
+	@Setter @Getter
 	private FluidStack inputStack, outputStack;
+	@Getter
 	private float progress = 0;
-	@Setter
+	@Setter @Getter
 	private FluidTransformer transformer;
 
 	@Override
@@ -120,7 +122,7 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 			int numberOfBlocks = Util.getNumSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld());
 			if (numberOfBlocks > 0) {
 				progress += numberOfBlocks * 1.0 / transformer.getDuration();
-
+				
 				if (barrel.getWorld().rand.nextDouble() < 0.005) {
 					boolean spawned = false;
 					ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(transformer.getTransformingBlocks()));

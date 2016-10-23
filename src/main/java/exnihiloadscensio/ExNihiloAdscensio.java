@@ -9,6 +9,7 @@ import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.command.CommandReloadConfig;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
 import exnihiloadscensio.config.Config;
+import exnihiloadscensio.enchantments.ENEnchantments;
 import exnihiloadscensio.entities.ENEntities;
 import exnihiloadscensio.handlers.HandlerCrook;
 import exnihiloadscensio.handlers.HandlerHammer;
@@ -78,6 +79,7 @@ public class ExNihiloAdscensio {
 		ENItems.init();
 		ENBlocks.init();
 		ENEntities.init();
+		ENEnchantments.init();
 		proxy.initModels();
 		proxy.registerRenderers();
 
