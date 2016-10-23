@@ -6,6 +6,9 @@ import com.google.common.collect.Lists;
 
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.compatibility.jei.barrel.fluidtransform.FluidTransformRecipe;
+import exnihiloadscensio.compatibility.jei.barrel.fluidtransform.FluidTransformRecipeCategory;
+import exnihiloadscensio.compatibility.jei.barrel.fluidtransform.FluidTransformRecipeHandler;
 import exnihiloadscensio.compatibility.jei.hammer.HammerRecipe;
 import exnihiloadscensio.compatibility.jei.hammer.HammerRecipeCategory;
 import exnihiloadscensio.compatibility.jei.hammer.HammerRecipeHandler;
@@ -13,8 +16,10 @@ import exnihiloadscensio.compatibility.jei.sieve.SieveRecipe;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeCategory;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeHandler;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.registries.FluidTransformRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import mezz.jei.api.IJeiRuntime;
@@ -82,6 +87,22 @@ public class CompatJEI implements IModPlugin
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENItems.hammerStone), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENItems.hammerIron), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENItems.hammerDiamond), HammerRecipeCategory.UID);
+        
+
+        registry.addRecipeCategories(new FluidTransformRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeHandlers(new FluidTransformRecipeHandler());
+        
+        List<FluidTransformRecipe> fluidTransformRecipes = Lists.newArrayList();
+        
+        for(FluidTransformer recipe : FluidTransformRegistry.getRegistry())
+        {
+            fluidTransformRecipes.add(new FluidTransformRecipe(recipe));
+        }
+        
+        registry.addRecipes(fluidTransformRecipes);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), FluidTransformRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), FluidTransformRecipeCategory.UID);
+        
     }
     
     @Override

@@ -60,7 +60,8 @@ public class ExNihiloAdscensio {
 	
 	public Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
 	
-	static {
+	static
+	{
 		FluidRegistry.enableUniversalBucket();
 	}
 	
@@ -74,8 +75,6 @@ public class ExNihiloAdscensio {
 
 		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
 
-		FluidRegistry.enableUniversalBucket();
-		
 		ENItems.init();
 		ENBlocks.init();
 		ENEntities.init();
