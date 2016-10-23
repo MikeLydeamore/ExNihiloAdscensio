@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Util {
 	
@@ -106,5 +107,21 @@ public class Util {
 		
 		return ret;
 	}
-
+	
+	public static int getLightValue(FluidStack fluid)
+	{
+	    if(fluid != null && fluid.getFluid() != null)
+	    {
+	        return fluid.getFluid().getLuminosity(fluid);
+	    }
+	    else
+	    {
+	        return 0;
+	    }
+	}
+	
+	public static float weightedAverage(float a, float b, float percent)
+	{
+	    return a * percent + b * (1 - percent);
+	}
 }

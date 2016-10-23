@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import exnihiloadscensio.barrel.BarrelFluidHandler;
 import exnihiloadscensio.barrel.BarrelItemHandler;
 import exnihiloadscensio.barrel.IBarrelMode;
+import exnihiloadscensio.blocks.BlockBarrel;
+import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
+import exnihiloadscensio.networking.MessageCheckLight;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
@@ -43,55 +46,80 @@ public class TileBarrel extends TileEntity implements ITickable {
 	
 	public TileBarrel()
 	{
-	    this(-1);
+	    this(ENBlocks.barrelWood);
 	}
 	
-	public TileBarrel(int tier)
+	public TileBarrel(BlockBarrel block)
 	{
-	    this.tier = tier;
+	    this.tier = block.getTier();
+	    this.blockType = block;
 		itemHandler = new BarrelItemHandler(this);
 		tank = new BarrelFluidHandler(this);
 	}
 
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
-	{
-		if (mode == null || mode.getName().equals("fluid")) {
-			ItemStack stack = player.getHeldItemMainhand();
-			boolean result = FluidUtil.interactWithFluidHandler(stack, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side), player);
-			
-			if (result)
-				return true;
-		}
-		if (mode == null)
-		{
-			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
-			{				
-				ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
-				ArrayList<IBarrelMode> modes = BarrelModeRegistry.getModes(TriggerType.ITEM);
-				if (modes == null)
-					return false;
-				for (IBarrelMode possibleMode : modes)
-				{
-					if (possibleMode.isTriggerItemStack(stack))
-					{
-						setMode(possibleMode.getName());
-						PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getName(), this.pos), this);
-						mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
-						this.markDirty();
-						this.worldObj.setBlockState(pos, state);
-						return true;
-					}
-				}
-			}
-		}
-		else
-		{
-			mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
-			return true;
-		}
-
-		return true;
-	}
+    {
+        if (mode == null || mode.getName().equals("fluid"))
+        {
+            ItemStack stack = player.getHeldItemMainhand();
+            boolean result = FluidUtil.interactWithFluidHandler(stack, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side), player);
+            
+            if (result)
+            {
+                if(getBlockType().getLightValue(state, world, pos) != world.getLight(pos))
+                {
+                    world.checkLight(pos);
+                    PacketHandler.sendToAllAround(new MessageCheckLight(pos), this);
+                }
+                
+                return true;
+            }
+        }
+        
+        if (mode == null)
+        {
+            if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
+            {
+                ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+                ArrayList<IBarrelMode> modes = BarrelModeRegistry.getModes(TriggerType.ITEM);
+                if (modes == null)
+                    return false;
+                for (IBarrelMode possibleMode : modes)
+                {
+                    if (possibleMode.isTriggerItemStack(stack))
+                    {
+                        setMode(possibleMode.getName());
+                        PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getName(), this.pos), this);
+                        mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
+                        this.markDirty();
+                        this.worldObj.setBlockState(pos, state);
+                        
+                        if(getBlockType().getLightValue(state, world, pos) != world.getLight(pos))
+                        {
+                            world.checkLight(pos);
+                            PacketHandler.sendToAllAround(new MessageCheckLight(pos), this);
+                        }
+                        
+                        return true;
+                    }
+                }
+            }
+        }
+        else
+        {
+            mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
+            
+            if(getBlockType().getLightValue(state, world, pos) != world.getLight(pos))
+            {
+                world.checkLight(pos);
+                PacketHandler.sendToAllAround(new MessageCheckLight(pos), this);
+            }
+            
+            return true;
+        }
+        
+        return true;
+    }
 
 	@Override
 	public void update()
@@ -108,6 +136,12 @@ public class TileBarrel extends TileEntity implements ITickable {
 		}
 		if (mode != null)
 			mode.update(this);
+        
+		if(getBlockType().getLightValue(worldObj.getBlockState(pos), worldObj, pos) != worldObj.getLight(pos))
+        {
+            worldObj.checkLight(pos);
+            PacketHandler.sendToAllAround(new MessageCheckLight(pos), this);
+        }
 	}
 
 	@Override

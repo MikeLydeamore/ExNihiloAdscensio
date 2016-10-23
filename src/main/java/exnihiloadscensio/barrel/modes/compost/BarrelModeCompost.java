@@ -44,7 +44,7 @@ public class BarrelModeCompost implements IBarrelMode {
 	private Color originalColor;
 	@Setter @Getter
 	private float progress = 0;
-	
+	@Getter
 	private IBlockState compostState;
 	
 	private BarrelItemHandlerCompost handler;
