@@ -41,7 +41,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	private ItemInfo currentItem;
 	
 	private int ticksSinceLast = 0;
-	
+	@Getter
 	private CrucibleItemHandler itemHandler;
 	
 	private static final int MAX_ITEMS = 4;

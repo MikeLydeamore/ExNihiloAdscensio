@@ -6,6 +6,7 @@ import exnihiloadscensio.blocks.BlockBarrel;
 import exnihiloadscensio.blocks.BlockCrucible;
 import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import exnihiloadscensio.blocks.BlockSieve;
+import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
@@ -79,12 +80,23 @@ public class CompatWaila implements IWailaDataProvider {
 		{
 		    TileCrucible tile = (TileCrucible) accessor.getTileEntity();
 		    
-		    ItemStack solid = tile.getCurrentItem().getItemStack();
+		    ItemStack solid = tile.getCurrentItem() == null ? null : tile.getCurrentItem().getItemStack();
 		    FluidStack liquid = tile.getTank().getFluid();
 		    
 		    String solidName = solid == null ? "None" : solid.getDisplayName();
 		    String liquidName = liquid == null ? "None" : liquid.getLocalizedName();
 		    
+		    int solidAmount = Math.max(0, tile.getSolidAmount());
+		    
+		    ItemStack toMelt = tile.getItemHandler().getStackInSlot(0);
+		    
+		    if(toMelt != null)
+		    {
+		        solidAmount += CrucibleRegistry.getMeltable(toMelt).getAmount() * toMelt.stackSize;
+		    }
+		    
+            currenttip.add(String.format("Solid (%s): %d", solidName, solidAmount));
+            currenttip.add(String.format("Liquid (%s): %d", liquidName, tile.getTank().getFluidAmount()));
 		    currenttip.add("Rate: " + tile.getHeatRate() + "x");
 		}
 		
