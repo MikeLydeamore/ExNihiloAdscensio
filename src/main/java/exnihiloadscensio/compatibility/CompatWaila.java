@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class CompatWaila implements IWailaDataProvider {
 
@@ -78,9 +79,13 @@ public class CompatWaila implements IWailaDataProvider {
 		{
 		    TileCrucible tile = (TileCrucible) accessor.getTileEntity();
 		    
-		    currenttip.add("Solid:  " + tile.getSolidAmount() + "mb");
-		    currenttip.add("Liquid: " + tile.getTank().getFluidAmount() + "mb");
-		    currenttip.add("Rate:   " + tile.getHeatRate() + "x");
+		    ItemStack solid = tile.getCurrentItem().getItemStack();
+		    FluidStack liquid = tile.getTank().getFluid();
+		    
+		    String solidName = solid == null ? "None" : solid.getDisplayName();
+		    String liquidName = liquid == null ? "None" : liquid.getLocalizedName();
+		    
+		    currenttip.add("Rate: " + tile.getHeatRate() + "x");
 		}
 		
 		return currenttip;
