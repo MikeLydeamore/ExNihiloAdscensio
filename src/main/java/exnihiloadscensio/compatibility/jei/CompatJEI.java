@@ -60,7 +60,13 @@ public class CompatJEI implements IModPlugin
             {
                 if (type.getID() != 0 && info.getBlockState() != null) // Bad configs strike back!
                 {
-                    sieveRecipes.add(new SieveRecipe(info.getBlockState(), type));
+                    SieveRecipe recipe = new SieveRecipe(info.getBlockState(), type);
+                    
+                    // If there's an input block, mesh, and at least one output
+                    if(recipe.getInputs().size() > 2 && recipe.getOutputs().size() > 0)
+                    {
+                        sieveRecipes.add(recipe);
+                    }
                 }
             }
         }
@@ -80,7 +86,13 @@ public class CompatJEI implements IModPlugin
                 @SuppressWarnings("deprecation")
                 IBlockState block = Block.getBlockFromItem(info.getItem()).getStateFromMeta(info.getMeta());
                 
-                hammerRecipes.add(new HammerRecipe(block));
+                HammerRecipe recipe = new HammerRecipe(block);
+                
+                // If there's an input block, and at least one output
+                if(recipe.getInputs().size() > 1 && recipe.getOutputs().size() > 0)
+                {
+                    hammerRecipes.add(recipe);
+                }
             }
         }
         
@@ -96,19 +108,17 @@ public class CompatJEI implements IModPlugin
         
         List<FluidTransformRecipe> fluidTransformRecipes = Lists.newArrayList();
         
-        for (FluidTransformer recipe : FluidTransformRegistry.getRegistry())
+        for (FluidTransformer transformer : FluidTransformRegistry.getRegistry())
         {
             // Make sure both fluids are registered
-            if (FluidRegistry.isFluidRegistered(recipe.getInputFluid()) && FluidRegistry.isFluidRegistered(recipe.getOutputFluid()))
+            if (FluidRegistry.isFluidRegistered(transformer.getInputFluid()) && FluidRegistry.isFluidRegistered(transformer.getOutputFluid()))
             {
-                // Make sure there's at least 1 valid (not null) transformer block
-                for (BlockInfo transformBlock : recipe.getTransformingBlocks())
+                FluidTransformRecipe recipe = new FluidTransformRecipe(transformer);
+                
+                // If theres a bucket + 1 block (and an output, for consistency)
+                if(recipe.getInputs().size() > 2 && recipe.getOutputs().size() > 0)
                 {
-                    if (transformBlock.getBlock() != null)
-                    {
-                        fluidTransformRecipes.add(new FluidTransformRecipe(recipe));
-                        break;
-                    }
+                    fluidTransformRecipes.add(new FluidTransformRecipe(transformer));
                 }
             }
         }
