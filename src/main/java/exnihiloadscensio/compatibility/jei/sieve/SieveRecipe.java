@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
+import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
@@ -29,7 +30,7 @@ public class SieveRecipe implements IRecipeWrapper
         List<ItemStack> allOutputs = Lists.newArrayList(Lists.transform(rewards, reward -> reward.getDrop().getItemStack()));
         allOutputs.removeIf(stack -> stack == null || stack.getItem() == null);
         
-        inputs = Lists.newArrayList(new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block)));
+        inputs = Lists.newArrayList(new ItemStack(ENItems.mesh, 1, mesh.getID()), new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block)));
         outputs = Lists.newArrayList();
         
         for (ItemStack stack : allOutputs)
