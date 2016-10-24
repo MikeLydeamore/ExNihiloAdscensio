@@ -20,30 +20,53 @@ public class ItemInfo
     
     public static ItemInfo getItemInfoFromStack(ItemStack stack)
     {
-        return new ItemInfo(stack.getItem(), stack.getItemDamage());
+        return new ItemInfo(stack);
     }
     
     public ItemInfo(ItemStack stack)
     {
-        item = stack.getItem();
-        meta = stack.getItemDamage();
+        item = stack == null ? null : stack.getItem();
+        meta = stack == null ? -1 : stack.getMetadata();
     }
     
-    public ItemInfo(Block block, int meta)
+    public ItemInfo(Block block, int blockMeta)
     {
         item = Item.getItemFromBlock(block);
-        this.meta = meta;
+        meta = block == null ? -1 : blockMeta;
     }
     
     public ItemInfo(String string)
     {
-        String[] arr = string.split(":");
+        String[] split = string.split(":");
         
-        item = Item.getByNameOrId(arr[0] + ":" + arr[1]);
-        
-        if (arr.length == 3)
+        if(split.length == 1)
         {
-            meta = Integer.parseInt(arr[2]);
+            item = Item.getByNameOrId("minecraft:" + split[0]);
+        }
+        else if(split.length == 2)
+        {
+            try
+            {
+                meta = split[1].equals("*") ? -1 : Integer.parseInt(split[1]);
+                item = Item.getByNameOrId("minecraft:" + split[0]);
+            }
+            catch(NumberFormatException e)
+            {
+                meta = -1;
+                item = Item.getByNameOrId(split[0] + ":" + split[1]);
+            }
+        }
+        else if(split.length == 3)
+        {
+            try
+            {
+                meta = split[2].equals("*") ? -1 : Integer.parseInt(split[2]);
+                item = Item.getByNameOrId(split[0] + ":" + split[1]);
+            }
+            catch(NumberFormatException e)
+            {
+                meta = -1;
+            }
         }
         else
         {
@@ -53,8 +76,8 @@ public class ItemInfo
     
     public ItemInfo(IBlockState state)
     {
-        this.item = Item.getItemFromBlock(state.getBlock());
-        this.meta = state.getBlock().getMetaFromState(state);
+        item = state == null ? null : Item.getItemFromBlock(state.getBlock());
+        meta = state == null ? -1 : state.getBlock().getMetaFromState(state);
     }
     
     public String toString()
@@ -64,7 +87,7 @@ public class ItemInfo
     
     public ItemStack getItemStack()
     {
-        return new ItemStack(item, 1, meta == -1 ? 0 : meta);
+        return item == null ? null : new ItemStack(item, 1, meta == -1 ? 0 : meta);
     }
     
     public NBTTagCompound writeToNBT(NBTTagCompound tag)

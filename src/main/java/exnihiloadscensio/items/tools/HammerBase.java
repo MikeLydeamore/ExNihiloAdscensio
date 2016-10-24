@@ -27,8 +27,6 @@ public class HammerBase extends ItemTool implements IHammer  {
 		GameRegistry.<Item>register(this);
 		this.setMaxDamage(maxUses);
 		this.miningLevel = material.getHarvestLevel();
-		System.out.println("Adding Hammer "+name+" with harvest level "+miningLevel);
-
 	}
 
 	@Override

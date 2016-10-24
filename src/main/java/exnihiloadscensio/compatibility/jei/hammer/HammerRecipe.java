@@ -24,8 +24,10 @@ public class HammerRecipe implements IRecipeWrapper
         if(block != null && block.getBlock() != null)
         {
             List<HammerReward> rewards = HammerRegistry.getRewards(block);
-            List<ItemStack> allOutputs = Lists.newArrayList(Lists.transform(rewards, reward -> reward.getStack().copy()));
-
+            // Make sure no null rewards, Item or ItemStack
+            List<ItemStack> allOutputs = Lists.newArrayList(Lists.transform(rewards, reward -> reward.getStack() == null ? null : reward.getStack().copy()));
+            allOutputs.removeIf(stack -> stack == null || stack.getItem() == null);
+            
             inputs = Lists.newArrayList(new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block)));
             outputs = Lists.newArrayList();
             

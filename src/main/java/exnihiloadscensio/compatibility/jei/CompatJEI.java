@@ -31,6 +31,7 @@ import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 
 @JEIPlugin
 public class CompatJEI implements IModPlugin
@@ -57,7 +58,7 @@ public class CompatJEI implements IModPlugin
         {
             for (MeshType type : MeshType.values())
             {
-                if (type.getID() != 0) // The empty mesh strikes back!
+                if (type.getID() != 0 && info.getBlockState() != null) // Bad configs strike back!
                 {
                     sieveRecipes.add(new SieveRecipe(info.getBlockState(), type));
                 }
@@ -67,18 +68,20 @@ public class CompatJEI implements IModPlugin
         registry.addRecipes(sieveRecipes);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.sieve), SieveRecipeCategory.UID);
         
-        
         registry.addRecipeCategories(new HammerRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeHandlers(new HammerRecipeHandler());
         
         List<HammerRecipe> hammerRecipes = Lists.newArrayList();
         
-        for(ItemInfo info : HammerRegistry.getRegistry().keySet())
+        for (ItemInfo info : HammerRegistry.getRegistry().keySet())
         {
-            @SuppressWarnings("deprecation")
-            IBlockState block = Block.getBlockFromItem(info.getItem()).getStateFromMeta(info.getMeta());
-            
-            hammerRecipes.add(new HammerRecipe(block));
+            if (info.getItem() != null)
+            {
+                @SuppressWarnings("deprecation")
+                IBlockState block = Block.getBlockFromItem(info.getItem()).getStateFromMeta(info.getMeta());
+                
+                hammerRecipes.add(new HammerRecipe(block));
+            }
         }
         
         registry.addRecipes(hammerRecipes);
@@ -88,21 +91,31 @@ public class CompatJEI implements IModPlugin
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENItems.hammerIron), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENItems.hammerDiamond), HammerRecipeCategory.UID);
         
-
         registry.addRecipeCategories(new FluidTransformRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeHandlers(new FluidTransformRecipeHandler());
         
         List<FluidTransformRecipe> fluidTransformRecipes = Lists.newArrayList();
         
-        for(FluidTransformer recipe : FluidTransformRegistry.getRegistry())
+        for (FluidTransformer recipe : FluidTransformRegistry.getRegistry())
         {
-            fluidTransformRecipes.add(new FluidTransformRecipe(recipe));
+            // Make sure both fluids are registered
+            if (FluidRegistry.isFluidRegistered(recipe.getInputFluid()) && FluidRegistry.isFluidRegistered(recipe.getOutputFluid()))
+            {
+                // Make sure there's at least 1 valid (not null) transformer block
+                for (BlockInfo transformBlock : recipe.getTransformingBlocks())
+                {
+                    if (transformBlock.getBlock() != null)
+                    {
+                        fluidTransformRecipes.add(new FluidTransformRecipe(recipe));
+                        break;
+                    }
+                }
+            }
         }
         
         registry.addRecipes(fluidTransformRecipes);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), FluidTransformRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), FluidTransformRecipeCategory.UID);
-        
     }
     
     @Override
