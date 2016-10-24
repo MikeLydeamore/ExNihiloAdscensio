@@ -117,13 +117,18 @@ public class ItemInfo
         {
             ItemInfo info = (ItemInfo) other;
             
+            if(item == null || info.item == null)
+            {
+                return false;
+            }
+            
             if (meta == -1 || info.meta == -1)
             {
-                return item == null ? info.item == null : item.equals(info.item);
+                return item.equals(info.item);
             }
             else
             {
-                return  meta == info.meta && (item == null ? info.item == null : item.equals(info.item));
+                return  meta == info.meta && item.equals(info.item);
             }
         }
         

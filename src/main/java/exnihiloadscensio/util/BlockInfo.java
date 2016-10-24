@@ -107,13 +107,18 @@ public class BlockInfo
         {
             BlockInfo info = (BlockInfo) other;
             
+            if(block == null || info.block == null)
+            {
+                return false;
+            }
+            
             if (meta == -1 || info.meta == -1)
             {
-                return block == null ? info.block == null : block.equals(info.block);
+                return block.equals(info.block);
             }
             else
             {
-                return meta == info.meta && (block == null ? info.block == null : block.equals(info.block));
+                return meta == info.meta && block.equals(info.block);
             }
         }
         
