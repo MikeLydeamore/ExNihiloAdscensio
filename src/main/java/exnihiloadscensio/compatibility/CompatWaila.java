@@ -3,9 +3,11 @@ package exnihiloadscensio.compatibility;
 import java.util.List;
 
 import exnihiloadscensio.blocks.BlockBarrel;
+import exnihiloadscensio.blocks.BlockCrucible;
 import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import exnihiloadscensio.blocks.BlockSieve;
 import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.tiles.TileSieve;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -72,6 +74,15 @@ public class CompatWaila implements IWailaDataProvider {
 		    }
 		}
 		
+		if(accessor.getBlock() instanceof BlockCrucible)
+		{
+		    TileCrucible tile = (TileCrucible) accessor.getTileEntity();
+		    
+		    currenttip.add("Solid:  " + tile.getSolidAmount() + "mb");
+		    currenttip.add("Liquid: " + tile.getTank().getFluidAmount() + "mb");
+		    currenttip.add("Rate:   " + tile.getHeatRate() + "x");
+		}
+		
 		return currenttip;
 	}
 
@@ -93,6 +104,7 @@ public class CompatWaila implements IWailaDataProvider {
 		registrar.registerBodyProvider(instance, BlockBarrel.class);
 		registrar.registerBodyProvider(instance, BlockSieve.class);
 		registrar.registerBodyProvider(instance, BlockInfestedLeaves.class);
+		registrar.registerBodyProvider(instance, BlockCrucible.class);
 	}
 
 }

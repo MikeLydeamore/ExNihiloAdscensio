@@ -33,7 +33,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileCrucible extends TileEntity implements ITickable {
 	
+    @Getter
 	private FluidTank tank;
+	@Getter
 	private int solidAmount;
 	@Getter
 	private ItemInfo currentItem;
@@ -95,7 +97,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 		
 	}
 	
-	private int getHeatRate() {
+	public int getHeatRate() {
 		BlockPos posBelow = new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
 		IBlockState blockBelow = worldObj.getBlockState(posBelow);
 		
