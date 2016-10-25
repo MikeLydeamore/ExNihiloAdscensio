@@ -7,6 +7,9 @@ import com.google.common.collect.Lists;
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform.FluidBlockTransformRecipe;
+import exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform.FluidBlockTransformRecipeCategory;
+import exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform.FluidBlockTransformRecipeHandler;
 import exnihiloadscensio.compatibility.jei.barrel.fluidontop.FluidOnTopRecipe;
 import exnihiloadscensio.compatibility.jei.barrel.fluidontop.FluidOnTopRecipeCategory;
 import exnihiloadscensio.compatibility.jei.barrel.fluidontop.FluidOnTopRecipeHandler;
@@ -20,10 +23,12 @@ import exnihiloadscensio.compatibility.jei.sieve.SieveRecipe;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeCategory;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeHandler;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.registries.FluidOnTopRegistry;
 import exnihiloadscensio.registries.FluidTransformRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.registries.types.FluidFluidBlock;
 import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
@@ -153,7 +158,6 @@ public class CompatJEI implements IModPlugin
             {
                 FluidOnTopRecipe recipe = new FluidOnTopRecipe(transformer);
                 
-                // If theres a bucket and at least one block (and an output, for consistency)
                 if(recipe.getInputs().size() == 2 && recipe.getOutputs().size() == 1)
                 {
                     fluidOnTopRecipes.add(new FluidOnTopRecipe(transformer));
@@ -164,6 +168,29 @@ public class CompatJEI implements IModPlugin
         registry.addRecipes(fluidOnTopRecipes);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), FluidOnTopRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), FluidOnTopRecipeCategory.UID);
+
+        registry.addRecipeCategories(new FluidBlockTransformRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeHandlers(new FluidBlockTransformRecipeHandler());
+
+        List<FluidBlockTransformRecipe> fluidBlockTransformRecipes = Lists.newArrayList();
+        
+        for (FluidBlockTransformer transformer : FluidBlockTransformerRegistry.getRegistry())
+        {
+            // Make sure everything's registered
+            if (FluidRegistry.isFluidRegistered(transformer.getFluidName()) && transformer.getInput().getItem() != null && transformer.getOutput().getItem() != null)
+            {
+                FluidBlockTransformRecipe recipe = new FluidBlockTransformRecipe(transformer);
+                
+                if(recipe.getInputs().size() == 2 && recipe.getOutputs().size() == 1)
+                {
+                    fluidBlockTransformRecipes.add(new FluidBlockTransformRecipe(transformer));
+                }
+            }
+        }
+        
+        registry.addRecipes(fluidBlockTransformRecipes);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), FluidBlockTransformRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), FluidBlockTransformRecipeCategory.UID);
 
         LogUtil.info("Hammer Recipes Loaded:             " + hammerRecipes.size());
         LogUtil.info("Sieve Recipes Loaded:              " + sieveRecipes.size());

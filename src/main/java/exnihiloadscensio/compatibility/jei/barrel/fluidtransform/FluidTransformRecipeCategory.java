@@ -97,7 +97,7 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
         
         recipeLayout.getItemStacks().set(0, new ItemStack(ENBlocks.barrelStone, 1, 0));
         recipeLayout.getItemStacks().set(1, recipeWrapper.getInputs().get(0));
-        recipeLayout.getItemStacks().set(2, !noCycle ? focusStack : ImmutableList.copyOf(recipeWrapper.getInputs().subList(1, recipeWrapper.getInputs().size())));
+        recipeLayout.getItemStacks().set(2, noCycle ? focusStack : ImmutableList.copyOf(recipeWrapper.getInputs().subList(1, recipeWrapper.getInputs().size())));
         recipeLayout.getItemStacks().set(3, recipeWrapper.getOutputs().get(0));
     }
     
