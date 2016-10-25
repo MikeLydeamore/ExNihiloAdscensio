@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.compatibility.jei.barrel.fluidtransform.FluidTransformRecipe;
@@ -63,7 +64,7 @@ public class CompatJEI implements IModPlugin
                     SieveRecipe recipe = new SieveRecipe(info.getBlockState(), type);
                     
                     // If there's an input block, mesh, and at least one output
-                    if(recipe.getInputs().size() > 2 && recipe.getOutputs().size() > 0)
+                    if(recipe.getInputs().size() == 2 && recipe.getOutputs().size() > 0)
                     {
                         sieveRecipes.add(recipe);
                     }
@@ -89,7 +90,7 @@ public class CompatJEI implements IModPlugin
                 HammerRecipe recipe = new HammerRecipe(block);
                 
                 // If there's an input block, and at least one output
-                if(recipe.getInputs().size() > 1 && recipe.getOutputs().size() > 0)
+                if(recipe.getInputs().size() == 1 && recipe.getOutputs().size() > 0)
                 {
                     hammerRecipes.add(recipe);
                 }
@@ -115,8 +116,8 @@ public class CompatJEI implements IModPlugin
             {
                 FluidTransformRecipe recipe = new FluidTransformRecipe(transformer);
                 
-                // If theres a bucket + 1 block (and an output, for consistency)
-                if(recipe.getInputs().size() > 2 && recipe.getOutputs().size() > 0)
+                // If theres a bucket and at least one block (and an output, for consistency)
+                if(recipe.getInputs().size() >= 2 && recipe.getOutputs().size() == 1)
                 {
                     fluidTransformRecipes.add(new FluidTransformRecipe(transformer));
                 }
@@ -126,6 +127,10 @@ public class CompatJEI implements IModPlugin
         registry.addRecipes(fluidTransformRecipes);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), FluidTransformRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), FluidTransformRecipeCategory.UID);
+
+        ExNihiloAdscensio.instance.logger.info("Hammer Recipes Loaded:          " + hammerRecipes.size());
+        ExNihiloAdscensio.instance.logger.info("Sieve Recipes Loaded:           " + sieveRecipes.size());
+        ExNihiloAdscensio.instance.logger.info("Fluid Transform Recipes Loaded: " + fluidTransformRecipes.size());
     }
     
     @Override
