@@ -58,7 +58,7 @@ public class ExNihiloAdscensio {
 
 	public static File configDirectory;
 	
-	public Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
+	public static Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
 	
 	static
 	{

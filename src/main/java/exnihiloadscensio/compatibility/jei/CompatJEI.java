@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.compatibility.jei.barrel.fluidtransform.FluidTransformRecipe;
@@ -23,6 +22,7 @@ import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.LogUtil;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -128,9 +128,13 @@ public class CompatJEI implements IModPlugin
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), FluidTransformRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), FluidTransformRecipeCategory.UID);
 
-        ExNihiloAdscensio.instance.logger.info("Hammer Recipes Loaded:          " + hammerRecipes.size());
-        ExNihiloAdscensio.instance.logger.info("Sieve Recipes Loaded:           " + sieveRecipes.size());
-        ExNihiloAdscensio.instance.logger.info("Fluid Transform Recipes Loaded: " + fluidTransformRecipes.size());
+        LogUtil.info("Hammer Recipes Loaded:             " + hammerRecipes.size());
+        LogUtil.info("Sieve Recipes Loaded:              " + sieveRecipes.size());
+        LogUtil.info("Fluid Transform Recipes Loaded:    " + fluidTransformRecipes.size());
+        LogUtil.info("");
+        LogUtil.info("Hammer Registries Loaded:          " + HammerRegistry.getRegistry().size());
+        LogUtil.info("Sieve Registries Loaded:           " + SieveRegistry.getRegistry().size());
+        LogUtil.info("Fluid Transform Registries Loaded: " + FluidTransformRegistry.getRegistry().size());
     }
     
     @Override

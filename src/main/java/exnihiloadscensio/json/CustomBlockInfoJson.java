@@ -10,8 +10,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.util.BlockInfo;
+import exnihiloadscensio.util.LogUtil;
 import net.minecraft.block.Block;
 
 public class CustomBlockInfoJson implements JsonDeserializer<BlockInfo>, JsonSerializer<BlockInfo>
@@ -39,8 +39,8 @@ public class CustomBlockInfoJson implements JsonDeserializer<BlockInfo>, JsonSer
         
         if(block == null)
         {
-            ExNihiloAdscensio.instance.logger.error("Error parsing JSON: Invalid Block: " + json.toString());
-            ExNihiloAdscensio.instance.logger.error("This may result in crashing or other undefined behavior");
+            LogUtil.error("Error parsing JSON: Invalid Block: " + json.toString());
+            LogUtil.error("This may result in crashing or other undefined behavior");
         }
         
         return new BlockInfo(block, meta);
