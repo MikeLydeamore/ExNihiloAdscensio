@@ -60,6 +60,8 @@ public class ExNihiloAdscensio {
 	
 	public static Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
 	
+	public static boolean configsLoaded = false;
+	
 	static
 	{
 		FluidRegistry.enableUniversalBucket();
@@ -118,6 +120,8 @@ public class ExNihiloAdscensio {
 	
 	public static void loadConfigs()
 	{
+	    configsLoaded = true;
+	    
         CompostRegistry.loadJson(new File(configDirectory, "CompostRegistry.json"));
         CompostRegistry.recommendAllFood(new File(configDirectory, "RecommendedFoodRegistry.json"));
         HammerRegistry.loadJson(new File(configDirectory, "HammerRegistry.json"));
