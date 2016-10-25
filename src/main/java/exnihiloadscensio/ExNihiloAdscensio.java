@@ -2,9 +2,6 @@ package exnihiloadscensio;
 
 import java.io.File;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.command.CommandReloadConfig;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
@@ -27,6 +24,7 @@ import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.util.LogUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,8 +56,6 @@ public class ExNihiloAdscensio {
 
 	public static File configDirectory;
 	
-	public static Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
-	
 	public static boolean configsLoaded = false;
 	
 	static
@@ -70,6 +66,8 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
+	    LogUtil.setup();
+	    
 		configDirectory = new File(event.getModConfigurationDirectory(), "exnihiloadscensio");
 		configDirectory.mkdirs();
 		
