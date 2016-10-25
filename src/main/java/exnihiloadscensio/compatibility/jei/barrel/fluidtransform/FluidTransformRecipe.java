@@ -103,5 +103,4 @@ public class FluidTransformRecipe implements IRecipeWrapper
     {
         return false;
     }
-    
 }

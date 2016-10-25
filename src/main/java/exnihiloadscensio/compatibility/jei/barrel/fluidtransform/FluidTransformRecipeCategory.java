@@ -1,5 +1,7 @@
 package exnihiloadscensio.compatibility.jei.barrel.fluidtransform;
 
+import java.util.List;
+
 import com.google.common.collect.ImmutableList;
 
 import exnihiloadscensio.ExNihiloAdscensio;
@@ -14,7 +16,6 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransformRecipe>
 {
@@ -75,51 +76,29 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
         recipeLayout.getItemStacks().init(2, true, 74, 36);
         recipeLayout.getItemStacks().init(3, false, 101, 9);
         
+        boolean noCycle = false;
+        List<ItemStack> focusStack = null;
+        
         IFocus<?> focus = recipeLayout.getFocus();
-        hasHighlight = focus.getMode() != IFocus.Mode.NONE;
         
-        boolean cycleBlocks = true;
-        ItemStack focusBlock = null;
-        
-        if(focus.getMode() == IFocus.Mode.INPUT)
+        if(focus.getMode() == IFocus.Mode.INPUT && focus.getValue() instanceof ItemStack)
         {
-            if(focus.getValue() instanceof FluidStack)
+            ItemStack stack = (ItemStack) focus.getValue();
+            
+            for(ItemStack inputStack : recipeWrapper.getInputs().subList(1, recipeWrapper.getInputs().size()))
             {
-                highlightX = 47;
-                highlightY = 9;
+                if(stack.isItemEqual(inputStack))
+                {
+                    noCycle = true;
+                    focusStack = ImmutableList.of(inputStack);
+                }
             }
-            else if(focus.getValue() instanceof ItemStack && recipeWrapper.getInputs().get(0).isItemEqual((ItemStack) focus.getValue()))
-            {
-                highlightX = 47;
-                highlightY = 9;
-            }
-            else if(recipeWrapper.getInputs().contains(focus.getValue()))
-            {
-                highlightX = 74;
-                highlightY = 36;
-                
-                cycleBlocks = false;
-                focusBlock = (ItemStack) focus.getValue();
-            }
-        }
-        else if(focus.getMode() == IFocus.Mode.OUTPUT)
-        {
-            highlightX = 101;
-            highlightY = 9;
         }
         
         recipeLayout.getItemStacks().set(0, new ItemStack(ENBlocks.barrelStone, 1, 0));
         recipeLayout.getItemStacks().set(1, recipeWrapper.getInputs().get(0));
+        recipeLayout.getItemStacks().set(2, !noCycle ? focusStack : ImmutableList.copyOf(recipeWrapper.getInputs().subList(1, recipeWrapper.getInputs().size())));
         recipeLayout.getItemStacks().set(3, recipeWrapper.getOutputs().get(0));
-        
-        if(cycleBlocks)
-        {
-            recipeLayout.getItemStacks().set(2, ImmutableList.copyOf(recipeWrapper.getInputs().subList(1, recipeWrapper.getInputs().size())));
-        }
-        else
-        {
-            recipeLayout.getItemStacks().set(2, focusBlock);
-        }
     }
     
     @Override
