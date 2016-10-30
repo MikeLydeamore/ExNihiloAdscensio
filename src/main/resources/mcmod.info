@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "exnihiloadscensio",
+  "name": "Ex Nihilo Adscensio",
+  "description": "\"From nothing, with progression\"",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Insaneau"],
+  "credits": "Insaneau, for, you know, being the author, and SnakeFang12 for, like, doing a bunch of stuff.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
