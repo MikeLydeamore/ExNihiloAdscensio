@@ -1,5 +1,6 @@
 package exnihiloadscensio.tiles;
 
+import exnihiloadscensio.capabilities.CapabilityHeatManager;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
@@ -96,16 +97,33 @@ public class TileCrucible extends TileEntity implements ITickable {
 		}
 		
 	}
-	
-	public int getHeatRate() {
-		BlockPos posBelow = new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
-		IBlockState blockBelow = worldObj.getBlockState(posBelow);
-		
-		if (blockBelow == null)
-			return 0;
-		
-		return HeatRegistry.getHeatAmount(new BlockInfo(blockBelow));
-	}
+    
+    public int getHeatRate()
+    {
+        BlockPos posBelow = pos.add(0, -1, 0);
+        IBlockState stateBelow = worldObj.getBlockState(posBelow);
+        
+        if (stateBelow == null)
+        {
+            return 0;
+        }
+        
+        int heat = HeatRegistry.getHeatAmount(new BlockInfo(stateBelow));
+        
+        if(heat != 0)
+        {
+            return heat;
+        }
+        
+        TileEntity tile = worldObj.getTileEntity(posBelow);
+        
+        if(tile.hasCapability(CapabilityHeatManager.HEAT_CAPABILITY, EnumFacing.UP))
+        {
+            return tile.getCapability(CapabilityHeatManager.HEAT_CAPABILITY, EnumFacing.UP).getHeatRate();
+        }
+        
+        return 0;
+    }
 	
 	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)

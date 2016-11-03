@@ -3,6 +3,7 @@ package exnihiloadscensio;
 import java.io.File;
 
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.capabilities.ENCapabilities;
 import exnihiloadscensio.command.CommandReloadConfig;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
 import exnihiloadscensio.config.Config;
@@ -75,6 +76,7 @@ public class ExNihiloAdscensio {
 
 		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
 
+        ENCapabilities.init();
 		ENItems.init();
 		ENBlocks.init();
 		ENEntities.init();
