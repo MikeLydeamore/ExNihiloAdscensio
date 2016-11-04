@@ -52,51 +52,81 @@ public class TileCrucible extends TileEntity implements ITickable {
 		tank.setCanFill(false);
 		itemHandler = new CrucibleItemHandler(); itemHandler.setTe(this);
 	}
+    
+    @Override
+    public void update()
+    {
+        if (worldObj.isRemote)
+            return;
+        
+        ticksSinceLast++;
+        
+        if (ticksSinceLast >= 10)
+        {
+            ticksSinceLast = 0;
 
-	@Override
-	public void update() {
-		if (worldObj.isRemote)
-			return;
-		
-		ticksSinceLast++;
-		if (ticksSinceLast >= 10) {
-			ticksSinceLast = 0;
-			if (getHeatRate() <= 0)
-				return;
-			
-			Fluid fluidToFill;
-			if (solidAmount > 0) {
-				Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
-				fluidToFill = FluidRegistry.getFluid(meltable.getFluid());
-			}
-			else {
-				ItemStack toMelt = itemHandler.getStackInSlot(0);
-				if (toMelt == null) {
-					return; //If we get to here, there is nothing left to melt.
-				}
-				Meltable meltable = CrucibleRegistry.getMeltable(toMelt);
-				solidAmount = meltable.getAmount();
-				currentItem = new ItemInfo(toMelt);
-				
-				toMelt.stackSize--;
-				if (toMelt.stackSize == 0)
-					itemHandler.setStackInSlot(0, null);
-				else
-					itemHandler.setStackInSlot(0, toMelt);
-				
-				fluidToFill = FluidRegistry.getFluid(meltable.getFluid());
-			}
-			//Check if the tank can take the fluid.
-			FluidStack fStack = new FluidStack(fluidToFill, getHeatRate());
-			int fillAmount = tank.fillInternal(fStack, false);
-			if (fillAmount > 0) {
-				tank.fillInternal(fStack, true);
-				solidAmount -= getHeatRate(); //Moving items into the "meltable" slot is handled earlier.
-				PacketHandler.sendNBTUpdate(this);
-			}
-		}
-		
-	}
+            int heatRate = getHeatRate();
+            
+            if (heatRate <= 0)
+                return;
+            
+            if(solidAmount == 0)
+            {
+                if(itemHandler.getStackInSlot(0) != null)
+                {
+                    currentItem = new ItemInfo(itemHandler.getStackInSlot(0));
+                    itemHandler.getStackInSlot(0).stackSize--;
+                    
+                    if(itemHandler.getStackInSlot(0).stackSize <= 0)
+                    {
+                        itemHandler.setStackInSlot(0, null);
+                    }
+                    
+                    solidAmount = CrucibleRegistry.getMeltable(currentItem).getAmount();
+                }
+                else
+                {
+                    currentItem = null;
+                    PacketHandler.sendNBTUpdate(this);
+                    
+                    return;
+                }
+            }
+            
+            if(itemHandler.getStackInSlot(0) != null && itemHandler.getStackInSlot(0).isItemEqual(currentItem.getItemStack()))
+            {
+                // For meltables with a really small "amount"
+                while(heatRate > solidAmount && itemHandler.getStackInSlot(0) != null)
+                {
+                    solidAmount += CrucibleRegistry.getMeltable(currentItem).getAmount();
+                    itemHandler.getStackInSlot(0).stackSize--;
+                    
+                    if (itemHandler.getStackInSlot(0).stackSize <= 0)
+                    {
+                        itemHandler.setStackInSlot(0, null);
+                    }
+                }
+            }
+            
+            // Never take more than we have left
+            if(heatRate > solidAmount)
+            {
+                heatRate = solidAmount;
+            }
+            
+            if(heatRate > 0 && currentItem != null && CrucibleRegistry.canBeMelted(currentItem))
+            {
+                FluidStack toFill = new FluidStack(FluidRegistry.getFluid(CrucibleRegistry.getMeltable(currentItem).getFluid()), heatRate);
+                int filled = tank.fillInternal(toFill, true);
+                solidAmount -= filled;
+                
+                if(filled > 0)
+                {
+                    PacketHandler.sendNBTUpdate(this);
+                }
+            }
+        }
+    }
     
     public int getHeatRate()
     {
@@ -117,7 +147,7 @@ public class TileCrucible extends TileEntity implements ITickable {
         
         TileEntity tile = worldObj.getTileEntity(posBelow);
         
-        if(tile.hasCapability(CapabilityHeatManager.HEAT_CAPABILITY, EnumFacing.UP))
+        if(tile != null && tile.hasCapability(CapabilityHeatManager.HEAT_CAPABILITY, EnumFacing.UP))
         {
             return tile.getCapability(CapabilityHeatManager.HEAT_CAPABILITY, EnumFacing.UP).getHeatRate();
         }
