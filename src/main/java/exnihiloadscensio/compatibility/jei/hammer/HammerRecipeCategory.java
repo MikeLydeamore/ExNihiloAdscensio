@@ -117,6 +117,12 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
         setRecipe(recipeLayout, recipeWrapper);
     }
 
+    @Override
+    public IDrawable getIcon()
+    {
+        return null;
+    }
+
     private class HammerTooltipCallback implements ITooltipCallback<ItemStack>
     {
         private HammerRecipe recipe;

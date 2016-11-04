@@ -74,4 +74,10 @@ public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidB
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
     }
+
+    @Override
+    public IDrawable getIcon()
+    {
+        return null;
+    }
 }

@@ -74,4 +74,10 @@ public class FluidOnTopRecipeCategory implements IRecipeCategory<FluidOnTopRecip
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
     }
+
+    @Override
+    public IDrawable getIcon()
+    {
+        return null;
+    }
 }

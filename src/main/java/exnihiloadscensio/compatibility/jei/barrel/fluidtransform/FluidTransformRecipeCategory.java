@@ -107,4 +107,10 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
     }
+
+    @Override
+    public IDrawable getIcon()
+    {
+        return null;
+    }
 }

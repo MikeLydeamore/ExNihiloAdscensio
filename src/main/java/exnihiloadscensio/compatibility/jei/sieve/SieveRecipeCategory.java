@@ -131,4 +131,9 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 
 	}
 
+    @Override
+    public IDrawable getIcon()
+    {
+        return null;
+    }
 }
