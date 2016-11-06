@@ -40,7 +40,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 		GameRegistry.<Block>register(this);
 		GameRegistry.register(new ItemBlock(this).setRegistryName("blockInfestedLeaves"));
 		this.setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, false));
-		this.setGraphicsLevel(true);
+		this.leavesFancy = true;
 	}
 	
     @SideOnly(Side.CLIENT)
