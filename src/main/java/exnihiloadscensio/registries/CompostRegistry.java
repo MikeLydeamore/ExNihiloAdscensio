@@ -29,6 +29,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class CompostRegistry {
 
@@ -225,6 +226,11 @@ public class CompostRegistry {
 	
 	public static void recommendAllFood(File file)
 	{
+	    if(FMLCommonHandler.instance().getSide().isServer())
+	    {
+	        return;
+	    }
+	    
 	    IBlockState dirt = Blocks.DIRT.getDefaultState();
 	    Color brown = new Color("7F3F0F");
 	    
