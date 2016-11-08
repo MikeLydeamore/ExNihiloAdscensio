@@ -7,6 +7,7 @@ import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.types.Meltable;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.LogUtil;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import net.minecraft.block.Block;
@@ -167,9 +168,19 @@ public class TileCrucible extends TileEntity implements ITickable {
 			return Util.getTextureFromBlockState(tank.getFluid().getFluid().getBlock().getDefaultState());
 		
 		double solidProportion = ((double) noItems) / MAX_ITEMS;
-		if (currentItem != null) {
+		
+		if (currentItem != null)
+		{
 			Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
-			solidProportion += ((double) solidAmount) / (MAX_ITEMS * meltable.getAmount());
+			
+			if(meltable != null)
+			{
+			    solidProportion += ((double) solidAmount) / (MAX_ITEMS * meltable.getAmount());
+			}
+			else
+			{
+			    LogUtil.throwing(new NullPointerException("Meltable is null! Item is " + currentItem.getItem().getUnlocalizedName()));
+			}
 		}
 		
 		double fluidProportion = ((double) tank.getFluidAmount()) / tank.getCapacity();

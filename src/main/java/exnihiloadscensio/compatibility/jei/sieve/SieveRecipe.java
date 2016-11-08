@@ -26,8 +26,9 @@ public class SieveRecipe implements IRecipeWrapper
     public SieveRecipe(IBlockState block, MeshType mesh)
     {
         List<Siftable> rewards = SieveRegistry.getDrops(new BlockInfo(block));
+        // Filter reward list into item stack list, keeping only those of the correct mesh level
+        List<ItemStack> allOutputs = Lists.newArrayList(Lists.transform(rewards, reward -> reward.getMeshLevel() == mesh.getID() ? reward.getDrop().getItemStack() : null));
         // Make sure no null rewards, Item or ItemStack
-        List<ItemStack> allOutputs = Lists.newArrayList(Lists.transform(rewards, reward -> reward.getDrop().getItemStack()));
         allOutputs.removeIf(stack -> stack == null || stack.getItem() == null);
         
         inputs = Lists.newArrayList(new ItemStack(ENItems.mesh, 1, mesh.getID()), new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block)));

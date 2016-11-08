@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,29 +22,47 @@ public class LogUtil
     {
         String message = object == null ? "null" : object.toString();
         
-        logger.log(level, message);
-        logWriter.write(new SimpleDateFormat("[HH:mm:ss]").format(new Date()));
-        logWriter.write(" [");
-        logWriter.write(level.name());
-        logWriter.write("] ");
-        logWriter.write(message);
-        logWriter.println();
+        String preLine = new SimpleDateFormat("[HH:mm:ss]").format(new Date()) + " [" + level.name() + "] ";
+        
+        for(String line : message.split("\\n"))
+        {
+            logger.log(level, line);
+            logWriter.println(preLine + line);
+        }
+        
         logWriter.flush();
     }
     
-    public static void info(Object object)
+    public static <T extends Throwable> T throwing(T thrown)
     {
-        log(Level.INFO, object);
+        return throwing(Level.ERROR, thrown);
     }
     
-    public static void warn(Object object)
+    public static <T extends Throwable> T throwing(Level level, T thrown)
     {
-        log(Level.WARN, object);
+        log(level, ExceptionUtils.getStackTrace(thrown));
+        
+        return thrown;
+    }
+    
+    public static void fatal(Object object)
+    {
+        log(Level.FATAL, object);
     }
 
     public static void error(Object object)
     {
         log(Level.ERROR, object);
+    }
+
+    public static void warn(Object object)
+    {
+        log(Level.WARN, object);
+    }
+
+    public static void info(Object object)
+    {
+        log(Level.INFO, object);
     }
     
     public static void debug(Object object)
