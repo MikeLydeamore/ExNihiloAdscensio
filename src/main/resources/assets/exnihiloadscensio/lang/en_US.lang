@@ -17,6 +17,10 @@ item.itemMaterial.porcelain_clay.name=Porcelain Clay
 item.itemMaterial.silkworm.name=Silkworm
 item.itemMaterial.grass_seeds.name=Grass Seeds
 item.itemMaterial.ancient_spores.name=Ancient Spores
+item.itemMaterial.doll.name=Porcelain Doll
+
+item.itemDoll.blaze.name=Blazing Doll
+item.itemDoll.enderman.name=Creeping Doll
 
 item.silkwormCooked.name=Cooked Silkworm
 

@@ -28,6 +28,7 @@ public class ItemResource extends Item {
 	public static final String SILKWORM = "silkworm";
 	public static final String ANCIENT_SPORES = "ancient_spores";
 	public static final String GRASS_SEEDS = "grass_seeds";
+	public static final String DOLL_BASE = "doll";
 	
 	private static ArrayList<String> names = new ArrayList<String>();
 
@@ -45,6 +46,7 @@ public class ItemResource extends Item {
 		names.add(2, SILKWORM);
 		names.add(3, ANCIENT_SPORES);
 		names.add(4, GRASS_SEEDS);
+		names.add(5, DOLL_BASE);
 	}
 
 	@Override
@@ -90,7 +92,11 @@ public class ItemResource extends Item {
 	}
 
 	public static ItemStack getResourceStack(String name) {
-		return new ItemStack(ENItems.resources, 1, names.indexOf(name));
+		return getResourceStack(name, 1);
+	}
+	
+	public static ItemStack getResourceStack(String name, int quantity) {
+		return new ItemStack(ENItems.resources, quantity, names.indexOf(name));
 	}
 
 

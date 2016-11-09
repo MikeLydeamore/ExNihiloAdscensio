@@ -41,6 +41,7 @@ import net.minecraftforge.fml.common.event.FMLModIdMappingEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -133,6 +134,7 @@ public class ExNihiloAdscensio {
         CrookRegistry.loadJson(new File(configDirectory, "CrookRegistry.json"));
         FluidTransformRegistry.loadJson(new File(configDirectory, "FluidTransformRegistry.json"));
         BarrelLiquidBlacklistRegistry.loadJson(new File(configDirectory, "BarrelLiquidBlacklistRegistry.json"));
+        
 	}
 	
 	@EventHandler

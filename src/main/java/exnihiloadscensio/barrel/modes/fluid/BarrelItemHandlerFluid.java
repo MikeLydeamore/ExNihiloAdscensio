@@ -1,5 +1,7 @@
 package exnihiloadscensio.barrel.modes.fluid;
 
+import exnihiloadscensio.barrel.modes.mobspawn.BarrelModeMobSpawn;
+import exnihiloadscensio.items.ItemDoll;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
@@ -8,6 +10,7 @@ import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.LogUtil;
 import lombok.Setter;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -58,6 +61,22 @@ public class BarrelItemHandlerFluid extends ItemStackHandler {
             }
             
         }
+        
+        if (stack != null && tank.getFluidAmount() == tank.getCapacity() && stack.getItem() instanceof ItemDoll
+				&& ((ItemDoll) stack.getItem()).getSpawnFluid(stack) == tank.getFluid().getFluid()) {
+			if (!simulate) {
+				barrel.getTank().drain(Fluid.BUCKET_VOLUME, true);
+				barrel.setMode("mobspawn");
+				PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("mobspawn", barrel.getPos()), barrel);
+				
+				((BarrelModeMobSpawn) barrel.getMode()).setDollStack(stack);
+				PacketHandler.sendNBTUpdate(barrel);
+			}
+			ItemStack ret = stack.copy();
+			ret.stackSize--;
+			
+			return ret;
+		}
         
         return stack;
     }

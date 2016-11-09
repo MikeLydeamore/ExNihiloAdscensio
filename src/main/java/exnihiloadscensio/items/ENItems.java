@@ -30,6 +30,8 @@ public class ENItems {
 	public static ItemCookedSilkworm cookedSilkworm;
 
     public static ItemPebble pebbles;
+    
+    public static ItemDoll dolls;
 	
 	public static ArrayList<ItemSeedBase> itemSeeds = new ArrayList<ItemSeedBase>();
 	
@@ -76,6 +78,9 @@ public class ENItems {
 		itemSeeds.add(new ItemSeedBase("sugarcane", Blocks.REEDS.getDefaultState()).setPlantType(EnumPlantType.Beach));
 		itemSeeds.add(new ItemSeedBase("carrot", Blocks.CARROTS.getDefaultState()).setPlantType(EnumPlantType.Crop));
 		itemSeeds.add(new ItemSeedBase("potato", Blocks.POTATOES.getDefaultState()).setPlantType(EnumPlantType.Crop));
+		
+		dolls = new ItemDoll();
+		
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -101,5 +106,7 @@ public class ENItems {
 		
 		for (ItemSeedBase seed : itemSeeds)
 			seed.initModel();
+		
+		dolls.initModel();
 	}
 }

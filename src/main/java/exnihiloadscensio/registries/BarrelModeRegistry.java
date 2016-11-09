@@ -8,6 +8,7 @@ import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
+import exnihiloadscensio.barrel.modes.mobspawn.BarrelModeMobSpawn;
 import exnihiloadscensio.barrel.modes.transform.BarrelModeFluidTransform;
 
 public class BarrelModeRegistry {
@@ -44,6 +45,7 @@ public class BarrelModeRegistry {
 		registerBarrelMode(new BarrelModeFluid(), TriggerType.FLUID);
 		registerBarrelMode(new BarrelModeBlock(), TriggerType.NONE);
 		registerBarrelMode(new BarrelModeFluidTransform(), TriggerType.NONE);
+		registerBarrelMode(new BarrelModeMobSpawn(), TriggerType.NONE);
 	}
 	
 	public static IBarrelMode getModeByName(String name)

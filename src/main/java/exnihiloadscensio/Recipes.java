@@ -49,5 +49,10 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.mesh, 1, 4), new Object[] {"x x","xyx","x x", 'x', Items.DIAMOND, 'y', new ItemStack(ENItems.mesh, 1, 3)}));
 		
 		FurnaceRecipes.instance().addSmeltingRecipe(ItemResource.getResourceStack("silkworm"), new ItemStack(ENItems.cookedSilkworm), 0.7f);
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 4), new Object[] {"xyx"," x ", "x x", 'x', ItemResource.getResourceStack("porcelain_clay"), 'y', "gemDiamond"}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 6), new Object[] {"xyx"," x ", "x x", 'x', ItemResource.getResourceStack("porcelain_clay"), 'y', "gemEmerald"}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.dolls, 1, 0), new Object[] {"xyx", "zwz", "xvx", 'x', Items.BLAZE_POWDER, 'v', Items.NETHER_WART, 'w', ItemResource.getResourceStack("doll"), 'y', "dustRedstone", 'z', "dustGlowstone"}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.dolls, 1, 1), new Object[] {"xyx", "zwz", "xvx", 'v', Items.NETHER_WART, 'x', "dyeBlack", 'w', ItemResource.getResourceStack("doll"), 'y', "dustRedstone", 'z', "dustGlowstone"}));
 	}
 }
