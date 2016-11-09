@@ -13,14 +13,16 @@ import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.util.ItemInfo;
+import lombok.Getter;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class FluidBlockTransformerRegistry {
-	
+public class FluidBlockTransformerRegistry
+{
+	@Getter
 	private static ArrayList<FluidBlockTransformer> registry = new ArrayList<FluidBlockTransformer>();
 	
 	public static void register(Fluid fluid, ItemInfo inputBlock, ItemInfo outputBlock) {

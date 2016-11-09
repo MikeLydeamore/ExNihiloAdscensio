@@ -20,11 +20,13 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -33,8 +35,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -88,33 +88,37 @@ public class BarrelModeFluid implements IBarrelMode {
 
 		return currenttip;
 	}
-
-	@Override
-	public boolean onBlockActivated(World world, TileBarrel barrel,
-			BlockPos pos, IBlockState state, EntityPlayer player,
-			EnumFacing side, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItemMainhand();
-		if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-			IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			FluidStack fluid = barrel.getTank().drain(Fluid.BUCKET_VOLUME, false);
-			int amount = handler.fill(fluid, true);
-			if (amount != 0) {
-				barrel.getTank().drain(Fluid.BUCKET_VOLUME, true);
-			}
-			return true;
-		}
-
-		if (stack != null) {
-			ItemStack stack2 = getHandler(barrel).insertItem(0, stack, true);
-			if (!ItemStack.areItemStacksEqual(stack, stack2)) {
-				getHandler(barrel).insertItem(0, stack, false);
-				stack.stackSize--;
-				return true;
-			}
-		}
-		return false;
-	}
-
+    
+    @Override
+    public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+        
+        if (stack != null)
+        {
+            ItemStack remainder = getHandler(barrel).insertItem(0, stack, false);
+            
+            int size = remainder == null ? 0 : remainder.stackSize;
+            
+            if(stack.getItem().hasContainerItem(stack))
+            {
+                ItemStack container = stack.getItem().getContainerItem(stack);
+                
+                // Should always be 1 but LET'S JUST MAKE SURE
+                container.stackSize = stack.stackSize - size;
+                
+                if(!player.inventory.addItemStackToInventory(container))
+                {
+                    player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, container));
+                }
+            }
+            
+            player.setHeldItem(EnumHand.MAIN_HAND, remainder);
+        }
+        
+        return false;
+    }
+    
 	@Override
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {

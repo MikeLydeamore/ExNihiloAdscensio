@@ -3,9 +3,12 @@ package exnihiloadscensio.compatibility;
 import java.util.List;
 
 import exnihiloadscensio.blocks.BlockBarrel;
+import exnihiloadscensio.blocks.BlockCrucible;
 import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import exnihiloadscensio.blocks.BlockSieve;
+import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
+import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.tiles.TileSieve;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -19,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class CompatWaila implements IWailaDataProvider {
 
@@ -72,6 +76,30 @@ public class CompatWaila implements IWailaDataProvider {
 		    }
 		}
 		
+		if(accessor.getBlock() instanceof BlockCrucible)
+		{
+		    TileCrucible tile = (TileCrucible) accessor.getTileEntity();
+		    
+		    ItemStack solid = tile.getCurrentItem() == null ? null : tile.getCurrentItem().getItemStack();
+		    FluidStack liquid = tile.getTank().getFluid();
+		    
+		    String solidName = solid == null ? "None" : solid.getDisplayName();
+		    String liquidName = liquid == null ? "None" : liquid.getLocalizedName();
+		    
+		    int solidAmount = Math.max(0, tile.getSolidAmount());
+		    
+		    ItemStack toMelt = tile.getItemHandler().getStackInSlot(0);
+		    
+		    if(toMelt != null)
+		    {
+		        solidAmount += CrucibleRegistry.getMeltable(toMelt).getAmount() * toMelt.stackSize;
+		    }
+		    
+            currenttip.add(String.format("Solid (%s): %d", solidName, solidAmount));
+            currenttip.add(String.format("Liquid (%s): %d", liquidName, tile.getTank().getFluidAmount()));
+		    currenttip.add("Rate: " + tile.getHeatRate() + "x");
+		}
+		
 		return currenttip;
 	}
 
@@ -93,6 +121,7 @@ public class CompatWaila implements IWailaDataProvider {
 		registrar.registerBodyProvider(instance, BlockBarrel.class);
 		registrar.registerBodyProvider(instance, BlockSieve.class);
 		registrar.registerBodyProvider(instance, BlockInfestedLeaves.class);
+		registrar.registerBodyProvider(instance, BlockCrucible.class);
 	}
 
 }

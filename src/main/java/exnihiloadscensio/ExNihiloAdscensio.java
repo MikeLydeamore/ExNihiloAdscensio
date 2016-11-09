@@ -2,10 +2,8 @@ package exnihiloadscensio;
 
 import java.io.File;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.capabilities.ENCapabilities;
 import exnihiloadscensio.command.CommandReloadConfig;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
 import exnihiloadscensio.config.Config;
@@ -27,6 +25,7 @@ import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.util.LogUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,15 +57,18 @@ public class ExNihiloAdscensio {
 
 	public static File configDirectory;
 	
-	public Logger logger = LogManager.getLogger("Ex Nihilo Adscensio");
+	public static boolean configsLoaded = false;
 	
-	static {
+	static
+	{
 		FluidRegistry.enableUniversalBucket();
 	}
 	
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
+	    LogUtil.setup();
+	    
 		configDirectory = new File(event.getModConfigurationDirectory(), "exnihiloadscensio");
 		configDirectory.mkdirs();
 		
@@ -74,8 +76,7 @@ public class ExNihiloAdscensio {
 
 		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
 
-		FluidRegistry.enableUniversalBucket();
-		
+        ENCapabilities.init();
 		ENItems.init();
 		ENBlocks.init();
 		ENEntities.init();
@@ -119,6 +120,8 @@ public class ExNihiloAdscensio {
 	
 	public static void loadConfigs()
 	{
+	    configsLoaded = true;
+	    
         CompostRegistry.loadJson(new File(configDirectory, "CompostRegistry.json"));
         CompostRegistry.recommendAllFood(new File(configDirectory, "RecommendedFoodRegistry.json"));
         HammerRegistry.loadJson(new File(configDirectory, "HammerRegistry.json"));

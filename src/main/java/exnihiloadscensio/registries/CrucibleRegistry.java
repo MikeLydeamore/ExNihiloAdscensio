@@ -39,10 +39,12 @@ public class CrucibleRegistry {
 	}
 	
 	public static boolean canBeMelted(ItemStack stack) {
-		ItemInfo info = new ItemInfo(stack);
-		
-		return registry.containsKey(info);
-	}
+        return canBeMelted(new ItemInfo(stack));
+    }
+	
+	public static boolean canBeMelted(ItemInfo info) {
+        return registry.containsKey(info) && FluidRegistry.isFluidRegistered(registry.get(info).getFluid());
+    }
 	
 	public static Meltable getMeltable(ItemStack stack) {
 		ItemInfo info = new ItemInfo(stack);

@@ -63,7 +63,7 @@ public class TileBarrel extends TileEntity implements ITickable {
         {
             ItemStack stack = player.getHeldItemMainhand();
             boolean result = FluidUtil.interactWithFluidHandler(stack, this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side), player);
-            
+
             if (result)
             {
                 if(getBlockType().getLightValue(state, world, pos) != world.getLight(pos))

@@ -12,12 +12,14 @@ import com.google.gson.reflect.TypeToken;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.FluidFluidBlock;
 import exnihiloadscensio.util.ItemInfo;
+import lombok.Getter;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class FluidOnTopRegistry {
-
+public class FluidOnTopRegistry
+{
+    @Getter
 	private static ArrayList<FluidFluidBlock> registry = new ArrayList<FluidFluidBlock>();
 
 	public static void register(Fluid fluidInBarrel, Fluid fluidOnTop, ItemInfo result) {

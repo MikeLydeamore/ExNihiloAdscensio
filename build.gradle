@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "0.0.28"
+version = "0.0.39"
 group= "exnihiloadscensio" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloadscensio"
 
@@ -28,7 +28,7 @@ sourceCompatibility=1.8
 targetCompatibility=1.8
 
 minecraft {
-    version = "1.10.2-12.18.2.2107"
+    version = "1.10.2-12.18.2.2121"
     runDir = "run"
 	mappings = "snapshot_20160824"
 }
@@ -49,8 +49,8 @@ repositories
 
 dependencies
 {
-    deobfCompile "mezz.jei:jei_1.10.2:3.12.+:api"
-    runtime "mezz.jei:jei_1.10.2:3.12.+"
+    deobfCompile "mezz.jei:jei_1.10.2:3.13.+:api"
+    runtime "mezz.jei:jei_1.10.2:3.13.+"
     
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.0.+"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.5.+"

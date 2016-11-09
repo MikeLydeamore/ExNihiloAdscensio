@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HammerReward;
+import exnihiloadscensio.util.LogUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
@@ -116,6 +117,12 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
         setRecipe(recipeLayout, recipeWrapper);
     }
 
+    @Override
+    public IDrawable getIcon()
+    {
+        return null;
+    }
+
     private class HammerTooltipCallback implements ITooltipCallback<ItemStack>
     {
         private HammerRecipe recipe;
@@ -163,7 +170,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
                 List<Integer> levelOrder = Lists.newArrayList(tieredOutputs.keySet());
                 levelOrder.sort((levelA, levelB) -> Integer.compare(levelB, levelA));
                 
-                ExNihiloAdscensio.instance.logger.info(levelOrder);
+                LogUtil.info(levelOrder);
                 
                 for(int level : levelOrder)
                 {

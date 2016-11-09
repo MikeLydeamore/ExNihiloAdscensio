@@ -13,10 +13,12 @@ import com.google.gson.reflect.TypeToken;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
+import lombok.Getter;
 import net.minecraft.init.Blocks;
 
 public class FluidTransformRegistry {
 	
+    @Getter
 	private static ArrayList<FluidTransformer> registry = new ArrayList<FluidTransformer>();
 	
 	private static HashMap<String, ArrayList<FluidTransformer>> registryInternal = new HashMap<String, ArrayList<FluidTransformer>>();

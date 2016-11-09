@@ -10,8 +10,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.LogUtil;
 import net.minecraft.item.Item;
 
 public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSerializer<ItemInfo>
@@ -39,8 +39,8 @@ public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSeria
         
         if(item == null)
         {
-            ExNihiloAdscensio.instance.logger.error("Error parsing JSON: Invalid Item: " + json.toString());
-            ExNihiloAdscensio.instance.logger.error("This may result in crashing or other undefined behavior");
+            LogUtil.error("Error parsing JSON: Invalid Item: " + json.toString());
+            LogUtil.error("This may result in crashing or other undefined behavior");
         }
         
         return new ItemInfo(item, meta);

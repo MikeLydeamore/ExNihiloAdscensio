@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -19,24 +20,48 @@ public class BlockInfo
     
     public BlockInfo(IBlockState state)
     {
-        block = state.getBlock();
-        meta = state.getBlock().getMetaFromState(state);
+        block = state == null ? null : state.getBlock();
+        meta = state == null ? -1 : state.getBlock().getMetaFromState(state);
     }
     
     public BlockInfo(ItemStack stack)
     {
-        block = Block.getBlockFromItem(stack.getItem());
-        meta = stack.getItemDamage();
+        block = (stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemBlock)) ? null : Block.getBlockFromItem(stack.getItem());
+        meta = (stack == null || stack.getItem() == null) ? null : stack.getItemDamage();
     }
     
     public BlockInfo(String string)
     {
-        String[] arr = string.split(":");
-        block = Block.getBlockFromName(arr[0] + ":" + arr[1]);
+        String[] split = string.split(":");
         
-        if (arr.length == 3)
+        if(split.length == 1)
         {
-            meta = Integer.parseInt(arr[2]);
+            block = Block.getBlockFromName("minecraft:" + split[0]);
+        }
+        else if(split.length == 2)
+        {
+            try
+            {
+                meta = split[1].equals("*") ? -1 : Integer.parseInt(split[1]);
+                block = Block.getBlockFromName("minecraft:" + split[0]);
+            }
+            catch(NumberFormatException e)
+            {
+                meta = -1;
+                block = Block.getBlockFromName(split[0] + ":" + split[1]);
+            }
+        }
+        else if(split.length == 3)
+        {
+            try
+            {
+                meta = split[2].equals("*") ? -1 : Integer.parseInt(split[2]);
+                block = Block.getBlockFromName(split[0] + ":" + split[1]);
+            }
+            catch(NumberFormatException e)
+            {
+                meta = -1;
+            }
         }
         else
         {
@@ -46,7 +71,7 @@ public class BlockInfo
     
     public String toString()
     {
-        return Block.REGISTRY.getNameForObject(block) + ":" + meta;
+        return Block.REGISTRY.getNameForObject(block) + (meta == -1 ? "" : (":" + meta));
     }
     
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
@@ -68,7 +93,7 @@ public class BlockInfo
     @SuppressWarnings("deprecation")
     public IBlockState getBlockState()
     {
-        return block.getStateFromMeta(meta == -1 ? 0 : meta);
+        return block == null ? null : block.getStateFromMeta(meta == -1 ? 0 : meta);
     }
     
     public int hashCode()
@@ -82,13 +107,18 @@ public class BlockInfo
         {
             BlockInfo info = (BlockInfo) other;
             
+            if(block == null || info.block == null)
+            {
+                return false;
+            }
+            
             if (meta == -1 || info.meta == -1)
             {
-                return block == null ? info.block == null : block.equals(info.block);
+                return block.equals(info.block);
             }
             else
             {
-                return meta == info.meta && (block == null ? info.block == null : block.equals(info.block));
+                return meta == info.meta && block.equals(info.block);
             }
         }
         

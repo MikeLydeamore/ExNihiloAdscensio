@@ -1,6 +1,5 @@
 package exnihiloadscensio.blocks;
 
-import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
@@ -82,11 +81,7 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider {
     	            int inputValue = Util.getLightValue(mode.getInputStack());
     	            int outputValue = Util.getLightValue(mode.getOutputStack());
     	            
-    	            int actualValue = Math.round(Util.weightedAverage(outputValue, inputValue, mode.getProgress()));
-    	            
-    	            ExNihiloAdscensio.instance.logger.debug(String.format("Light Value: (%d -> %d) %d%n", inputValue, outputValue, actualValue));
-    	            
-    	            return actualValue;
+    	            return Math.round(Util.weightedAverage(outputValue, inputValue, mode.getProgress()));
     	        }
             }
 	    }
