@@ -1,29 +1,74 @@
 package exnihiloadscensio.client.renderers;
 
-import javax.annotation.Nullable;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import com.google.common.collect.Lists;
 
 import exnihiloadscensio.tiles.TileInfestedLeaves;
-import exnihiloadscensio.util.Util;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.model.pipeline.LightUtil;
 
-public class RenderInfestedLeaves implements IBlockColor
+public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfestedLeaves>
 {
     @Override
-    public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
+    public void renderTileEntityAt(TileInfestedLeaves tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        if (worldIn == null || pos == null)
-            return Util.whiteColor.toInt();
-        
-        TileInfestedLeaves tile = (TileInfestedLeaves) worldIn.getTileEntity(pos);
-        
-        if (tile != null)
+        if(tile != null)
         {
-            return tile.getProgress() >= 1.0F ? Util.whiteColor.toInt() : tile.getColor();
+            IBlockState leafBlock = tile.getLeafBlock();
+            IBakedModel leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(leafBlock);
+            
+            if(leafModel == null)
+            {
+                leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.LEAVES.getDefaultState());
+            }
+            
+            List<BakedQuad> leafQuads = Lists.newArrayList();
+            
+            long seed = tile.getWorld().rand.nextLong();
+            
+            for(EnumFacing side : EnumFacing.VALUES)
+            {
+                if(leafBlock.shouldSideBeRendered(tile.getWorld(), tile.getPos(), side))
+                {
+                    leafQuads.addAll(leafModel.getQuads(leafBlock, side, seed));
+                }
+            }
+            
+            int color = tile.getColor();
+            
+            Tessellator tessellator = Tessellator.getInstance();
+            VertexBuffer buffer = tessellator.getBuffer();
+            
+            RenderHelper.disableStandardItemLighting();
+            
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y, z);
+            GlStateManager.enableAlpha();
+            
+            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+            
+            for(BakedQuad quad : leafQuads)
+            {
+                LightUtil.renderQuadColor(buffer, quad, color);
+            }
+            
+            tessellator.draw();
+            RenderHelper.enableStandardItemLighting();
+            GlStateManager.popMatrix();
         }
-        
-        return Util.whiteColor.toInt();
     }
 }

@@ -22,13 +22,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider {
 
@@ -43,12 +42,27 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 		this.leavesFancy = true;
 	}
 	
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
-                new ModelResourceLocation(getRegistryName(), "inventory"));
-    }
+	public EnumBlockRenderType getRenderType(IBlockState state)
+	{
+	    return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	}
+	
+	public static void infestLeafBlock(World world, BlockPos pos)
+	{
+	    IBlockState block = world.getBlockState(pos);
+	    
+	    if(block.getBlock().isLeaves(block, world, pos) && !block.getBlock().equals(ENBlocks.infestedLeaves))
+	    {
+	        world.setBlockState(pos, ENBlocks.infestedLeaves.getDefaultState());
+	        
+	        TileInfestedLeaves tile = (TileInfestedLeaves) world.getTileEntity(pos);
+	        
+	        if(tile != null)
+	        {
+	            tile.setLeafBlock(block);
+	        }
+	    }
+	}
 	
 	@Override
 	protected BlockStateContainer createBlockState()
@@ -108,17 +122,16 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
 		return world.setBlockToAir(pos);
 	}
-
-	@Override
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world,
-			BlockPos pos, int fortune) {
-		// TODO Auto-generated method stub
+    
+    @Override
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    {
 		return new ArrayList<>();
 	}
 
 	@Override
-	public EnumType getWoodType(int meta) {
-		// TODO Auto-generated method stub
+	public EnumType getWoodType(int meta)
+	{
 		return null;
 	}
 

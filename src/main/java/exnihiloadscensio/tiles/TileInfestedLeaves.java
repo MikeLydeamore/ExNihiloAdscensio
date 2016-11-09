@@ -1,12 +1,11 @@
 package exnihiloadscensio.tiles;
 
-import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import exnihiloadscensio.config.Config;
-import exnihiloadscensio.networking.MessageInfestedLeavesUpdate;
-import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,41 +18,36 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileInfestedLeaves extends TileEntity implements ITickable {
+public class TileInfestedLeaves extends TileEntity implements ITickable
+{
     private static int tileId = 0;
     
-	@Getter
-	private float progress = 0;
-	@Getter
-	private boolean hasNearbyLeaves = true;
-	
-	// Stop ALL infested leaves from updating on the same tick always - this way they're evenly spread out
-	// Let's hope no one gets 2 billion in their server
-	private int updateIndex = tileId++ % Config.leavesUpdateFrequency;
-	
-	@Override
-	public void update() 
+    @Getter
+    private float progress = 0;
+    @Getter
+    private boolean hasNearbyLeaves = true;
+    @Getter
+    private IBlockState leafBlock = Blocks.LEAVES.getDefaultState();
+    
+    // Stop ALL infested leaves from updating on the same tick always - this way they're evenly spread out
+    // Let's hope no one gets 2 billion in their server
+    private int updateIndex = tileId++ % Config.leavesUpdateFrequency;
+    
+    @Override
+    public void update()
     {
-	    if(progress < 1.0F)
-	    {
+        if (progress < 1.0F)
+        {
             progress += 1.0 / Config.infestedLeavesTicks;
             markDirty();
             
             if (progress > 1.0F)
             {
                 progress = 1.0F;
+                
+                worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
             }
-            
-            if(!worldObj.isRemote)
-            {
-                PacketHandler.sendToAllAround(new MessageInfestedLeavesUpdate(progress, pos), this);
-            }
-            else if(Config.doLeavesUpdateClient && worldObj.getWorldTime() % Config.leavesUpdateFrequency == updateIndex)
-            {
-                IBlockState state = worldObj.getBlockState(pos);
-                worldObj.notifyBlockUpdate(pos, state, state, 2);
-            }
-	    }
+        }
         
         // Don't update unless there's leaves nearby, or we haven't checked for leavesUpdateFrequency ticks. And only update on the server
         if (!worldObj.isRemote && hasNearbyLeaves || worldObj.getWorldTime() % Config.leavesUpdateFrequency == updateIndex)
@@ -75,7 +69,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable {
                             
                             if (worldObj.rand.nextFloat() < Config.leavesSpreadChance)
                             {
-                                worldObj.setBlockState(newPos, ENBlocks.infestedLeaves.getDefaultState());
+                                BlockInfestedLeaves.infestLeafBlock(worldObj, newPos);
                             }
                         }
                     }
@@ -84,59 +78,74 @@ public class TileInfestedLeaves extends TileEntity implements ITickable {
         }
     }
     
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public int getColor()
-	{
-	    if(worldObj == null || pos == null)
-	    {
-	        return Util.whiteColor.toInt();
-	    }
-	    else
-	    {
-	        Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(worldObj, pos));
-	        return Color.average(green, Util.whiteColor, progress).toInt();
-	    }
-	}
-	
-	public void setProgress(float progress)
-	{
-		this.progress = progress;
-		this.markDirty();
-	}
-	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
-		tag.setFloat("progress", progress);
-		return super.writeToNBT(tag);
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
-		progress = tag.getFloat("progress");
-		super.readFromNBT(tag);
-	}
-	
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
     {
-		NBTTagCompound tag = this.writeToNBT(new NBTTagCompound());
-
-		return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
+        if (worldObj == null || pos == null)
+        {
+            return Util.whiteColor.toInt();
+        }
+        else
+        {
+            Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(worldObj, pos));
+            return Color.average(green, Util.whiteColor, (float) Math.pow(progress, 2)).toInt();
+        }
     }
-	
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
-		NBTTagCompound tag = pkt.getNbtCompound();
-		readFromNBT(tag);
-	}
-	
-	@Override
-	public NBTTagCompound getUpdateTag()
+    
+    public void setProgress(float newProgress)
     {
-		NBTTagCompound tag = writeToNBT(new NBTTagCompound());
-        return tag;
+        progress = newProgress;
+        markDirty();
+    }
+    
+    public void setLeafBlock(IBlockState block)
+    {
+        leafBlock = block;
+        markDirty();
+    }
+    
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+    {
+        tag.setFloat("progress", progress);
+        tag.setString("leafBlock", leafBlock.getBlock().getRegistryName().toString());
+        tag.setInteger("leafBlockMeta", leafBlock.getBlock().getMetaFromState(leafBlock));
+        return super.writeToNBT(tag);
+    }
+    
+    @SuppressWarnings("deprecation")
+    @Override
+    public void readFromNBT(NBTTagCompound tag)
+    {
+        progress = tag.getFloat("progress");
+        
+        if (tag.hasKey("leafBlock") && tag.hasKey("leafBlockMeta"))
+        {
+            leafBlock = Block.getBlockFromName(tag.getString("leafBlock")).getStateFromMeta(tag.getInteger("leafBlockMeta"));
+        }
+        else
+        {
+            leafBlock = Blocks.LEAVES.getDefaultState();
+        }
+        
+        super.readFromNBT(tag);
+    }
+    
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), getUpdateTag());
+    }
+    
+    @Override
+    public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
+    {
+        readFromNBT(packet.getNbtCompound());
+    }
+    
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return writeToNBT(new NBTTagCompound());
     }
 }
