@@ -30,6 +30,11 @@
                 "textures": {
                     "layer0": "exnihiloadscensio:items/grassSeeds"
                 }
+            },
+            "doll": {
+            	"textures": {
+                    "layer0": "exnihiloadscensio:items/doll"
+                }
             }
         }
     }

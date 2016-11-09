@@ -5,6 +5,7 @@ import java.util.List;
 import exnihiloadscensio.barrel.BarrelFluidHandler;
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.barrel.modes.transform.BarrelModeFluidTransform;
+import exnihiloadscensio.items.ItemDoll;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelLiquidBlacklistRegistry;
