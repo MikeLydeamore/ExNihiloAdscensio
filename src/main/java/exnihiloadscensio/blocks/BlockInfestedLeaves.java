@@ -64,6 +64,11 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	    }
 	}
 	
+	public void initModel()
+	{
+	    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+	}
+	
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
