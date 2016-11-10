@@ -47,7 +47,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerColorHandlers()
 	{
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new RenderOrePiece(), OreRegistry.getItemOreRegistry().toArray(new ItemOre[0]));
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new RenderOrePiece(), OreRegistry.getItemOreRegistry().toArray(new ItemOre[0]));
 	}
 
 

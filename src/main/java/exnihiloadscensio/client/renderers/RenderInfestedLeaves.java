@@ -1,5 +1,6 @@
 package exnihiloadscensio.client.renderers;
 
+
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
@@ -28,6 +30,9 @@ public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfested
     {
         if(tile != null)
         {
+            long seed = tile.getWorld().rand.nextLong();
+            int color = tile.getColor();
+            
             IBlockState leafBlock = tile.getLeafBlock();
             IBakedModel leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(leafBlock);
             
@@ -38,8 +43,6 @@ public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfested
             
             List<BakedQuad> leafQuads = Lists.newArrayList();
             
-            long seed = tile.getWorld().rand.nextLong();
-            
             for(EnumFacing side : EnumFacing.VALUES)
             {
                 if(leafBlock.shouldSideBeRendered(tile.getWorld(), tile.getPos(), side))
@@ -48,16 +51,14 @@ public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfested
                 }
             }
             
-            int color = tile.getColor();
-            
             Tessellator tessellator = Tessellator.getInstance();
             VertexBuffer buffer = tessellator.getBuffer();
             
-            RenderHelper.disableStandardItemLighting();
+            bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
-            GlStateManager.enableAlpha();
+            RenderHelper.disableStandardItemLighting();
             
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
             
@@ -67,6 +68,7 @@ public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfested
             }
             
             tessellator.draw();
+            
             RenderHelper.enableStandardItemLighting();
             GlStateManager.popMatrix();
         }

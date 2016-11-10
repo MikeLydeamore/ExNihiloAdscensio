@@ -29,7 +29,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
     @Getter
     private IBlockState leafBlock = Blocks.LEAVES.getDefaultState();
     
-    // Stop ALL infested leaves from updating on the same tick always - this way they're evenly spread out
+    // Stop ALL infested leaves from updating on the same tick always - this way they're evenly spread out and not causing a spike in tick time every time they update
     // Let's hope no one gets 2 billion in their server
     private int updateIndex = tileId++ % Config.leavesUpdateFrequency;
     
@@ -76,6 +76,13 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
                 }
             }
         }
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return 128 * 128;
     }
     
     @SideOnly(Side.CLIENT)
