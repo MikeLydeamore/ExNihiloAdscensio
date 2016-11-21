@@ -15,6 +15,4 @@ public class HammerReward {
 	private float chance;
 	@Getter
 	private float fortuneChance;
-
-
 }

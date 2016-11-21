@@ -71,7 +71,7 @@ public class TileCrucible extends TileEntity implements ITickable {
             if (heatRate <= 0)
                 return;
             
-            if(solidAmount == 0)
+            if(solidAmount <= 0)
             {
                 if(itemHandler.getStackInSlot(0) != null)
                 {
@@ -87,8 +87,12 @@ public class TileCrucible extends TileEntity implements ITickable {
                 }
                 else
                 {
-                    currentItem = null;
-                    PacketHandler.sendNBTUpdate(this);
+                    if(currentItem != null)
+                    {
+                        currentItem = null;
+    
+                        PacketHandler.sendNBTUpdate(this);
+                    }
                     
                     return;
                 }
@@ -267,37 +271,50 @@ public class TileCrucible extends TileEntity implements ITickable {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
 				capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ||
 				super.hasCapability(capability, facing);
-	}
-	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		if (currentItem != null) {
-			NBTTagCompound currentItemTag = currentItem.writeToNBT(new NBTTagCompound());
-			tag.setTag("currentItem", currentItemTag);
-		}
-		tag.setInteger("solidAmount", solidAmount);
-		NBTTagCompound itemHandlerTag = itemHandler.serializeNBT();
-		tag.setTag("itemHandler", itemHandlerTag);
-		
-		NBTTagCompound tankTag = tank.writeToNBT(new NBTTagCompound());
-		tag.setTag("tank", tankTag);
-		
-		return super.writeToNBT(tag);
-	}
-	
+    }
+    
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+    {
+        if (currentItem != null)
+        {
+            NBTTagCompound currentItemTag = currentItem.writeToNBT(new NBTTagCompound());
+            tag.setTag("currentItem", currentItemTag);
+        }
+        
+        tag.setInteger("solidAmount", solidAmount);
+        
+        NBTTagCompound itemHandlerTag = itemHandler.serializeNBT();
+        tag.setTag("itemHandler", itemHandlerTag);
+        
+        NBTTagCompound tankTag = tank.writeToNBT(new NBTTagCompound());
+        tag.setTag("tank", tankTag);
+        
+        return super.writeToNBT(tag);
+    }
+    
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
-		if (tag.hasKey("currentItem")) {
+		if (tag.hasKey("currentItem"))
+		{
 			currentItem = ItemInfo.readFromNBT(tag.getCompoundTag("currentItem"));
 		}
-		solidAmount = tag.getInteger("solidAmount");
-		if (tag.hasKey("itemHandler"))	{
-			itemHandler.deserializeNBT((NBTTagCompound) tag.getTag("itemHandler"));
-		}
-		if (tag.hasKey("tank")) {
-			tank.readFromNBT((NBTTagCompound) tag.getTag("tank"));
+		else
+		{
+		    currentItem = null;
 		}
 		
+		solidAmount = tag.getInteger("solidAmount");
+		
+		if (tag.hasKey("itemHandler"))
+		{
+			itemHandler.deserializeNBT((NBTTagCompound) tag.getTag("itemHandler"));
+		}
+		
+		if (tag.hasKey("tank"))
+		{
+			tank.readFromNBT((NBTTagCompound) tag.getTag("tank"));
+		}
 		
 		super.readFromNBT(tag);
 	}

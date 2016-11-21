@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,12 +21,19 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class FluidOnTopRegistry
 {
     @Getter
-	private static ArrayList<FluidFluidBlock> registry = new ArrayList<FluidFluidBlock>();
+    private static ArrayList<FluidFluidBlock> registry = new ArrayList<>();
+    private static List<FluidFluidBlock> externalRegistry = new ArrayList<>();
 
-	public static void register(Fluid fluidInBarrel, Fluid fluidOnTop, ItemInfo result) {
-		FluidFluidBlock reg = new FluidFluidBlock(fluidInBarrel.getName(), fluidOnTop.getName(), result);
-		registry.add(reg);
-	}
+    public static void register(Fluid fluidInBarrel, Fluid fluidOnTop, ItemInfo result)
+    {
+        registerInternal(fluidInBarrel, fluidOnTop, result);
+        externalRegistry.add(new FluidFluidBlock(fluidInBarrel.getName(), fluidOnTop.getName(), result));
+    }
+    
+    private static void registerInternal(Fluid fluidInBarrel, Fluid fluidOnTop, ItemInfo result)
+    {
+        registry.add(new FluidFluidBlock(fluidInBarrel.getName(), fluidOnTop.getName(), result));
+    }
 	
 	public static boolean isValidRecipe(Fluid fluidInBarrel, Fluid fluidOnTop) {
 		if (fluidInBarrel == null || fluidOnTop == null)
@@ -48,23 +56,21 @@ public class FluidOnTopRegistry
 		
 		return null;
 	}
-	
-	private static Gson gson;
-
-	public static void loadJson(File file)
+    
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
+    
+    public static void loadJson(File file)
 	{
 	    registry.clear();
 	    
-		gson = new GsonBuilder().setPrettyPrinting()
-				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
 		if (file.exists())
 		{
 			try 
 			{
 				FileReader fr = new FileReader(file);
-				ArrayList<FluidFluidBlock> gsonInput = gson.fromJson(fr, new TypeToken<ArrayList<FluidFluidBlock>>(){}.getType());
+				List<FluidFluidBlock> gsonInput = gson.fromJson(fr, new TypeToken<List<FluidFluidBlock>>(){}.getType());
 				
-				registry = gsonInput;
+				registry.addAll(gsonInput);
 			} 
 			catch (Exception e) 
 			{
@@ -76,6 +82,8 @@ public class FluidOnTopRegistry
 			registerDefaults();
 			saveJson(file);
 		}
+		
+		registry.addAll(externalRegistry);
 	}
 	
 	public static void saveJson(File file)
@@ -93,9 +101,9 @@ public class FluidOnTopRegistry
 		}
 	}
 	
-	public static void registerDefaults() {
-		register(FluidRegistry.LAVA, FluidRegistry.WATER, new ItemInfo(Blocks.OBSIDIAN.getDefaultState()));
-		register(FluidRegistry.WATER, FluidRegistry.LAVA, new ItemInfo(Blocks.COBBLESTONE.getDefaultState()));
+	public static void registerDefaults()
+	{
+		registerInternal(FluidRegistry.LAVA, FluidRegistry.WATER, new ItemInfo(Blocks.OBSIDIAN.getDefaultState()));
+		registerInternal(FluidRegistry.WATER, FluidRegistry.LAVA, new ItemInfo(Blocks.COBBLESTONE.getDefaultState()));
 	}
-	
 }
