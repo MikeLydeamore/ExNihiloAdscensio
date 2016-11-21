@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exnihiloadscensio.ExNihiloAdscensio;
-import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -65,7 +65,7 @@ public class ItemResource extends Item {
 		if (stack.getItemDamage() == names.indexOf(SILKWORM)) {
 			IBlockState state = world.getBlockState(pos);
 			if (state != null && state.getBlock() != null && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2)) {
-				world.setBlockState(pos, ENBlocks.infestedLeaves.getDefaultState());
+			    BlockInfestedLeaves.infestLeafBlock(world, pos);
 				stack.stackSize--;
 				return EnumActionResult.SUCCESS;
 			}

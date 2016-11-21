@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,68 +18,81 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class CrucibleRegistry {
+public class CrucibleRegistry
+{
+    private static Map<ItemInfo, Meltable> registry = new HashMap<>();
+    private static Map<ItemInfo, Meltable> externalRegistry = new HashMap<>();
 	
-	private static HashMap<ItemInfo, Meltable> registry = new HashMap<ItemInfo, Meltable>();
-	
-	private static Gson gson;
-	
-	public static void register(ItemInfo item, Fluid fluid, int amount) {
-		Meltable meltable = new Meltable(fluid.getName(), amount);
-		
-		registry.put(item, meltable);
-	}
-	
-	public static void register(ItemStack stack, Fluid fluid, int amount) {
-		register(new ItemInfo(stack), fluid, amount);
-	}
-	
-	public static void register(ItemInfo item, Meltable meltable) {
-		registry.put(item, meltable);
-	}
-	
-	public static boolean canBeMelted(ItemStack stack) {
+	private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
+    
+    public static void register(ItemInfo item, Fluid fluid, int amount)
+    {
+        register(item, new Meltable(fluid.getName(), amount));
+    }
+    
+    public static void register(ItemStack stack, Fluid fluid, int amount)
+    {
+        register(new ItemInfo(stack), new Meltable(fluid.getName(), amount));
+    }
+    
+    public static void register(ItemInfo item, Meltable meltable)
+    {
+        registerInternal(item, meltable);
+        
+        externalRegistry.put(item, meltable);
+    }
+    
+    private static void registerInternal(ItemStack stack, Fluid fluid, int amount)
+    {
+        registerInternal(new ItemInfo(stack), new Meltable(fluid.getName(), amount));
+    }
+    
+    private static void registerInternal(ItemInfo item, Meltable meltable)
+    {
+        registry.put(item, meltable);
+    }
+    
+    public static boolean canBeMelted(ItemStack stack)
+    {
         return canBeMelted(new ItemInfo(stack));
     }
-	
-	public static boolean canBeMelted(ItemInfo info) {
+    
+    public static boolean canBeMelted(ItemInfo info)
+    {
         return registry.containsKey(info) && FluidRegistry.isFluidRegistered(registry.get(info).getFluid());
     }
-	
-	public static Meltable getMeltable(ItemStack stack) {
-		ItemInfo info = new ItemInfo(stack);
-		
-		return registry.get(info);
-	}
-	
-	public static Meltable getMeltable(ItemInfo info) {
-		return registry.get(info);
-	}
-	
-	public static void registerDefaults() {
-		register(new ItemStack(Blocks.COBBLESTONE), FluidRegistry.LAVA, 250);
-	}
-	
+    
+    public static Meltable getMeltable(ItemStack stack)
+    {
+        ItemInfo info = new ItemInfo(stack);
+        
+        return registry.get(info);
+    }
+    
+    public static Meltable getMeltable(ItemInfo info)
+    {
+        return registry.get(info);
+    }
+    
+    public static void registerDefaults()
+    {
+        registerInternal(new ItemStack(Blocks.COBBLESTONE), FluidRegistry.LAVA, 250);
+    }
+    
 	public static void loadJson(File file)
 	{
 	    registry.clear();
 	    
-		gson = new GsonBuilder().setPrettyPrinting()
-				.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
 		if (file.exists())
 		{
 			try 
 			{
 				FileReader fr = new FileReader(file);
-				HashMap<String, Meltable> gsonInput = gson.fromJson(fr, new TypeToken<HashMap<String, Meltable>>(){}.getType());
-				
-				Iterator<String> it = gsonInput.keySet().iterator();
-				
-				while (it.hasNext())
+				Map<String, Meltable> gsonInput = gson.fromJson(fr, new TypeToken<Map<String, Meltable>>(){}.getType());
+
+                for(Map.Entry<String, Meltable> entry : gsonInput.entrySet())
 				{
-					String s = (String) it.next();
-					ItemInfo stack = new ItemInfo(s);
-					register(stack, gsonInput.get(s));
+                    registry.put(new ItemInfo(entry.getKey()), entry.getValue());
 				}
 			} 
 			catch (Exception e) 
@@ -92,6 +105,8 @@ public class CrucibleRegistry {
 			registerDefaults();
 			saveJson(file);
 		}
+		
+		registry.putAll(externalRegistry);
 	}
 	
 	public static void saveJson(File file)

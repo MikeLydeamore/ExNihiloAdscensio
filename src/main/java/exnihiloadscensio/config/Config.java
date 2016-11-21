@@ -15,9 +15,6 @@ public class Config {
 	public static int compostingTicks;
 	public static int infestedLeavesTicks;
 	
-	public static double silkwormChance;
-	public static double silkwormFortuneChance;
-	
 	public static double stringChance;
 	public static double stringFortuneChance;
 	

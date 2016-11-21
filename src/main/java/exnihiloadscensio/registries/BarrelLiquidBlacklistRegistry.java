@@ -15,10 +15,13 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import exnihiloadscensio.blocks.ENBlocks;
+
 public class BarrelLiquidBlacklistRegistry
 {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final Map<Integer, List<String>> blacklist = new HashMap<>();
+    private static final Map<Integer, List<String>> externalBlacklist = new HashMap<>();
     
     public static boolean isBlacklisted(int level, String fluid)
     {
@@ -26,6 +29,21 @@ public class BarrelLiquidBlacklistRegistry
     }
     
     public static void register(int level, String fluid)
+    {
+        registerInternal(level, fluid);
+        
+        List<String> list = externalBlacklist.get(level);
+        
+        if(list == null)
+        {
+            list = new ArrayList<>();
+            externalBlacklist.put(level, list);
+        }
+        
+        list.add(fluid);
+    }
+    
+    private static void registerInternal(int level, String fluid)
     {
         List<String> list = blacklist.get(level);
         
@@ -40,9 +58,9 @@ public class BarrelLiquidBlacklistRegistry
     
     public static void registerDefaults()
     {
-        register(0, "lava");
-        register(0, "fire_water");
-        register(0, "rocket_fuel");
+        registerInternal(ENBlocks.barrelWood.getTier(), "lava");
+        registerInternal(ENBlocks.barrelWood.getTier(), "fire_water");
+        registerInternal(ENBlocks.barrelWood.getTier(), "rocket_fuel");
     }
     
     public static void loadJson(File file)
@@ -56,6 +74,7 @@ public class BarrelLiquidBlacklistRegistry
                 String json = new String(Files.readAllBytes(file.toPath()));
                 
                 Map<Integer, List<String>> loaded = gson.fromJson(json, new TypeToken<Map<Integer, List<String>>>(){}.getType());
+                
                 blacklist.putAll(Maps.transformValues(loaded, list -> new ArrayList<>(list)));
             }
             catch (IOException e)
@@ -67,6 +86,16 @@ public class BarrelLiquidBlacklistRegistry
         {
             registerDefaults();
             saveJson(file);
+        }
+        
+        for(Map.Entry<Integer, List<String>> entry : externalBlacklist.entrySet())
+        {
+            if(!blacklist.containsKey(entry.getKey()))
+            {
+                blacklist.put(entry.getKey(), new ArrayList<>());
+            }
+            
+            blacklist.get(entry.getKey()).addAll(entry.getValue());
         }
     }
     
