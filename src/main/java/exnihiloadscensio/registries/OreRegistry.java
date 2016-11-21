@@ -103,10 +103,10 @@ public class OreRegistry {
      */
     public static Ore register(String name, Color color, ItemInfo info)
     {
-        registerInternal(name, color, info);
-    	externalRegistry.add(registerInternal(name, color, info));
+        Ore ore = registerInternal(name, color, info);
+    	externalRegistry.add(ore);
     	
-    	return new Ore(name, color, info);
+    	return ore;
     }
     
     /**
@@ -181,6 +181,8 @@ public class OreRegistry {
 				List<Ore> gsonInput = gson.fromJson(fr, new TypeToken<List<Ore>>(){}.getType());
 				
 				registry.addAll(gsonInput);
+				registerFromRegistry();
+				registry.addAll(externalRegistry);
 			} 
 			catch (Exception e) 
 			{
@@ -190,11 +192,9 @@ public class OreRegistry {
 		else
 		{
 			registerDefaults();
+			//registerDefaults() will add everything to the external registry automatically.
 			saveJson(file);
 		}
-		
-		registry.addAll(externalRegistry);
-        registerFromRegistry();
 	}
 	
 	public static void saveJson(File file)
