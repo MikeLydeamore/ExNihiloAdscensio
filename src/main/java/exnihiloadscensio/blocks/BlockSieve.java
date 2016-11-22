@@ -110,11 +110,11 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 			if (te.addBlock(heldItem)) {
 				heldItem.stackSize--;
 				for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= 1*Config.sieveSimilarRadius ; xOffset++) {
-					for (int yOffset = -1*Config.sieveSimilarRadius ; yOffset <= 1*Config.sieveSimilarRadius ; yOffset++) {
-						TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, yOffset));
+					for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= 1*Config.sieveSimilarRadius ; zOffset++) {
+						TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, zOffset));
 						if (entity != null && entity instanceof TileSieve) {
 							TileSieve sieve = (TileSieve) entity;
-							if (heldItem.stackSize >0 && te.isSieveSimilar(sieve)) {
+							if (heldItem.stackSize > 0 && te.isSieveSimilar(sieve)) {
 								if (sieve.addBlock(heldItem))
 									heldItem.stackSize--;
 							}
@@ -125,8 +125,8 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 			}
 			
 			for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= Config.sieveSimilarRadius ; xOffset++) {
-				for (int yOffset = -1*Config.sieveSimilarRadius ; yOffset <= 1*Config.sieveSimilarRadius ; yOffset++) {
-					TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, yOffset));
+				for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= 1*Config.sieveSimilarRadius ; zOffset++) {
+					TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, zOffset));
 					if (entity != null && entity instanceof TileSieve) {
 						TileSieve sieve = (TileSieve) entity;
 						if (te.isSieveSimilar(sieve))
