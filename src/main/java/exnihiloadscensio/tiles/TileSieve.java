@@ -32,6 +32,8 @@ public class TileSieve extends TileEntity {
 	@Getter
 	private ItemStack meshStack;
 	
+	private long lastSieveAction = 0;
+	
 	private static Random rand = new Random();
 	
 	public TileSieve() {}
@@ -87,12 +89,16 @@ public class TileSieve extends TileEntity {
 		return false;
 	}
     
-    public void doSieving(EntityPlayer player)
+    public boolean doSieving(EntityPlayer player)
     {
-        if (currentStack == null)
-        {
-            return;
+        if (currentStack == null) {
+            return false;
         }
+        
+        if (lastSieveAction == worldObj.getWorldTime())
+        	return false;
+        
+        lastSieveAction = worldObj.getWorldTime();
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
         int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
@@ -111,6 +117,8 @@ public class TileSieve extends TileEntity {
             
             resetSieve();
         }
+        
+        return true;
     }
 	
 	private void resetSieve() {

@@ -112,7 +112,15 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 				return true;
 			}
 			
-			te.doSieving(player);
+			for (int xOffset = -1 ; xOffset <= 1 ; xOffset++) {
+				for (int yOffset = -1 ; yOffset <= 1 ; yOffset++) {
+					TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, yOffset));
+					if (entity != null && entity instanceof TileSieve) {
+						TileSieve sieve = (TileSieve) entity;
+						sieve.doSieving(player);
+					}
+				}
+			}
 			return true;
 		}
 
