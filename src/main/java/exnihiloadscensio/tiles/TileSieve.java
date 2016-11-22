@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -107,6 +108,10 @@ public class TileSieve extends TileEntity {
             
             if(drops != null)
             {
+            	for (int i = 0 ; i < EnchantmentHelper.getEnchantmentLevel(ENEnchantments.luckOfTheSea, meshStack) ; i++) {
+            		if (worldObj.rand.nextDouble() < 0.5)
+            			drops.add(new ItemStack(Items.FISH));
+            	}
                 drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
             }
             

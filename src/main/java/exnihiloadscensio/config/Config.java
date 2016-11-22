@@ -26,6 +26,7 @@ public class Config {
 	
 	public static int enchantmentIDEfficiency;
 	public static int enchantmentIDFortune;
+	public static int enchantmentIDLuckOfTheSea;
 	
 	public static void doNormalConfig(File file)
 	{
@@ -52,6 +53,7 @@ public class Config {
 		
 		enchantmentIDEfficiency = config.get("Enchantments","efficiency", 105).getInt();
 		enchantmentIDFortune = config.get("Enchantments","fortune", 106).getInt();
+		enchantmentIDLuckOfTheSea = config.get("Enchantments", "luckofthesea", 107).getInt();
 		
 		if (config.hasChanged())
 			config.save();
