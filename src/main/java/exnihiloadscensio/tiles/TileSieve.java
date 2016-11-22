@@ -3,6 +3,7 @@ package exnihiloadscensio.tiles;
 import java.util.List;
 import java.util.Random;
 
+import exnihiloadscensio.enchantments.ENEnchantments;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
@@ -94,8 +95,8 @@ public class TileSieve extends TileEntity {
             return;
         }
         
-        int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
-        int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
+        int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
+        int fortune = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.fortune, meshStack);
         
         progress += 10 + 5 * efficiency;
         PacketHandler.sendNBTUpdate(this);
