@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "0.0.41"
+version = "1.10.12-0.1.2"
 group= "exnihiloadscensio" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloadscensio"
 
@@ -50,14 +50,14 @@ repositories
 dependencies
 {
     deobfCompile "mezz.jei:jei_1.10.2:3.13.+:api"
-    runtime "mezz.jei:jei_1.10.2:3.13.+"
+    compile "mezz.jei:jei_1.10.2:3.13.+"
     
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.0.+"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.5.+"
     
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     
-    compileOnly "org.projectlombok:lombok:1.16.10"
+    compile "org.projectlombok:lombok:1.16.10"
 }
 
 processResources
