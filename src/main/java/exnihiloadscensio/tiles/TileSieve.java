@@ -97,7 +97,9 @@ public class TileSieve extends TileEntity {
         }
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
+        efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
         int fortune = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.fortune, meshStack);
+        fortune += EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
         
         progress += 10 + 5 * efficiency;
         PacketHandler.sendNBTUpdate(this);
