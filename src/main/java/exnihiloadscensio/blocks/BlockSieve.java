@@ -1,5 +1,7 @@
 package exnihiloadscensio.blocks;
 
+import java.util.ArrayList;
+
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ItemMesh;
 import exnihiloadscensio.networking.PacketHandler;
@@ -114,7 +116,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 						TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, zOffset));
 						if (entity != null && entity instanceof TileSieve) {
 							TileSieve sieve = (TileSieve) entity;
-							if (heldItem.stackSize > 0 && te.isSieveSimilar(sieve)) {
+							if (heldItem.stackSize > 0 && te.isSieveSimilarToInput(sieve)) {
 								if (sieve.addBlock(heldItem))
 									heldItem.stackSize--;
 							}
@@ -124,14 +126,21 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 				return true;
 			}
 			
+			ArrayList<BlockPos> toSift = new ArrayList<BlockPos>();
 			for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= Config.sieveSimilarRadius ; xOffset++) {
 				for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= 1*Config.sieveSimilarRadius ; zOffset++) {
 					TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, zOffset));
 					if (entity != null && entity instanceof TileSieve) {
 						TileSieve sieve = (TileSieve) entity;
 						if (te.isSieveSimilar(sieve))
-							sieve.doSieving(player);
+							toSift.add(pos.add(xOffset, 0, zOffset));
 					}
+				}
+			}
+			for (BlockPos posIter : toSift) {
+				if (posIter != null) {
+					TileSieve sieve = (TileSieve) world.getTileEntity(posIter);
+					sieve.doSieving(player);
 				}
 			}
 			return true;

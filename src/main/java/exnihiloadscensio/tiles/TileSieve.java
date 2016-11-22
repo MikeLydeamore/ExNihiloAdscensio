@@ -123,9 +123,19 @@ public class TileSieve extends TileEntity {
     }
     
     public boolean isSieveSimilar(TileSieve sieve) {
-    	return meshStack == sieve.getMeshStack() &&
+    	if (meshStack == null || sieve.getMeshStack() == null)
+    		return false;
+    	return meshStack.getItemDamage() == sieve.getMeshStack().getItemDamage() &&
     			progress == sieve.getProgress() &&
-    			currentStack == sieve.getCurrentStack();
+    			currentStack.equals(sieve.getCurrentStack());
+    }
+    
+    public boolean isSieveSimilarToInput(TileSieve sieve) {
+    	if (meshStack == null || sieve.getMeshStack() == null)
+    		return false;
+    	return meshStack.getItemDamage() == sieve.getMeshStack().getItemDamage() &&
+    			progress == sieve.getProgress() &&
+    			sieve.getCurrentStack() == null;
     }
 	
 	private void resetSieve() {
