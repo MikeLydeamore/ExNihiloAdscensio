@@ -24,6 +24,8 @@ public class Config {
 	
 	public static boolean enableBarrelTransformLighting;
 	
+	public static int sieveSimilarRadius;
+	
 	public static void doNormalConfig(File file)
 	{
 		Configuration config = new Configuration(file);
@@ -46,6 +48,8 @@ public class Config {
         
 		stringChance = config.get("Crooking", "stringChance", 1).getDouble();
 		stringFortuneChance = config.get("Crooking", "stringFortuneChance", 1).getDouble();
+		
+		sieveSimilarRadius = config.get("Sieving", "sieveSimilarRadius", 2).getInt();
 		
 		if (config.hasChanged())
 			config.save();

@@ -28,7 +28,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 
 		private int id;
 		private String name;
-
+		
 		private MeshType(int id, String name) {
 			this.id = id;
 			this.name = name;
@@ -65,7 +65,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 	}
 
 	public static final PropertyEnum<MeshType> MESH = PropertyEnum.create("mesh", MeshType.class);
-
+	
 	public BlockSieve() {
 		super(Material.WOOD, "blockSieve");
 		this.setDefaultState(this.blockState.getBaseState().withProperty(MESH, MeshType.NONE));
@@ -109,15 +109,28 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 			
 			if (te.addBlock(heldItem)) {
 				heldItem.stackSize--;
+				for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= 1*Config.sieveSimilarRadius ; xOffset++) {
+					for (int yOffset = -1*Config.sieveSimilarRadius ; yOffset <= 1*Config.sieveSimilarRadius ; yOffset++) {
+						TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, yOffset));
+						if (entity != null && entity instanceof TileSieve) {
+							TileSieve sieve = (TileSieve) entity;
+							if (heldItem.stackSize >0 && te.isSieveSimilar(sieve)) {
+								if (sieve.addBlock(heldItem))
+									heldItem.stackSize--;
+							}
+						}
+					}
+				}
 				return true;
 			}
 			
-			for (int xOffset = -1 ; xOffset <= 1 ; xOffset++) {
-				for (int yOffset = -1 ; yOffset <= 1 ; yOffset++) {
+			for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= Config.sieveSimilarRadius ; xOffset++) {
+				for (int yOffset = -1*Config.sieveSimilarRadius ; yOffset <= 1*Config.sieveSimilarRadius ; yOffset++) {
 					TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, yOffset));
 					if (entity != null && entity instanceof TileSieve) {
 						TileSieve sieve = (TileSieve) entity;
-						sieve.doSieving(player);
+						if (te.isSieveSimilar(sieve))
+							sieve.doSieving(player);
 					}
 				}
 			}

@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileSieve extends TileEntity {
 	
+	@Getter
 	private BlockInfo currentStack;
 	@Getter
 	private byte progress = 0;
@@ -119,6 +120,12 @@ public class TileSieve extends TileEntity {
         }
         
         return true;
+    }
+    
+    public boolean isSieveSimilar(TileSieve sieve) {
+    	return meshStack == sieve.getMeshStack() &&
+    			progress == sieve.getProgress() &&
+    			currentStack == sieve.getCurrentStack();
     }
 	
 	private void resetSieve() {
