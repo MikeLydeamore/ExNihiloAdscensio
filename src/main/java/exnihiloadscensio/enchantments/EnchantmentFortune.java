@@ -12,6 +12,7 @@ public class EnchantmentFortune extends Enchantment {
     {
         super(Rarity.RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND });
         this.setName("sieveFortune");
+        this.setRegistryName("sieveFortune");
     }
     
     @Override

@@ -24,10 +24,6 @@ public class Config {
 	
 	public static boolean enableBarrelTransformLighting;
 	
-	public static int enchantmentIDEfficiency;
-	public static int enchantmentIDFortune;
-	public static int enchantmentIDLuckOfTheSea;
-	
 	public static void doNormalConfig(File file)
 	{
 		Configuration config = new Configuration(file);
@@ -50,10 +46,6 @@ public class Config {
         
 		stringChance = config.get("Crooking", "stringChance", 1).getDouble();
 		stringFortuneChance = config.get("Crooking", "stringFortuneChance", 1).getDouble();
-		
-		enchantmentIDEfficiency = config.get("Enchantments","efficiency", 105).getInt();
-		enchantmentIDFortune = config.get("Enchantments","fortune", 106).getInt();
-		enchantmentIDLuckOfTheSea = config.get("Enchantments", "luckofthesea", 107).getInt();
 		
 		if (config.hasChanged())
 			config.save();

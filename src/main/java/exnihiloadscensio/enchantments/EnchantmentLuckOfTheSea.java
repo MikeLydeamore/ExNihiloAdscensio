@@ -12,6 +12,7 @@ public class EnchantmentLuckOfTheSea extends Enchantment {
     {
         super(Rarity.RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND });
         this.setName("sieveLuckOfTheSea");
+        this.setRegistryName("sieveLuckOfTheSea");
     }
     
     @Override

@@ -12,6 +12,7 @@ public class EnchantmentEfficiency extends Enchantment {
     {
         super(Rarity.COMMON, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND });
         this.setName("sieveEfficiency");
+        this.setRegistryName("sieveEfficiency");
     }
     
     @Override

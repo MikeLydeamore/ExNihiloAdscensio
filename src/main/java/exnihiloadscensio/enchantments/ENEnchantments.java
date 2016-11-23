@@ -1,20 +1,16 @@
 package exnihiloadscensio.enchantments;
 
-import exnihiloadscensio.config.Config;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ENEnchantments
-{
+public class ENEnchantments {
 	public static EnchantmentEfficiency efficiency = new EnchantmentEfficiency();
 	public static EnchantmentFortune fortune = new EnchantmentFortune();
 	public static EnchantmentLuckOfTheSea luckOfTheSea = new EnchantmentLuckOfTheSea();
 	
-    public static void init()
-    {
-        Enchantment.REGISTRY.register(Config.enchantmentIDEfficiency, new ResourceLocation("sieveefficiency"), efficiency);
-        Enchantment.REGISTRY.register(Config.enchantmentIDFortune, new ResourceLocation("sievefortune"), fortune);
-        Enchantment.REGISTRY.register(Config.enchantmentIDLuckOfTheSea, new ResourceLocation("sieveluckofthesea"), luckOfTheSea);
+    public static void init() {
+        GameRegistry.register(efficiency);
+        GameRegistry.register(fortune);
+        GameRegistry.register(luckOfTheSea);
     }
     
 }
