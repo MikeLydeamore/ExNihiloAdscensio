@@ -1,7 +1,10 @@
 package exnihiloadscensio.client.renderers;
 
+import java.awt.Color;
+
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
+import exnihiloadscensio.util.Util;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 
@@ -13,10 +16,16 @@ public class RenderOrePiece implements IItemColor {
 			return 0;
 		
 		if (stack.getItem() instanceof ItemOre) {
-			Ore ore = ((ItemOre) stack.getItem()).getOre();
-			return ore.getColor().toInt();
+			if (stack.getItemDamage() == 3 || stack.getItemDamage() == 2) {
+				Ore ore = ((ItemOre) stack.getItem()).getOre();
+				return ore.getColor().toInt();
+			}
+			if (tintIndex == 1) {
+				Ore ore = ((ItemOre) stack.getItem()).getOre();
+				return ore.getColor().toInt();
+			}
 		}
-		return 0;
+		return Color.WHITE.getRGB();
 	}
 
 }

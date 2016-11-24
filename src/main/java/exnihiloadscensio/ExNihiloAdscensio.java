@@ -75,13 +75,14 @@ public class ExNihiloAdscensio {
 		Config.doNormalConfig(new File(configDirectory, "ExNihiloAdscensio.cfg"));
 
 		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
-
+		
         ENCapabilities.init();
 		ENItems.init();
 		ENBlocks.init();
 		ENEntities.init();
 		ENEnchantments.init();
 		proxy.initModels();
+		proxy.initOreModels();
 		proxy.registerRenderers();
 
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());
@@ -100,6 +101,8 @@ public class ExNihiloAdscensio {
 	public static void init(FMLInitializationEvent event)
 	{
 		proxy.registerColorHandlers();
+		
+		
 		
 		FMLInterModComms.sendMessage("Waila", "register", "exnihiloadscensio.compatibility.CompatWaila.callbackRegister");
 	}

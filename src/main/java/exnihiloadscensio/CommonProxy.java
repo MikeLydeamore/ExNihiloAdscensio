@@ -3,6 +3,8 @@ package exnihiloadscensio;
 public class CommonProxy {
 
 	public void initModels() {}
+	
+	public void initOreModels() {}
 
 	public boolean runningOnServer()
 	{
