@@ -73,8 +73,6 @@ public class ExNihiloAdscensio {
 		configDirectory.mkdirs();
 		
 		Config.doNormalConfig(new File(configDirectory, "ExNihiloAdscensio.cfg"));
-
-		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
 		
         ENCapabilities.init();
 		ENItems.init();
@@ -82,7 +80,6 @@ public class ExNihiloAdscensio {
 		ENEntities.init();
 		ENEnchantments.init();
 		proxy.initModels();
-		proxy.initOreModels();
 		proxy.registerRenderers();
 
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());
@@ -100,6 +97,13 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void init(FMLInitializationEvent event)
 	{
+		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
+		loadConfigs();
+	    
+		Recipes.init();
+        OreRegistry.doRecipes();
+		
+		proxy.initOreModels();
 		proxy.registerColorHandlers();
 		
 		
@@ -110,10 +114,6 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void postInit(FMLPostInitializationEvent event)
 	{
-	    loadConfigs();
-	    
-		Recipes.init();
-        OreRegistry.doRecipes();
         
 		if(Loader.isModLoaded("tconstruct"))
 		{

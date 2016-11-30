@@ -22,9 +22,15 @@ import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -161,8 +167,27 @@ public class OreRegistry {
     @SideOnly(Side.CLIENT)
     public static void initModels()
     {
+    	final ItemMeshDefinition ORES = new ItemMeshDefinition() {
+    		@Override
+    		public ModelResourceLocation getModelLocation(ItemStack stack) {
+    			switch (stack.getItemDamage()) {
+    			case 0:
+    				return new ModelResourceLocation("exnihiloadscensio:itemOre", "type=piece");
+    			case 1:
+    				return new ModelResourceLocation("exnihiloadscensio:itemOre", "type=hunk");
+    			case 2:
+    				return new ModelResourceLocation("exnihiloadscensio:itemOre", "type=dust");
+    			case 3:
+    				return new ModelResourceLocation("exnihiloadscensio:itemOre", "type=ingot");
+    			default:
+    				return new ModelResourceLocation(stack.getItem().getRegistryName(), "inventory");
+    			}
+    		}
+    	};
     	for (ItemOre ore : itemOreRegistry) {
-    		ore.initModel();
+    		ModelLoader.setCustomMeshDefinition(ore, ORES);
+    		ModelBakery.registerItemVariants(ore, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=piece"), new ModelResourceLocation("exnihiloadscensio:itemOre", "type=hunk"), new ModelResourceLocation("exnihiloadscensio:itemOre", "type=dust"), new ModelResourceLocation("exnihiloadscensio:itemOre", "type=ingot"));
+    		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ore, ORES);
     	}
     }
     
