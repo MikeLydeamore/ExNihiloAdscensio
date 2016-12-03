@@ -49,7 +49,7 @@ public class ItemOre extends Item {
 
 	@SideOnly(Side.CLIENT)
 	public void initModel()	{
-
+		
 		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=piece"));
 		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=hunk"));
 		ModelLoader.setCustomModelResourceLocation(this, 2, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=dust"));

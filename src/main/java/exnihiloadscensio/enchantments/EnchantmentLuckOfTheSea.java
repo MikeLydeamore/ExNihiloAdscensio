@@ -6,13 +6,13 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
-public class EnchantmentFortune extends Enchantment {
+public class EnchantmentLuckOfTheSea extends Enchantment {
 	
-    protected EnchantmentFortune()
+    protected EnchantmentLuckOfTheSea()
     {
         super(Rarity.RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND });
-        this.setName("sieveFortune");
-        this.setRegistryName("sieveFortune");
+        this.setName("sieveLuckOfTheSea");
+        this.setRegistryName("sieveLuckOfTheSea");
     }
     
     @Override
@@ -45,6 +45,6 @@ public class EnchantmentFortune extends Enchantment {
     @Override
     public int getMaxLevel()
     {
-        return 3;
+        return 1;
     }
 }

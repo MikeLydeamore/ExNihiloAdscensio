@@ -27,6 +27,11 @@ public class ClientProxy extends CommonProxy {
 		ENItems.initModels();
 		ENBlocks.initModels();
 	}
+	
+	@Override
+	public void initOreModels() {
+		OreRegistry.initModels();
+	}
 
 	@Override
 	public boolean runningOnServer()

@@ -73,9 +73,7 @@ public class ExNihiloAdscensio {
 		configDirectory.mkdirs();
 		
 		Config.doNormalConfig(new File(configDirectory, "ExNihiloAdscensio.cfg"));
-
-		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
-
+		
         ENCapabilities.init();
 		ENItems.init();
 		ENBlocks.init();
@@ -99,7 +97,16 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void init(FMLInitializationEvent event)
 	{
+		OreRegistry.loadJson(new File(configDirectory, "OreRegistry.json"));
+		loadConfigs();
+	    
+		Recipes.init();
+        OreRegistry.doRecipes();
+		
+		proxy.initOreModels();
 		proxy.registerColorHandlers();
+		
+		
 		
 		FMLInterModComms.sendMessage("Waila", "register", "exnihiloadscensio.compatibility.CompatWaila.callbackRegister");
 	}
@@ -107,10 +114,6 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void postInit(FMLPostInitializationEvent event)
 	{
-	    loadConfigs();
-	    
-		Recipes.init();
-        OreRegistry.doRecipes();
         
 		if(Loader.isModLoaded("tconstruct"))
 		{

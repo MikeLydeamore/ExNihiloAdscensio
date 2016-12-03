@@ -3,6 +3,7 @@ package exnihiloadscensio.tiles;
 import java.util.List;
 import java.util.Random;
 
+import exnihiloadscensio.enchantments.ENEnchantments;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -49,7 +51,7 @@ public class TileSieve extends TileEntity {
 	}
 	
 	public boolean setMesh(ItemStack newMesh, boolean simulate) {
-		if (progress != 0)
+		if (progress != 0 || currentStack != null)
 			return false;
 		
 		if (meshStack == null) {
@@ -101,8 +103,10 @@ public class TileSieve extends TileEntity {
         
         lastSieveAction = worldObj.getWorldTime();
         
-        int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
-        int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
+        int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
+        efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
+        int fortune = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.fortune, meshStack);
+        fortune += EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
         
         progress += 10 + 5 * efficiency;
         PacketHandler.sendNBTUpdate(this);
@@ -113,6 +117,10 @@ public class TileSieve extends TileEntity {
             
             if(drops != null)
             {
+            	for (int i = 0 ; i < EnchantmentHelper.getEnchantmentLevel(ENEnchantments.luckOfTheSea, meshStack) ; i++) {
+            		if (worldObj.rand.nextDouble() < 0.5)
+            			drops.add(new ItemStack(Items.FISH));
+            	}
                 drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
             }
             
