@@ -48,7 +48,7 @@ public class TileSieve extends TileEntity {
 	}
 	
 	public boolean setMesh(ItemStack newMesh, boolean simulate) {
-		if (progress != 0)
+		if (progress != 0 || currentStack != null)
 			return false;
 		
 		if (meshStack == null) {
