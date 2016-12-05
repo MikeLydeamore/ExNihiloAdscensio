@@ -129,7 +129,7 @@ public class OreRegistry {
         registry.add(ore);
         itemOreRegistry.add(new ItemOre(ore));
         
-        return new Ore(name, color, info);
+        return ore;
     }
     
     public static void registerFromRegistry()
@@ -161,6 +161,7 @@ public class OreRegistry {
             }
             
             FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(ore, 1, 1), smeltingResult, 0.7f);
+            FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(ore, 1, 2), smeltingResult, 0.7f);
         }
     }
     
