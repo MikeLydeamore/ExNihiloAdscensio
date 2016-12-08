@@ -137,7 +137,7 @@ public class TileSieve extends TileEntity {
     		return false;
     	return meshStack.getItemDamage() == sieve.getMeshStack().getItemDamage() &&
     			progress == sieve.getProgress() &&
-    			currentStack.equals(sieve.getCurrentStack());
+    			BlockInfo.areEqual(currentStack, sieve.getCurrentStack());
     }
     
     public boolean isSieveSimilarToInput(TileSieve sieve) {

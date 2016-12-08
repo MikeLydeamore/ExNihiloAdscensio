@@ -124,4 +124,17 @@ public class BlockInfo
         
         return false;
     }
+    
+    public static boolean areEqual(BlockInfo block1, BlockInfo block2) {
+    	if (block1 == null && block2 == null)
+    		return true;
+    	
+    	if (block1 == null && block2 != null)
+    		return false;
+    	
+    	if (block1 != null && block2 == null)
+    		return false;
+    	
+    	return block1.equals(block2);
+    }
 }
