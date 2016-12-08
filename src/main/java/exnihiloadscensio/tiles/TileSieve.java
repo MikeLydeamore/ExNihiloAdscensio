@@ -131,6 +131,8 @@ public class TileSieve extends TileEntity {
     }
     
     public boolean isSieveSimilar(TileSieve sieve) {
+    	if (sieve == null)
+    		return false;
     	if (meshStack == null || sieve.getMeshStack() == null)
     		return false;
     	return meshStack.getItemDamage() == sieve.getMeshStack().getItemDamage() &&

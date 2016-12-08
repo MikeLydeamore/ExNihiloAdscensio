@@ -37,9 +37,7 @@ public class BarrelItemHandlerFluid extends ItemStackHandler {
             ItemInfo info = FluidBlockTransformerRegistry.getBlockForTransformation(tank.getFluid().getFluid(), stack);
             
             if (info != null)
-            {
-                LogUtil.info(simulate);
-                
+            {               
                 if (!simulate)
                 {
                     tank.drain(tank.getCapacity(), true);
