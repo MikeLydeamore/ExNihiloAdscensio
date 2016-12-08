@@ -44,7 +44,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio")
+@Mod(modid = ExNihiloAdscensio.MODID, name="Ex Nihilo Adscensio", version="0.1.5")
 public class ExNihiloAdscensio {
 
 	public static final String MODID = "exnihiloadscensio";
