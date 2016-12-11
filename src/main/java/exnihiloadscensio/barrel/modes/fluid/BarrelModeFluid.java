@@ -181,7 +181,9 @@ public class BarrelModeFluid implements IBarrelMode {
                 
                 for (FluidTransformer transformer : transformers)
                 {
-                    if (!BarrelLiquidBlacklistRegistry.isBlacklisted(barrel.getTier(), transformer.getOutputFluid()) && Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld()))
+                    if (!BarrelLiquidBlacklistRegistry.isBlacklisted(barrel.getTier(), transformer.getOutputFluid()) && 
+                    		(Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos().add(0, -1, 0), barrel.getWorld())
+                    		|| Util.isSurroundingBlocksAtLeastOneOf(transformer.getTransformingBlocks(), barrel.getPos(), barrel.getWorld())))
                     {
                         // Time to start the process.
                         FluidStack fstack = tank.getFluid();

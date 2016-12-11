@@ -81,8 +81,8 @@ public class Util {
 	public static boolean isSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world) {
 
 		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
-		for (int xShift = -1 ; xShift <= 1 ; xShift++) {
-			for (int zShift = -1 ; zShift <= 1 ; zShift++) {
+		for (int xShift = -2 ; xShift <= 2 ; xShift++) {
+			for (int zShift = -2 ; zShift <= 2 ; zShift++) {
 				BlockPos checkPos = pos.add(xShift, 0, zShift);
 				BlockInfo checkBlock = new BlockInfo(world.getBlockState(checkPos));
 				if (blockList.contains(checkBlock))
