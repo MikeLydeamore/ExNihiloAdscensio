@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.10.2-0.1.4"
+version = "1.10.2-0.1.5"
 group= "exnihiloadscensio" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloadscensio"
 
@@ -28,22 +28,29 @@ sourceCompatibility=1.8
 targetCompatibility=1.8
 
 minecraft {
-    version = "1.10.2-12.18.2.2121"
+    version = "1.10.2-12.18.3.2185"
     runDir = "run"
 	mappings = "snapshot_20160824"
 }
 
 repositories
 {
-    maven
-    {
-        name "DVS1 Maven FS"
-        url "http://dvs1.progwml6.com/files/maven"
+    maven { 
+    	name "DVS1 Maven FS" 
+    	url "http://dvs1.progwml6.com/files/maven" 
     }
     
-    maven
-    {
-        url "http://mobiusstrip.eu/maven"
+    maven { url "http://mobiusstrip.eu/maven" }
+    maven {	url 'http://maven.tterrag.com/' }
+    
+    maven { url 'http://maven.epoxide.xyz' }
+    maven { url 'http://files.minecraftforge.net/maven' }
+    
+    ivy {
+        url "http://ae-mod.info/builds"
+        layout "pattern", {
+            artifact "[module]-[revision](-[classifier])(.[ext])"
+        }
     }
 }
 
@@ -58,6 +65,8 @@ dependencies
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     
     compile "org.projectlombok:lombok:1.16.10"
+    compile "com.enderio:EnderIO:1.10.2-3.0.1.138_beta"
+    compile "com.enderio.core:EnderCore:1.10.2-0.4.1.60-beta"
 }
 
 processResources
