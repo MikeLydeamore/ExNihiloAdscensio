@@ -41,7 +41,7 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider {
 	{
 	    TileBarrel tile = (TileBarrel) world.getTileEntity(pos);
 	    
-	    if(tile != null)
+	    if(tile != null && tile instanceof TileBarrel)
 	    {
 	        if(tile.getMode() instanceof BarrelModeBlock)
 	        {
@@ -86,7 +86,7 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider {
             }
 	    }
 	    
-	    return 0;
+	    return super.getLightValue(state, world, pos);
 	}
 	
 	@Override
