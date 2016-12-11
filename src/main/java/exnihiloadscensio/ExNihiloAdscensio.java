@@ -5,6 +5,7 @@ import java.io.File;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.capabilities.ENCapabilities;
 import exnihiloadscensio.command.CommandReloadConfig;
+import exnihiloadscensio.compatibility.CompatEIO;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.enchantments.ENEnchantments;
@@ -111,6 +112,9 @@ public class ExNihiloAdscensio {
 
 		if (Loader.isModLoaded("tconstruct")) {
 			CompatTConstruct.postInit();
+		}
+		if (Loader.isModLoaded("EnderIO")) {
+			CompatEIO.postInit();
 		}
 	}
 
