@@ -64,9 +64,7 @@ public class BarrelItemHandlerFluid extends ItemStackHandler {
 				&& ((ItemDoll) stack.getItem()).getSpawnFluid(stack) == tank.getFluid().getFluid()) {
 			if (!simulate) {
 				barrel.getTank().drain(Fluid.BUCKET_VOLUME, true);
-				barrel.setMode("mobspawn");
-				PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("mobspawn", barrel.getPos()), barrel);
-				
+				barrel.setMode("mobspawn");				
 				((BarrelModeMobSpawn) barrel.getMode()).setDollStack(stack);
 				PacketHandler.sendNBTUpdate(barrel);
 			}
