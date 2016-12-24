@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
-import exnihiloadscensio.util.Util;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 
