@@ -22,37 +22,36 @@ public class HeatRegistry {
     
     private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson()).create();
     
-    public static void register(BlockInfo info, int ticksBetween)
+    public static void register(BlockInfo info, int heatAmount)
     {
-        registerInternal(info, ticksBetween);
-        externalRegistry.put(info, ticksBetween);
+        registerInternal(info, heatAmount);
+        externalRegistry.put(info, heatAmount);
     }
     
-    public static void register(ItemStack stack, int ticksBetween)
+    public static void register(ItemStack stack, int heatAmount)
     {
-        register(new BlockInfo(stack), ticksBetween);
+        register(new BlockInfo(stack), heatAmount);
     }
 
-    public static void registerInternal(BlockInfo info, int ticksBetween)
+    public static void registerInternal(BlockInfo info, int heatAmount)
     {
-        registry.put(info, ticksBetween);
+        registry.put(info, heatAmount);
     }
     
-    public static void registerInternal(ItemStack stack, int ticksBetween)
+    public static void registerInternal(ItemStack stack, int heatAmount)
     {
-        register(new BlockInfo(stack), ticksBetween);
+        register(new BlockInfo(stack), heatAmount);
     }
     
     public static void registerDefaults()
     {
-        for (int i = 0; i < 16; i++)
-            registerInternal(new ItemStack(Blocks.TORCH, 1, i), 1);
-        for (int i = 0; i < 16; i++)
-            registerInternal(new BlockInfo(Blocks.LAVA, i), 3);
-        for (int i = 0; i < 16; i++)
-            registerInternal(new BlockInfo(Blocks.FLOWING_LAVA, i), 2);
-        for (int i = 0; i < 16; i++)
-            registerInternal(new BlockInfo(Blocks.FIRE, i), 4);
+        // Vanilla fluids are weird, the "flowing" variant is simply a temporary state of checking if it can flow.
+        // So, once the lava has spread out all the way, it will all actually be "still" lava.
+        // Thanks Mojang <3
+        registerInternal(new BlockInfo(Blocks.FLOWING_LAVA, -1), 3);
+        registerInternal(new BlockInfo(Blocks.LAVA, -1), 3);
+        registerInternal(new BlockInfo(Blocks.FIRE, -1), 4);
+        registerInternal(new BlockInfo(Blocks.TORCH, -1), 1);
     }
     
     public static int getHeatAmount(ItemStack stack)
