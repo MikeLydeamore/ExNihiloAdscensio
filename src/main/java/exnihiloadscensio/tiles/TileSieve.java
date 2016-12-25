@@ -8,6 +8,7 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
+import exnihiloadscensio.util.LogUtil;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
@@ -98,10 +99,10 @@ public class TileSieve extends TileEntity {
             return false;
         }
         
-        if (lastSieveAction == worldObj.getWorldTime())
+        if (lastSieveAction == worldObj.getTotalWorldTime())
         	return false;
         
-        lastSieveAction = worldObj.getWorldTime();
+        lastSieveAction = worldObj.getTotalWorldTime();
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
         efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
