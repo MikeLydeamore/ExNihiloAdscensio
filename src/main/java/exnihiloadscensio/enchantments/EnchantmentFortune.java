@@ -1,13 +1,13 @@
 package exnihiloadscensio.enchantments;
 
-import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.items.ItemMesh;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
-public class EnchantmentFortune extends Enchantment {
-	
+public class EnchantmentFortune extends Enchantment
+{
     protected EnchantmentFortune()
     {
         super(Rarity.RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND });
@@ -18,7 +18,7 @@ public class EnchantmentFortune extends Enchantment {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack)
     {
-        return stack.getItem().equals(ENItems.mesh) ? true : super.canApplyAtEnchantingTable(stack);
+        return stack.getItem() instanceof ItemMesh;
     }
     
     /**
