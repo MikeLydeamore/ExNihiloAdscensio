@@ -60,7 +60,6 @@ public class SieveRecipe implements IRecipeWrapper
     {
         ingredients.setInputs(ItemStack.class, inputs);
         ingredients.setOutputs(ItemStack.class, outputs);
-        
     }
     
     @Override

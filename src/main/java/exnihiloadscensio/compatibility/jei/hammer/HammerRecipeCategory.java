@@ -39,7 +39,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
     
     public HammerRecipeCategory(IGuiHelper helper)
     {
-        this.background = helper.createDrawable(texture, 0, 0, 166, 130);
+        this.background = helper.createDrawable(texture, 0, 0, 166, 128);
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
     
