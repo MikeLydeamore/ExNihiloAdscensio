@@ -12,7 +12,6 @@ import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.ItemInfo;
-import exnihiloadscensio.util.LogUtil;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import lombok.Setter;
@@ -129,8 +128,6 @@ public class BarrelModeCompost implements IBarrelMode {
 	@SuppressWarnings("deprecation")
 	public boolean addItem(ItemStack stack, TileBarrel barrel)
 	{
-		LogUtil.info("Adding item: " + stack.stackSize + " x " + stack.getItem().getRegistryName().toString());
-	    
 		if (fillAmount < 1)
 		{
 			if (stack != null)

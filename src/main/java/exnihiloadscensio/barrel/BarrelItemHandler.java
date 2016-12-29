@@ -8,7 +8,6 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
 import exnihiloadscensio.registries.BarrelModeRegistry.TriggerType;
 import exnihiloadscensio.tiles.TileBarrel;
-import exnihiloadscensio.util.LogUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -93,11 +92,6 @@ public class BarrelItemHandler extends ItemStackHandler {
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
 	{
-	    if(stack != null)
-	    {
-	        LogUtil.info("Item Inserted: " + stack.stackSize + " x " + stack.getItem().getRegistryName().toString() + " Simulate: " + simulate);
-	    }
-	    
 		if (barrel.getMode() == null)
 		{
 			ArrayList<IBarrelMode> modes = BarrelModeRegistry.getModes(TriggerType.ITEM);
