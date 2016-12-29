@@ -119,7 +119,6 @@ public class BarrelModeBlock implements IBarrelMode {
 		handler.setBarrel(barrel);
 		if (handler.getStackInSlot(0) == null) {
 			handler.insertItem(0, stack, false);
-			PacketHandler.sendNBTUpdate(barrel);
 			return true;
 		}
 		return false;

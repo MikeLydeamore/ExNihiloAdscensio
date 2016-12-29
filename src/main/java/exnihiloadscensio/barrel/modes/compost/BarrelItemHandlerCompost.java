@@ -1,7 +1,5 @@
 package exnihiloadscensio.barrel.modes.compost;
 
-import exnihiloadscensio.networking.MessageBarrelModeUpdate;
-import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
 import lombok.Setter;
@@ -24,15 +22,18 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 		if (CompostRegistry.containsItem(stack))
 		{
 			BarrelModeCompost mode = (BarrelModeCompost) this.barrel.getMode();
+			
 			if (mode != null && mode.getFillAmount() < 1)
 			{
-				ItemStack ret = stack.copy();
-				ret.stackSize--;
+				ItemStack toReturn = stack.copy();
+				toReturn.stackSize--;
 				
 				if (!simulate)
+				{
 					mode.addItem(stack, barrel);
+				}
 				
-				return ret;
+				return toReturn;
 			}
 		}
 		
@@ -42,19 +43,6 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate)
 	{
-		BarrelModeCompost mode = (BarrelModeCompost) this.barrel.getMode();
-		if (mode != null && mode.getProgress() >= 1)
-		{
-			ItemStack ret = super.extractItem(slot, amount, simulate);
-			if (!simulate) {
-				mode.removeItem(barrel);
-				barrel.setMode("null");
-				PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
-			}
-			return ret;
-		}
-		
 		return null;
 	}
-
 }

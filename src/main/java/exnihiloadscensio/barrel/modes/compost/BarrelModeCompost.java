@@ -12,6 +12,7 @@ import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.LogUtil;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import lombok.Setter;
@@ -128,7 +129,8 @@ public class BarrelModeCompost implements IBarrelMode {
 	@SuppressWarnings("deprecation")
 	public boolean addItem(ItemStack stack, TileBarrel barrel)
 	{
-		
+		LogUtil.info("Adding item: " + stack.stackSize + " x " + stack.getItem().getRegistryName().toString());
+	    
 		if (fillAmount < 1)
 		{
 			if (stack != null)
@@ -163,26 +165,35 @@ public class BarrelModeCompost implements IBarrelMode {
 		}
 		return false;
 	}
-	
-	@Override
-	public void update(TileBarrel barrel)
-	{
-		if (fillAmount >= 1 && progress < 1)
-		{
-			if (progress == 0)
-				originalColor = color;
-			progress += 1.0/Config.compostingTicks;
-			color = Color.average(originalColor, whiteColor, progress);
-			PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
-			barrel.markDirty();
-		}
-		if (progress >= 1 && compostState != null) {
-			handler.setStackInSlot(0, new ItemStack(compostState.getBlock(), 1, compostState.getBlock().getMetaFromState(compostState)));
-			//barrel.getWorld().setBlockState(barrel.getPos(), barrel.getWorld().getBlockState(barrel.getPos()));
-			//System.out.println("update");
-		}
-	}
-	
+    
+    @Override
+    public void update(TileBarrel barrel)
+    {
+        if (fillAmount >= 1 && progress < 1)
+        {
+            if (progress == 0)
+            {
+                originalColor = color;
+            }
+            
+            progress += 1.0 / Config.compostingTicks;
+            
+            color = Color.average(originalColor, whiteColor, progress);
+            
+            PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
+            
+            barrel.markDirty();
+        }
+        
+        if (progress >= 1 && compostState != null)
+        {
+            barrel.setMode("block");
+            PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("block", barrel.getPos()), barrel);
+            
+            barrel.getMode().addItem(new ItemStack(compostState.getBlock(), 1, compostState.getBlock().getMetaFromState(compostState)), barrel);
+        }
+    }
+    
 	@Override
 	public String getName()
 	{
