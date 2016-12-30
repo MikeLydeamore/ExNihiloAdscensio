@@ -1,0 +1,81 @@
+item.hammerWood.name=Marreta de Madeira
+item.hammerStone.name=Marreta de Pedra
+item.hammerIron.name=Marreta de Ferro
+item.hammerGold.name=Marreta de Ouro(inutil)
+item.hammerDiamond.name=Marreta de Diamante(A melhor, sem dúvidas)
+
+item.crookWood.name=Cajado de Madeira
+item.crookBone.name=Cajado de Osso
+
+item.itemPebble.stone.name=Fragmento de Pedra
+item.itemPebble.granite.name=Fragmento de Granito
+item.itemPebble.diorite.name=Fragmento de Diorite
+item.itemPebble.andesite.name=Fragmento de Andesite
+
+item.itemMaterial.removed.name=Removido do Mod
+item.itemMaterial.porcelain_clay.name=Argila de Porcelana
+item.itemMaterial.silkworm.name=Bicho-da-seda
+item.itemMaterial.grass_seeds.name=Sementes de Grama
+item.itemMaterial.ancient_spores.name=Esporos Antigos
+item.itemMaterial.doll.name=Boneco de Porcelana
+
+item.itemDoll.blaze.name=Boneco Ardente
+item.itemDoll.enderman.name=Boneco Assustador
+
+item.silkwormCooked.name=Bicho-da-seda Cozido
+
+item.itemSeedBirch.name=Semente de Eucalipto
+item.itemSeedOak.name=Semente de Carvalho
+item.itemSeedJungle.name=Semente da Selva
+item.itemSeedAcacia.name=Semente de Acácia
+item.itemSeedSpruce.name=Semente de Pinheiro
+item.itemSeedCarrot.name=Semente de Cenoura
+item.itemSeedPotato.name=Semente de Batata
+item.itemSeedSugarcane.name=Semente de Cana-de-açúcar
+item.itemSeedCactus.name=Semente de Cactus
+item.itemSeedDarkOak.name=Semente de Carvalho Escuro
+
+tile.blockDust.name=Pó
+tile.blockNetherrackCrushed.name=Netherrack Esmagada
+tile.blockEndstoneCrushed.name=Pedra do Fim esmagada
+
+tile.blockBarrel0.name=Barril de Madeira
+tile.blockBarrel1.name=Barril de Pedra
+
+tile.blockCrucible.0.name=Crisol(Cru)
+tile.blockCrucible.1.name=Crisol
+
+tile.blockInfestedLeaves.name=Folhas Infestadas
+
+tile.blockSieve.name=Peneira
+item.itemMesh.1.name=Malha de Linha
+item.itemMesh.2.name=Malha de Silex
+item.itemMesh.3.name=Malha enrijecida de Ferro
+item.itemMesh.4.name=Malha enrijecida de Diamante
+
+orepiece.name=fragmento de Minério
+orehunk.name=Pedaço de Minério
+oredust.name=Minério em pò
+oreingot.name=Barra
+
+fluid.witchwater=Agua-das-bruxas
+
+jei.sieve.dropChance=Chance de Obter
+
+jei.hammer.hammerLevel=Nível de Marreta
+jei.hammer.hammerLevel.0=Mdeira
+jei.hammer.hammerLevel.1=Pedra
+jei.hammer.hammerLevel.2=Ferro
+jei.hammer.hammerLevel.3=Diamante
+jei.hammer.hammerLevel.4=Supremo
+
+commands.enreloadconfig.confirm=Ex Nihilo Configuração Recarregada
+
+itemGroup.exNihilo=Ex Nihilo
+
+modifier.exnihilo_smashing.name=Esmagante
+modifier.exnihilo_smashing.desc=§rSmashing baby, yeaaah!\n§rBreaks things into smaller things
+
+enchantment.sieveEfficiency=Eficiência para Peneira
+enchantment.sieveFortune=Fortuna para Peneira
+enchantment.sieveLuckOfTheSea=Sorte dos Mares para Peneira
