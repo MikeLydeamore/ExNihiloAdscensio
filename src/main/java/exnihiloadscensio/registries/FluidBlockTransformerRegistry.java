@@ -40,6 +40,11 @@ public class FluidBlockTransformerRegistry
 	    registry.add(new FluidBlockTransformer(fluid.getName(), inputBlock, outputBlock));
 	}
 	
+    private static void registerInternal(String fluid, ItemInfo inputBlock, ItemInfo outputBlock)
+    {
+        registry.add(new FluidBlockTransformer(fluid, inputBlock, outputBlock));
+    }
+	
 	public static boolean canBlockBeTransformedWithThisFluid(Fluid fluid, ItemStack stack)
 	{
 		ItemInfo info = ItemInfo.getItemInfoFromStack(stack);
@@ -116,5 +121,6 @@ public class FluidBlockTransformerRegistry
 		registerInternal(FluidRegistry.WATER, new ItemInfo(new ItemStack(ENBlocks.dust)), new ItemInfo(new ItemStack(Blocks.CLAY)));
 		registerInternal(FluidRegistry.LAVA, new ItemInfo(new ItemStack(Items.REDSTONE)), new ItemInfo(new ItemStack(Blocks.NETHERRACK)));
 		registerInternal(FluidRegistry.LAVA, new ItemInfo(new ItemStack(Items.GLOWSTONE_DUST)), new ItemInfo(new ItemStack(Blocks.END_STONE)));
+		registerInternal("witchwater", new ItemInfo(new ItemStack(Blocks.SAND)), new ItemInfo(new ItemStack(Blocks.SOUL_SAND)));
 	}
 }

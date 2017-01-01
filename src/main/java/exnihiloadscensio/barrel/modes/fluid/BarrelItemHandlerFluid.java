@@ -7,7 +7,6 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.ItemInfo;
-import exnihiloadscensio.util.LogUtil;
 import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;

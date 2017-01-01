@@ -19,6 +19,7 @@ public class ItemMesh extends Item {
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName("itemMesh");
 		this.setRegistryName("itemMesh");
+		this.setMaxStackSize(1);
 		GameRegistry.<Item>register(this);
 	}
 	

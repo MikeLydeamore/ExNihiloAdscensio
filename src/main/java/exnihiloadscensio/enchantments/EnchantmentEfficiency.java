@@ -1,6 +1,6 @@
 package exnihiloadscensio.enchantments;
 
-import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.items.ItemMesh;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,7 +18,7 @@ public class EnchantmentEfficiency extends Enchantment {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack)
     {
-        return stack.getItem().equals(ENItems.mesh) ? true : super.canApplyAtEnchantingTable(stack);
+        return stack.getItem() instanceof ItemMesh;
     }
     
     /**

@@ -1,5 +1,6 @@
 package exnihiloadscensio.tiles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -98,15 +99,25 @@ public class TileSieve extends TileEntity {
             return false;
         }
         
-        if (lastSieveAction == worldObj.getWorldTime())
+        if (lastSieveAction == worldObj.getTotalWorldTime())
         	return false;
         
-        lastSieveAction = worldObj.getWorldTime();
+        lastSieveAction = worldObj.getTotalWorldTime();
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
         efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
+        
         int fortune = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.fortune, meshStack);
         fortune += EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
+        fortune += player.getLuck();
+        
+        int luckOfTheSea = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.luckOfTheSea, meshStack);
+        luckOfTheSea += EnchantmentHelper.getEnchantmentLevel(Enchantments.LUCK_OF_THE_SEA, meshStack);
+        
+        if(luckOfTheSea > 0)
+        {
+            luckOfTheSea += player.getLuck();
+        }
         
         progress += 10 + 5 * efficiency;
         PacketHandler.sendNBTUpdate(this);
@@ -115,14 +126,48 @@ public class TileSieve extends TileEntity {
         {
             List<ItemStack> drops = SieveRegistry.getRewardDrops(rand, currentStack.getBlockState(), meshStack.getMetadata(), fortune);
             
-            if(drops != null)
+            if (drops == null)
             {
-            	for (int i = 0 ; i < EnchantmentHelper.getEnchantmentLevel(ENEnchantments.luckOfTheSea, meshStack) ; i++) {
-            		if (worldObj.rand.nextDouble() < 0.5)
-            			drops.add(new ItemStack(Items.FISH));
-            	}
-                drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
+                drops = new ArrayList<>();
             }
+            
+            // Fancy math to make the average fish dropped ~ luckOfTheSea / 2 fish, which is what it was before
+            
+            int fishToDrop = (int) Math.round(rand.nextGaussian() + (luckOfTheSea / 2.0));
+            
+            fishToDrop = Math.min(fishToDrop, 0);
+            fishToDrop = Math.max(fishToDrop, luckOfTheSea);
+
+            for(int i = 0; i < fishToDrop; i++)
+            {
+                /*
+                 * Gives fish following chances:
+                 *  Normal: 43% (3/7)
+                 *  Salmon: 29% (2/7)
+                 *  Clown:  14% (1/7)
+                 *  Puffer: 14% (1/7)
+                 */
+                
+                int fishMeta = 0;
+                
+                switch(rand.nextInt(7))
+                {
+                    case 3:
+                    case 4:
+                        fishMeta = 1;
+                        break;
+                    case 5:
+                        fishMeta = 2;
+                        break;
+                    case 6:
+                        fishMeta = 3;
+                        break;
+                }
+                
+                drops.add(new ItemStack(Items.FISH, 1, fishMeta));
+            }
+            
+            drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
             
             resetSieve();
         }

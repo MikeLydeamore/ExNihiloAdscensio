@@ -7,39 +7,59 @@ import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class BarrelItemHandlerBlock extends ItemStackHandler {
-	
-	@Setter
-	private TileBarrel barrel;
-	
-	public BarrelItemHandlerBlock(TileBarrel barrel) {
-		super(1);
-		this.barrel = barrel;
-	}
-	
-	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-		if (slot != 0)
-			return stack;
-		
-		if (getStackInSlot(0) == null) {
-			ItemStack ret = super.insertItem(slot, stack, simulate);
-			PacketHandler.sendNBTUpdate(barrel);
-			return ret;
-		}
-		
-		return stack;
-	}
-	
-	@Override
-	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		ItemStack ret = super.extractItem(slot, amount, simulate);
-		if (ret != null && !simulate) {
-			barrel.setMode("null");
-			PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
-		}
-		
-		return ret;
-	}
-
+public class BarrelItemHandlerBlock extends ItemStackHandler
+{
+    @Setter
+    private TileBarrel barrel;
+    
+    public BarrelItemHandlerBlock(TileBarrel barrel)
+    {
+        super(1);
+        this.barrel = barrel;
+    }
+    
+    protected int getStackLimit(int slot, ItemStack stack)
+    {
+        return stack.getMaxStackSize();
+    }
+    
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+    {
+        ItemStack returned = super.insertItem(slot, stack, simulate);
+        
+        if (!simulate)
+        {
+            PacketHandler.sendNBTUpdate(barrel);
+        }
+        
+        return returned;
+    }
+    
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate)
+    {
+        ItemStack ret = super.extractItem(slot, amount, simulate);
+        
+        checkEmpty();
+        
+        return ret;
+    }
+    
+    @Override
+    public void setStackInSlot(int slot, ItemStack stack)
+    {
+        super.setStackInSlot(slot, stack);
+        
+        checkEmpty();
+    }
+    
+    private void checkEmpty()
+    {
+        if (getStackInSlot(0) == null)
+        {
+            barrel.setMode("null");
+            PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
+        }
+    }
 }

@@ -9,7 +9,6 @@ import com.google.common.collect.Maps;
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HammerReward;
-import exnihiloadscensio.util.LogUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
@@ -39,7 +38,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
     
     public HammerRecipeCategory(IGuiHelper helper)
     {
-        this.background = helper.createDrawable(texture, 0, 0, 166, 130);
+        this.background = helper.createDrawable(texture, 0, 0, 166, 128);
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
     
@@ -169,8 +168,6 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
                 
                 List<Integer> levelOrder = Lists.newArrayList(tieredOutputs.keySet());
                 levelOrder.sort((levelA, levelB) -> Integer.compare(levelB, levelA));
-                
-                LogUtil.info(levelOrder);
                 
                 for(int level : levelOrder)
                 {

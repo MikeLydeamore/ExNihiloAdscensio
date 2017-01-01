@@ -21,6 +21,7 @@ import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -32,6 +33,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class CompostRegistry {
 
+    @Getter
 	private static Map<ItemInfo, Compostable> registry = new HashMap<>();
     private static Map<ItemInfo, Compostable> externalRegistry = new HashMap<>();
     

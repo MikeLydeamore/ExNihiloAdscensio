@@ -50,7 +50,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
         }
         
         // Don't update unless there's leaves nearby, or we haven't checked for leavesUpdateFrequency ticks. And only update on the server
-        if (!worldObj.isRemote && hasNearbyLeaves || worldObj.getWorldTime() % Config.leavesUpdateFrequency == updateIndex)
+        if (!worldObj.isRemote && hasNearbyLeaves || worldObj.getTotalWorldTime() % Config.leavesUpdateFrequency == updateIndex)
         {
             hasNearbyLeaves = false;
             

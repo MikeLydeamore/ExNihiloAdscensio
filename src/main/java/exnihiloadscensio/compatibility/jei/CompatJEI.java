@@ -1,12 +1,18 @@
 package exnihiloadscensio.compatibility.jei;
 
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
+import exnihiloadscensio.compatibility.jei.barrel.compost.CompostRecipe;
+import exnihiloadscensio.compatibility.jei.barrel.compost.CompostRecipeCategory;
+import exnihiloadscensio.compatibility.jei.barrel.compost.CompostRecipeHandler;
 import exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform.FluidBlockTransformRecipe;
 import exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform.FluidBlockTransformRecipeCategory;
 import exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform.FluidBlockTransformRecipeHandler;
@@ -23,11 +29,13 @@ import exnihiloadscensio.compatibility.jei.sieve.SieveRecipe;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeCategory;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeHandler;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
 import exnihiloadscensio.registries.FluidOnTopRegistry;
 import exnihiloadscensio.registries.FluidTransformRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.registries.types.FluidFluidBlock;
 import exnihiloadscensio.registries.types.FluidTransformer;
@@ -42,6 +50,7 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -192,15 +201,76 @@ public class CompatJEI implements IModPlugin
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), FluidBlockTransformRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), FluidBlockTransformRecipeCategory.UID);
 
+        registry.addRecipeCategories(new CompostRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeHandlers(new CompostRecipeHandler());
+        
+        List<CompostRecipe> compostRecipes = Lists.newArrayList();
+        
+        Map<ItemInfo, Compostable> compostRegistry = CompostRegistry.getRegistry();
+        Map<ItemInfo, List<ItemStack>> compostEntries = Maps.newHashMap();
+        
+        for(Map.Entry<ItemInfo, Compostable> compostEntry : compostRegistry.entrySet())
+        {
+            ItemInfo compostBlock = compostEntry.getValue().getCompostBlock();
+            
+            List<ItemStack> compostables = compostEntries.get(compostBlock);
+            
+            if(compostables == null)
+            {
+                compostEntries.put(compostBlock, compostables = Lists.newArrayList());
+            }
+            
+            Item compostItem = compostEntry.getKey().getItem();
+            int compostCount = (int) Math.ceil(1.0F / compostEntry.getValue().getValue());
+            int compostMeta = compostEntry.getKey().getMeta();
+            
+            if(compostMeta == -1)
+            {
+                List<ItemStack> subItems = Lists.newArrayList();
+                compostItem.getSubItems(compostItem, null, subItems);
+                
+                for(ItemStack subItem : subItems)
+                {
+                    subItem.stackSize = compostCount;
+                    compostables.add(subItem);
+                }
+            }
+            else
+            {
+                compostables.add(new ItemStack(compostItem, compostCount, compostMeta));
+            }
+        }
+        
+        for(Map.Entry<ItemInfo, List<ItemStack>> compostEntry : compostEntries.entrySet())
+        {
+            // I heard you like lists, you I put some lists in your lists, so you can list while you list
+            List<List<ItemStack>> splitList = Lists.newArrayList(ImmutableList.of(Lists.newArrayList()));
+            
+            for(ItemStack stack : compostEntry.getValue())
+            {
+                if(splitList.get(0).size() >= 45)
+                {
+                    splitList.add(0, Lists.newArrayList());
+                }
+                
+                splitList.get(0).add(stack);
+            }
+            
+            for(List<ItemStack> compostInputs : Lists.reverse(splitList))
+            {
+                compostRecipes.add(new CompostRecipe(compostEntry.getKey().getItemStack(), compostInputs));
+            }
+        }
+
+        registry.addRecipes(compostRecipes);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelWood), CompostRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENBlocks.barrelStone), CompostRecipeCategory.UID);
+        
         LogUtil.info("Hammer Recipes Loaded:             " + hammerRecipes.size());
         LogUtil.info("Sieve Recipes Loaded:              " + sieveRecipes.size());
         LogUtil.info("Fluid Transform Recipes Loaded:    " + fluidTransformRecipes.size());
         LogUtil.info("Fluid On Top Recipes Loaded:       " + fluidOnTopRecipes.size());
-        LogUtil.info("");
-        LogUtil.info("Hammer Registries Loaded:          " + HammerRegistry.getRegistry().size());
-        LogUtil.info("Sieve Registries Loaded:           " + SieveRegistry.getRegistry().size());
-        LogUtil.info("Fluid Transform Registries Loaded: " + FluidTransformRegistry.getRegistry().size());
-        LogUtil.info("Fluid On Top Registries Loaded:    " + FluidOnTopRegistry.getRegistry().size());
+        LogUtil.info("Compost Recipes Loaded:            " + compostRecipes.size());
     }
     
     @Override

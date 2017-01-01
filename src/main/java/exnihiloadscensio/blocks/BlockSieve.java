@@ -93,7 +93,9 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 				boolean done = te.setMesh(meshStack, false);
 				
 				if (done) {
-					heldItem.stackSize--;
+				    if(!player.isCreative())
+				        heldItem.stackSize--;
+				    
 					world.setBlockState(pos, state.withProperty(MESH, type));
 					PacketHandler.sendNBTUpdate(te);			
 					return true;
@@ -110,16 +112,17 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 			}
 			
 			if (te.addBlock(heldItem)) {
-				heldItem.stackSize--;
+			    if(!player.isCreative())
+                    heldItem.stackSize--;
+                
 				for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= 1*Config.sieveSimilarRadius ; xOffset++) {
 					for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= 1*Config.sieveSimilarRadius ; zOffset++) {
 						TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, zOffset));
 						if (entity != null && entity instanceof TileSieve) {
 							TileSieve sieve = (TileSieve) entity;
-							if (heldItem.stackSize > 0 && te.isSieveSimilarToInput(sieve)) {
-								if (sieve.addBlock(heldItem))
-									heldItem.stackSize--;
-							}
+							if (heldItem.stackSize > 0 && te.isSieveSimilarToInput(sieve)) 
+                                if (sieve.addBlock(heldItem) && !player.isCreative())
+                                    heldItem.stackSize--;
 						}
 					}
 				}

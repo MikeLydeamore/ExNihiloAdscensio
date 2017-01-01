@@ -35,7 +35,7 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
     
     public SieveRecipeCategory(IGuiHelper helper)
     {
-        this.background = helper.createDrawable(texture, 0, 0, 166, 130);
+        this.background = helper.createDrawable(texture, 0, 0, 166, 128);
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
     
