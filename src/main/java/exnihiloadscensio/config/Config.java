@@ -59,10 +59,9 @@ public class Config {
 		doEnderIOCompat = config.get("Compatibilitiy", "EnderIO", true).getBoolean();
 		doTICCompat = config.get("Compatibilitiy", "TinkersConstruct", true).getBoolean();
 		
-		setFireToMacroUsers = config.get("Sieving", "setFireToMacroUsers", true).getBoolean();
+		setFireToMacroUsers = config.get("Sieving", "setFireToMacroUsers", false).getBoolean();
 		
 		if (config.hasChanged())
 			config.save();
-				
 	}
 }
