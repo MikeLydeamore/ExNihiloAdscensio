@@ -34,22 +34,22 @@ public class Util {
 		switch (hitOrientation) {
 		case 0:
 			stackCoordX = source.getPos().getX() + 0.5D;
-			stackCoordY = source.getPos().getY() + 0.5D;
+			stackCoordY = source.getPos().getY() + 0.5D + 1;
 			stackCoordZ = source.getPos().getZ() - 0.25D;
 			break;
 		case 1:
 			stackCoordX = source.getPos().getX() + 1.25D;
-			stackCoordY = source.getPos().getY() + 0.5D;
+			stackCoordY = source.getPos().getY() + 0.5D + 1;
 			stackCoordZ = source.getPos().getZ() + 0.5D;
 			break;
 		case 2:
 			stackCoordX = source.getPos().getX() + 0.5D;
-			stackCoordY = source.getPos().getY() + 0.5D;
+			stackCoordY = source.getPos().getY() + 0.5D + 1;
 			stackCoordZ = source.getPos().getZ() + 1.25D;
 			break;
 		case 3:
 			stackCoordX = source.getPos().getX() - 0.25D;
-			stackCoordY = source.getPos().getY() + 0.5D;
+			stackCoordY = source.getPos().getY() + 0.5D + 1;
 			stackCoordZ = source.getPos().getZ() + 0.5D;
 			break;
 		}
