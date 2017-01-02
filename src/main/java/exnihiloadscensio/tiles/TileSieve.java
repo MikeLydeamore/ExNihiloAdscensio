@@ -3,12 +3,15 @@ package exnihiloadscensio.tiles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
+import exnihiloadscensio.config.Config;
 import exnihiloadscensio.enchantments.ENEnchantments;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
+import exnihiloadscensio.util.LogUtil;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +26,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -37,6 +43,7 @@ public class TileSieve extends TileEntity {
 	private ItemStack meshStack;
 	
 	private long lastSieveAction = 0;
+	private UUID lastPlayer;
 	
 	private static Random rand = new Random();
 	
@@ -99,10 +106,27 @@ public class TileSieve extends TileEntity {
             return false;
         }
         
-        if (lastSieveAction == worldObj.getTotalWorldTime())
-        	return false;
+        // 4 ticks is the same period of holding down right click
+        if (worldObj.getTotalWorldTime() - lastSieveAction < 4)
+        {
+            return false;
+        }
+        
+        // Really good chance that they're using a macro
+        if(worldObj.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
+        {
+            if(Config.setFireToMacroUsers)
+            {
+                player.setFire(1);
+            }
+            
+            player.addChatMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
+        }
+        
+        LogUtil.info(worldObj.getTotalWorldTime() - lastSieveAction);
         
         lastSieveAction = worldObj.getTotalWorldTime();
+        lastPlayer = player.getUniqueID();
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
         efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
