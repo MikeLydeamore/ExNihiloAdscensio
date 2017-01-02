@@ -29,6 +29,8 @@ public class Config {
 	public static boolean doEnderIOCompat;
 	public static boolean doTICCompat;
 	
+	public static boolean setFireToMacroUsers;
+	
 	public static void doNormalConfig(File file)
 	{
 		Configuration config = new Configuration(file);
@@ -57,6 +59,7 @@ public class Config {
 		doEnderIOCompat = config.get("Compatibilitiy", "EnderIO", true).getBoolean();
 		doTICCompat = config.get("Compatibilitiy", "TinkersConstruct", true).getBoolean();
 		
+		setFireToMacroUsers = config.get("Sieving", "setFireToMacroUsers", true).getBoolean();
 		
 		if (config.hasChanged())
 			config.save();
