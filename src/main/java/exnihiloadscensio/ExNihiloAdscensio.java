@@ -110,10 +110,10 @@ public class ExNihiloAdscensio {
 	@EventHandler
 	public static void postInit(FMLPostInitializationEvent event) {
 
-		if (Loader.isModLoaded("tconstruct")) {
+		if (Loader.isModLoaded("tconstruct") && Config.doTICCompat) {
 			CompatTConstruct.postInit();
 		}
-		if (Loader.isModLoaded("EnderIO")) {
+		if (Loader.isModLoaded("EnderIO") && Config.doEnderIOCompat) {
 			CompatEIO.postInit();
 		}
 	}

@@ -26,6 +26,9 @@ public class Config {
 	
 	public static int sieveSimilarRadius;
 	
+	public static boolean doEnderIOCompat;
+	public static boolean doTICCompat;
+	
 	public static void doNormalConfig(File file)
 	{
 		Configuration config = new Configuration(file);
@@ -50,6 +53,10 @@ public class Config {
 		stringFortuneChance = config.get("Crooking", "stringFortuneChance", 1).getDouble();
 		
 		sieveSimilarRadius = config.get("Sieving", "sieveSimilarRadius", 2).getInt();
+		
+		doEnderIOCompat = config.get("Compatibilitiy", "EnderIO", true).getBoolean();
+		doTICCompat = config.get("Compatibilitiy", "TinkersConstruct", true).getBoolean();
+		
 		
 		if (config.hasChanged())
 			config.save();
