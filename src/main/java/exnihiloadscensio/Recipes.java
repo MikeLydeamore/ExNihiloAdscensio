@@ -33,7 +33,7 @@ public class Recipes {
             GameRegistry.addRecipe(new ShapedOreRecipe(ENBlocks.barrelStone, new Object[] {"x x","x x", "xyx", 'x', new ItemStack(Blocks.STONE), 'y', new ItemStack(Blocks.STONE_SLAB)}));
 		}
 		if (Config.enableCrucible) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new Object[] {"x x","x x","xxx", 'x', ItemResource.getResourceStack("porcelain_clay")}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new Object[] {"x x","x x","xxx", 'x', "clayPorcelain"}));
 			FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(ENBlocks.crucible, 1, 0), new ItemStack(ENBlocks.crucible, 1, 1), 0.7f);
 		}
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.COBBLESTONE, new Object[] {"xx","xx", 'x', ItemPebble.getPebbleStack("stone")}));
@@ -50,8 +50,8 @@ public class Recipes {
 		
 		FurnaceRecipes.instance().addSmeltingRecipe(ItemResource.getResourceStack("silkworm"), new ItemStack(ENItems.cookedSilkworm), 0.7f);
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 4), new Object[] {"xyx"," x ", "x x", 'x', ItemResource.getResourceStack("porcelain_clay"), 'y', "gemDiamond"}));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 6), new Object[] {"xyx"," x ", "x x", 'x', ItemResource.getResourceStack("porcelain_clay"), 'y', "gemEmerald"}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 4), new Object[] {"xyx"," x ", "x x", 'x', "clayPorcelain", 'y', "gemDiamond"}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 6), new Object[] {"xyx"," x ", "x x", 'x', "clayPorcelain", 'y', "gemEmerald"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.dolls, 1, 0), new Object[] {"xyx", "zwz", "xvx", 'x', Items.BLAZE_POWDER, 'v', Items.NETHER_WART, 'w', ItemResource.getResourceStack("doll"), 'y', "dustRedstone", 'z', "dustGlowstone"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.dolls, 1, 1), new Object[] {"xyx", "zwz", "xvx", 'v', Items.NETHER_WART, 'x', "dyeBlack", 'w', ItemResource.getResourceStack("doll"), 'y', "dustRedstone", 'z', "dustGlowstone"}));
 	}

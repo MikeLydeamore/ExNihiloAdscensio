@@ -12,6 +12,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ENItems {
 	
@@ -63,6 +64,7 @@ public class ENItems {
 		mesh.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
 		resources = new ItemResource();
+		OreDictionary.registerOre("clayPorcelain", ItemResource.getResourceStack("porcelain_clay"));
 		
 		cookedSilkworm = new ItemCookedSilkworm();
 
