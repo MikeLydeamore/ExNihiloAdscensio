@@ -109,25 +109,37 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
-	{
-		if (!world.isRemote)
-		{
-			TileInfestedLeaves leaves = (TileInfestedLeaves) world.getTileEntity(pos);
-
-			if (leaves != null && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ICrook)
-			{
-				if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance)
-					Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
-
-				if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance / 4.0d)
-					Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
-			}
-		}
-
-		return world.setBlockToAir(pos);
-	}
-    
+    public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player)
+    {
+        if (!world.isRemote && !player.isCreative())
+        {
+            TileEntity tile = world.getTileEntity(pos);
+            
+            if(tile != null)
+            {
+                if(tile instanceof TileInfestedLeaves)
+                {
+                    TileInfestedLeaves leaves = (TileInfestedLeaves) tile;
+        
+                    if (leaves != null && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ICrook)
+                    {
+                        if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance)
+                        {
+                            Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
+                        }
+        
+                        if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance / 4.0d)
+                        {
+                            Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
+                        }
+                    }
+                }
+                
+                world.removeTileEntity(pos);
+            }
+        }
+    }
+	
     @Override
     public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
