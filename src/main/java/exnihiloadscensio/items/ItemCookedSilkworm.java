@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemCookedSilkworm extends ItemFood {
 
 	public ItemCookedSilkworm() {
-		super(2, 10.0f, false);
+		super(2, 0.6f, false);
 		this.setUnlocalizedName("silkwormCooked");
 		this.setRegistryName("silkwormCooked");
 		GameRegistry.<Item>register(this);
