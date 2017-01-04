@@ -3,6 +3,7 @@ package exnihiloadscensio.handlers;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.tools.ICrook;
 import exnihiloadscensio.registries.CrookRegistry;
 import exnihiloadscensio.registries.types.CrookReward;
@@ -30,9 +31,8 @@ public class HandlerCrook {
 		ItemStack held = event.getHarvester().getHeldItemMainhand();
 		if (!isCrook(held))
 			return;
-		
+
 		ArrayList<CrookReward> rewards = CrookRegistry.getRewards(event.getState());
-		
 		if (rewards != null && rewards.size() > 0)
 		{
 			event.getDrops().clear();
@@ -51,19 +51,21 @@ public class HandlerCrook {
 
 			}
 		}
-		
+
 		if (event.getState().getBlock() instanceof BlockLeaves) //Simulate vanilla drops without firing event
 		{
-			Block block = event.getState().getBlock();
-			int fortune = event.getFortuneLevel();
-			java.util.List<ItemStack> items = block.getDrops(event.getWorld(), event.getPos(), event.getState(), fortune);
-            for (ItemStack item : items)
-            {
-                if (event.getWorld().rand.nextFloat() <= event.getDropChance())
-                {
-                    Block.spawnAsEntity(event.getWorld(), event.getPos(), item);
-                }
-            }
+			for (int i = 0 ; i < Config.numberOfTimesToTestVanillaDrops+1; i++) {
+				Block block = event.getState().getBlock();
+				int fortune = event.getFortuneLevel();
+				java.util.List<ItemStack> items = block.getDrops(event.getWorld(), event.getPos(), event.getState(), fortune);
+				for (ItemStack item : items)
+				{
+					if (event.getWorld().rand.nextFloat() <= event.getDropChance())
+					{
+						Block.spawnAsEntity(event.getWorld(), event.getPos(), item);
+					}
+				}
+			}
 		}
 	}
 
@@ -72,7 +74,7 @@ public class HandlerCrook {
 	{
 		if (stack == null)
 			return false;
-		
+
 		if (stack.getItem() == null)
 			return false;
 

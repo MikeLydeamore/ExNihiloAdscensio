@@ -17,6 +17,7 @@ public class Config {
 	
 	public static double stringChance;
 	public static double stringFortuneChance;
+	public static int numberOfTimesToTestVanillaDrops;
 	
 	public static int leavesUpdateFrequency;
 	public static double leavesSpreadChance;
@@ -60,6 +61,8 @@ public class Config {
 		doTICCompat = config.get("Compatibilitiy", "TinkersConstruct", true).getBoolean();
 		
 		setFireToMacroUsers = config.get("Sieving", "setFireToMacroUsers", false).getBoolean();
+		
+		numberOfTimesToTestVanillaDrops = config.get("Crooking", "numberOfVanillaDropRuns", 3).getInt();
 		
 		if (config.hasChanged())
 			config.save();
