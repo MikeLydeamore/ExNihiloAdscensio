@@ -143,7 +143,9 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
     @Override
     public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-		return new ArrayList<>();
+    	ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+    	ret.add(new ItemStack(this));
+		return ret;
 	}
 
 	@Override
