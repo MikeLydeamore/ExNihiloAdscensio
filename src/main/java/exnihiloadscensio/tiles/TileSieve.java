@@ -123,8 +123,6 @@ public class TileSieve extends TileEntity {
             player.addChatMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
         }
         
-        LogUtil.info(worldObj.getTotalWorldTime() - lastSieveAction);
-        
         lastSieveAction = worldObj.getTotalWorldTime();
         lastPlayer = player.getUniqueID();
         

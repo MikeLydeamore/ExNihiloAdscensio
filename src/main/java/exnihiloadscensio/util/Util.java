@@ -78,18 +78,16 @@ public class Util {
 		.getTexture(state);
 	}
 	
-	public static boolean isSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world) {
-
+	public static boolean isSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world, int radius) {
 		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
-		for (int xShift = -2 ; xShift <= 2 ; xShift++) {
-			for (int zShift = -2 ; zShift <= 2 ; zShift++) {
+		for (int xShift = -1*radius ; xShift <= radius ; xShift++) {
+			for (int zShift = -1*radius ; zShift <= radius ; zShift++) {
 				BlockPos checkPos = pos.add(xShift, 0, zShift);
 				BlockInfo checkBlock = new BlockInfo(world.getBlockState(checkPos));
 				if (blockList.contains(checkBlock))
 					return true;				
 			}
 		}
-		
 		
 		return false;
 	}

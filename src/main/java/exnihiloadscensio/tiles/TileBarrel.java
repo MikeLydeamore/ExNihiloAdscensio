@@ -66,6 +66,7 @@ public class TileBarrel extends TileEntity implements ITickable {
 
             if (result)
             {
+            	PacketHandler.sendNBTUpdate(this);
                 if(getBlockType().getLightValue(state, world, pos) != world.getLight(pos))
                 {
                     world.checkLight(pos);
