@@ -36,7 +36,7 @@ public class BarrelFluidHandler extends FluidTank {
     
     @Override
     public boolean canFillFluidType(FluidStack fluid) {
-        if(BarrelLiquidBlacklistRegistry.isBlacklisted(barrel.getTier(), fluid.getFluid().getName()))
+        if(fluid == null || fluid.getFluid() == null || BarrelLiquidBlacklistRegistry.isBlacklisted(barrel.getTier(), fluid.getFluid().getName()))
             return false;
         
     	for (IBarrelMode mode : BarrelModeRegistry.getModes(TriggerType.FLUID))	{
