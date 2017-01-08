@@ -77,7 +77,22 @@ public class Util {
 		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
 		.getTexture(state);
 	}
-	
+
+    public static TextureAtlasSprite getTextureFromFluidStack(FluidStack stack)
+    {
+        if(stack.getFluid() != null)
+        {
+            Fluid fluid = stack.getFluid();
+            
+            if(fluid.getStill(stack) != null)
+            {
+                return Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
+            }
+        }
+        
+        return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+    }
+    
 	public static boolean isSurroundingBlocksAtLeastOneOf(BlockInfo[] blocks, BlockPos pos, World world, int radius) {
 		ArrayList<BlockInfo> blockList = new ArrayList<BlockInfo>(Arrays.asList(blocks));
 		for (int xShift = -1*radius ; xShift <= radius ; xShift++) {

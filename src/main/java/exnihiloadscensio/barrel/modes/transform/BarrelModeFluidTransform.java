@@ -11,6 +11,7 @@ import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.BlockInfo;
+import exnihiloadscensio.util.LogUtil;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,29 +84,28 @@ public class BarrelModeFluidTransform implements IBarrelMode {
 			EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
 		return false;
 	}
-
-	@Override
-	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
-		if (progress < 0.5) {
-			if (inputStack == null || inputStack.getFluid().getBlock() == null)
-				return Util.getTextureFromBlockState(FluidRegistry.WATER.getBlock().getDefaultState());
-			return Util.getTextureFromBlockState(inputStack.getFluid().getBlock().getDefaultState());
-		}
-		else {
-			if (outputStack == null || outputStack.getFluid().getBlock() == null)
-				return Util.getTextureFromBlockState(FluidRegistry.WATER.getBlock().getDefaultState());
-			return Util.getTextureFromBlockState(outputStack.getFluid().getBlock().getDefaultState());
-		}
-	}
-
-	@Override
-	public Color getColorForRender() {
-		if (progress < 0.5) {
-			return Color.average(Util.whiteColor, Util.blackColor, (float) (progress/0.5));
-		}
-		return Color.average(Util.blackColor, Util.whiteColor, (float) ((progress-0.5)/0.5));
-	}
-
+    
+    @Override
+    public TextureAtlasSprite getTextureForRender(TileBarrel barrel)
+    {
+        if (progress < 0.5)
+        {
+            return Util.getTextureFromFluidStack(inputStack);
+        }
+        else
+        {
+            return Util.getTextureFromFluidStack(outputStack);
+        }
+    }
+    
+    @Override
+    public Color getColorForRender()
+    {
+        LogUtil.info(2 * Math.abs(progress - 0.5F));
+        
+        return Color.average(Util.blackColor, Util.whiteColor, 2 * Math.abs(progress - 0.5F));
+    }
+    
 	@Override
 	public float getFilledLevelForRender(TileBarrel barrel) {
 		return 1;
