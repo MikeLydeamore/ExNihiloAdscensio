@@ -101,8 +101,6 @@ public class BarrelModeFluidTransform implements IBarrelMode {
     @Override
     public Color getColorForRender()
     {
-        LogUtil.info(2 * Math.abs(progress - 0.5F));
-        
         return Color.average(Util.blackColor, Util.whiteColor, 2 * Math.abs(progress - 0.5F));
     }
     
