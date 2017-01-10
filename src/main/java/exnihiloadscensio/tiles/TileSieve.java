@@ -113,7 +113,7 @@ public class TileSieve extends TileEntity {
         }
         
         // Really good chance that they're using a macro
-        if(worldObj.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
+        if(player != null && worldObj.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
         {
             if(Config.setFireToMacroUsers)
             {
@@ -124,19 +124,21 @@ public class TileSieve extends TileEntity {
         }
         
         lastSieveAction = worldObj.getTotalWorldTime();
-        lastPlayer = player.getUniqueID();
+        if (player != null)
+        	lastPlayer = player.getUniqueID();
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
         efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
         
         int fortune = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.fortune, meshStack);
         fortune += EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
-        fortune += player.getLuck();
+        if (player != null)
+        	fortune += player.getLuck();
         
         int luckOfTheSea = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.luckOfTheSea, meshStack);
         luckOfTheSea += EnchantmentHelper.getEnchantmentLevel(Enchantments.LUCK_OF_THE_SEA, meshStack);
         
-        if(luckOfTheSea > 0)
+        if(player != null && luckOfTheSea > 0)
         {
             luckOfTheSea += player.getLuck();
         }
@@ -196,7 +198,7 @@ public class TileSieve extends TileEntity {
         
         return true;
     }
-    
+        
     public boolean isSieveSimilar(TileSieve sieve) {
     	if (sieve == null)
     		return false;
