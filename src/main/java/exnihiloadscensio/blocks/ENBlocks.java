@@ -6,6 +6,7 @@ import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.tiles.TileSieve;
+import exnihiloadscensio.tiles.TileSievePress;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -23,6 +24,7 @@ public class ENBlocks {
 	public static BlockInfestedLeaves infestedLeaves;
 	public static BlockCrucible crucible;
 	public static BlockSieve sieve;
+	public static BlockSievePress sievePress;
 	
 	public static FluidWitchWater fluidWitchwater;
 	public static BlockFluidWitchwater blockWitchwater;
@@ -60,6 +62,10 @@ public class ENBlocks {
 		sieve = new BlockSieve();
 		sieve.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		GameRegistry.registerTileEntity(TileSieve.class, "blockSieve");
+		
+		sievePress = new BlockSievePress();
+		sievePress.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
+		GameRegistry.registerTileEntity(TileSievePress.class, "blockSievePress");
 		
 		fluidWitchwater = new FluidWitchWater();
 		blockWitchwater = new BlockFluidWitchwater();

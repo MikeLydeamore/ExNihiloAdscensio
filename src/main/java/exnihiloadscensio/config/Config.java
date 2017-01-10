@@ -11,6 +11,7 @@ public class Config {
 	public static boolean enableCrucible;
 	public static boolean shouldBarrelsFillWithRain;
     public static boolean fakePlayersCanSieve;
+    public static boolean enableSievePress;
 	
 	public static int compostingTicks;
 	public static int infestedLeavesTicks;
@@ -42,6 +43,7 @@ public class Config {
 		enableCrucible = config.get("Mechanics", "crucible", true).getBoolean();
 		shouldBarrelsFillWithRain = config.get("Mechanics", "barrelsFillWithRain", true).getBoolean();
 		fakePlayersCanSieve = config.get("Mechanics", "fakePlayersCanSieve", false).getBoolean();
+		enableSievePress = config.get("Mechanics", "enableSievePress", true).getBoolean();
 		
 		compostingTicks = config.get("Composting", "ticksToFormDirt", 600).getInt();
 		
