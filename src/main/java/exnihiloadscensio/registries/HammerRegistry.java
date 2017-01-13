@@ -17,6 +17,8 @@ import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.json.CustomItemStackJson;
+import exnihiloadscensio.registries.manager.IHammerDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.util.ItemInfo;
 import lombok.Getter;
 import net.minecraft.block.Block;
@@ -28,9 +30,7 @@ public class HammerRegistry
 {
     @Getter
     private static HashMap<ItemInfo, List<HammerReward>> registry = new HashMap<ItemInfo, List<HammerReward>>();
-    private static Map<ItemInfo, List<HammerReward>> externalRegistry = new HashMap<>();
-    
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemStack.class, new CustomItemStackJson()).create();
+        private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemStack.class, new CustomItemStackJson()).create();
     
     public static void loadJson(File file)
     {
@@ -61,19 +61,6 @@ public class HammerRegistry
         {
             registerDefaults();
             saveJson(file);
-        }
-        
-        for (Map.Entry<ItemInfo, List<HammerReward>> entry : externalRegistry.entrySet())
-        {
-            List<HammerReward> rewards = registry.get(entry.getKey());
-            
-            if (rewards == null)
-            {
-                rewards = new ArrayList<>();
-            }
-            
-            rewards.addAll(entry.getValue());
-            registry.put(entry.getKey(), rewards);
         }
     }
     
@@ -118,23 +105,6 @@ public class HammerRegistry
      */
     public static void register(IBlockState state, ItemStack reward, int miningLevel, float chance, float fortuneChance)
     {
-        registerInternal(state, reward, miningLevel, chance, fortuneChance);
-        
-        ItemInfo key = new ItemInfo(state);
-        
-        List<HammerReward> rewards = externalRegistry.get(key);
-        
-        if (rewards == null)
-        {
-            rewards = new ArrayList<>();
-        }
-        
-        rewards.add(new HammerReward(reward, miningLevel, chance, fortuneChance));
-        externalRegistry.put(key, rewards);
-    }
-    
-    private static void registerInternal(IBlockState state, ItemStack reward, int miningLevel, float chance, float fortuneChance)
-    {
         ItemInfo key = new ItemInfo(state);
         
         List<HammerReward> rewards = registry.get(key);
@@ -147,7 +117,7 @@ public class HammerRegistry
         rewards.add(new HammerReward(reward, miningLevel, chance, fortuneChance));
         registry.put(key, rewards);
     }
-    
+        
     public static List<ItemStack> getRewardDrops(Random random, IBlockState block, int miningLevel, int fortuneLevel)
     {
         List<ItemStack> rewards = new ArrayList<ItemStack>();
@@ -178,11 +148,9 @@ public class HammerRegistry
     
     public static void registerDefaults()
     {
-        registerInternal(Blocks.COBBLESTONE.getDefaultState(), new ItemStack(Blocks.GRAVEL, 1), 0, 1.0F, 0.0F);
-        registerInternal(Blocks.GRAVEL.getDefaultState(), new ItemStack(Blocks.SAND, 1), 0, 1.0F, 0.0F);
-        registerInternal(Blocks.SAND.getDefaultState(), new ItemStack(ENBlocks.dust, 1), 0, 1.0F, 0.0F);
-        registerInternal(Blocks.NETHERRACK.getDefaultState(), new ItemStack(ENBlocks.netherrackCrushed, 1), 0, 1.0F, 0.0F);
-        registerInternal(Blocks.END_STONE.getDefaultState(), new ItemStack(ENBlocks.endstoneCrushed, 1), 0, 1.0F, 0.0F);
+    	for (IHammerDefaultRegistryProvider provider : RegistryManager.getDefaultHammerRecipeHandlers()) {
+    		provider.registerHammerRecipeDefaults();
+    	}
     }
     
     // Legacy

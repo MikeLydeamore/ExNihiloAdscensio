@@ -26,6 +26,8 @@ import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.manager.ExNihiloDefaultRecipes;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.util.LogUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -59,6 +61,8 @@ public class ExNihiloAdscensio {
 	public static File configDirectory;
 
 	public static boolean configsLoaded = false;
+	
+	public static ExNihiloDefaultRecipes defaultRecipes;
 
 	static {
 		FluidRegistry.enableUniversalBucket();
@@ -80,6 +84,8 @@ public class ExNihiloAdscensio {
 		ENEnchantments.init();
 		proxy.initModels();
 		proxy.registerRenderers();
+		
+		defaultRecipes = new ExNihiloDefaultRecipes();
 
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());
 
