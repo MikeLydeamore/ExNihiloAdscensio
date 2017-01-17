@@ -1,5 +1,10 @@
 package exnihiloadscensio.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
@@ -8,6 +13,10 @@ import exnihiloadscensio.config.Config;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoAccessor;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -19,10 +28,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBarrel extends BlockBase implements ITileEntityProvider {
+public class BlockBarrel extends BlockBase implements ITileEntityProvider, IProbeInfoAccessor {
 
 	private AxisAlignedBB boundingBox = new AxisAlignedBB(0.0625f, 0, 0.0625f, 0.9375f, 1f, 0.9375f);
 	@Getter
@@ -140,5 +150,21 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider {
     {
         return false;
     }
+
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
+			IBlockState blockState, IProbeHitData data) {
+		TileBarrel barrel = (TileBarrel) world.getTileEntity(data.getPos());
+		if (barrel == null)
+			return;
+		
+		if (mode == ProbeMode.EXTENDED)
+			probeInfo.text(TextFormatting.GREEN + "Mode: "+StringUtils.capitalize(barrel.getMode().getName()));
+		
+		List<String> tooltips = barrel.getMode().getWailaTooltip(barrel, new ArrayList<String>());
+		for (String tooltip : tooltips) {
+			probeInfo.text( tooltip);
+		}
+	}
 
 }

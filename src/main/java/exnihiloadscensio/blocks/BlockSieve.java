@@ -1,18 +1,27 @@
 package exnihiloadscensio.blocks;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ItemMesh;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.tiles.TileSieve;
 import exnihiloadscensio.util.Util;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoAccessor;
+import mcjty.theoneprobe.api.ProbeMode;
+import mcjty.theoneprobe.api.TextStyleClass;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -20,10 +29,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class BlockSieve extends BlockBase implements ITileEntityProvider {
+public class BlockSieve extends BlockBase implements ITileEntityProvider, IProbeInfoAccessor {
 
 	public enum MeshType implements IStringSerializable {
 		NONE(0, "none"), STRING(1, "string"), FLINT(2, "flint"), IRON(3, "iron"), DIAMOND(4, "diamond");
@@ -228,6 +238,29 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider {
 	public boolean isFullCube(IBlockState state)
 	{
 		return false;
+	}
+
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
+			IBlockState blockState, IProbeHitData data) {
+		
+		TileSieve sieve = (TileSieve) world.getTileEntity(data.getPos());
+		if (sieve == null)
+			return;
+		
+		if (sieve.getMeshStack() == null) {
+			probeInfo.text("Mesh: None");
+			return;
+		}
+		probeInfo.text("Mesh: " + I18n.format(sieve.getMeshStack().getUnlocalizedName() + ".name"));
+		
+		if (mode == ProbeMode.EXTENDED) {
+			Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(sieve.getMeshStack());
+			for (Enchantment enchantment : enchantments.keySet()) {
+				probeInfo.text(TextFormatting.BLUE + enchantment.getTranslatedName(enchantments.get(enchantment)));
+			}
+		}
+		
 	}
 
 }
