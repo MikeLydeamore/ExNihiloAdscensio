@@ -27,10 +27,12 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileBarrel extends TileEntity implements ITickable {
@@ -74,6 +76,18 @@ public class TileBarrel extends TileEntity implements ITickable {
                 }
                 
                 return true;
+            }
+            
+            //Check for more fluid
+            IFluidHandler tank = (IFluidHandler) this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+            FluidStack bucketStack = FluidUtil.getFluidContained(stack);
+            FluidStack tankStack = tank.drain(Integer.MAX_VALUE, false);
+            if (bucketStack != null && tankStack != null 
+            		&& bucketStack.getFluid() == tankStack.getFluid()
+            		&& tank.fill(FluidUtil.getFluidContained(stack), false) != 0) {
+            	tank.drain(Fluid.BUCKET_VOLUME, true);
+               	FluidUtil.interactWithFluidHandler(stack, tank, player);
+               	PacketHandler.sendNBTUpdate(this);
             }
         }
         
