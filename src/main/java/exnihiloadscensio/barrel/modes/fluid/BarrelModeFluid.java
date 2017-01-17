@@ -119,10 +119,7 @@ public class BarrelModeFluid implements IBarrelMode {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
-		if (barrel.getTank().getFluid() != null)
-			return Util.getTextureFromBlockState(barrel.getTank().getFluid().getFluid().getBlock().getDefaultState());
-
-		return Util.getTextureFromBlockState(Blocks.WATER.getDefaultState());
+		return Util.getTextureFromFluidStack(barrel.getTank().getFluid());
 	}
 
 	@Override
