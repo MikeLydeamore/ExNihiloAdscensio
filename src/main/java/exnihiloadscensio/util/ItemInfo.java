@@ -2,6 +2,7 @@ package exnihiloadscensio.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -15,7 +16,7 @@ public class ItemInfo
     
     @Getter
     private Item item;
-    @Getter
+    @Getter @Setter
     private int meta;
     
     public static ItemInfo getItemInfoFromStack(ItemStack stack)

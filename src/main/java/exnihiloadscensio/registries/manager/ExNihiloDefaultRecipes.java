@@ -106,6 +106,8 @@ ICompostDefaultRegistryProvider {
 		HammerRegistry.register(Blocks.SAND.getDefaultState(), new ItemStack(ENBlocks.dust, 1), 0, 1.0F, 0.0F);
 		HammerRegistry.register(Blocks.NETHERRACK.getDefaultState(), new ItemStack(ENBlocks.netherrackCrushed, 1), 0, 1.0F, 0.0F);
 		HammerRegistry.register(Blocks.END_STONE.getDefaultState(), new ItemStack(ENBlocks.endstoneCrushed, 1), 0, 1.0F, 0.0F);
+		
+		HammerRegistry.register(Blocks.LOG.getDefaultState(), new ItemStack(Items.DIAMOND), 0, 1.0F, 0.0F, true);
 	}
 
 	public void registerCompostRecipeDefaults() {
