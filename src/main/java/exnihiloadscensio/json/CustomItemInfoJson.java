@@ -1,18 +1,11 @@
 package exnihiloadscensio.json;
 
-import java.lang.reflect.Type;
-
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
+import com.google.gson.*;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.LogUtil;
 import net.minecraft.item.Item;
+
+import java.lang.reflect.Type;
 
 public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSerializer<ItemInfo>
 {
@@ -21,7 +14,7 @@ public class CustomItemInfoJson implements JsonDeserializer<ItemInfo>, JsonSeria
     {
         JsonObject obj = new JsonObject();
         
-        obj.addProperty("name", src.getItem().getRegistryName().toString());
+        obj.addProperty("name", src.getItem().getRegistryName() == null ? "" : src.getItem().getRegistryName().toString());
         obj.addProperty("meta", src.getMeta());
         
         return obj;

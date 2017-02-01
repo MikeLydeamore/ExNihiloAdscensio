@@ -1,7 +1,5 @@
 package exnihiloadscensio.barrel.modes.block;
 
-import java.util.List;
-
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
@@ -19,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,6 +25,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.List;
 
 public class BarrelModeBlock implements IBarrelMode {
 
@@ -39,7 +40,7 @@ public class BarrelModeBlock implements IBarrelMode {
 		if (block != null) {
 			tag.setString("block", block.toString());
 		}
-		if (handler.getStackInSlot(0) != null) {
+		if (!handler.getStackInSlot(0).isEmpty()) {
 			handler.getStackInSlot(0).writeToNBT(tag);
 		}
 	}
@@ -50,7 +51,7 @@ public class BarrelModeBlock implements IBarrelMode {
 			block = new ItemInfo(tag.getString("block"));
 		}
 		
-		handler.setStackInSlot(0, ItemStack.loadItemStackFromNBT(tag));
+		handler.setStackInSlot(0, new ItemStack(tag));
 	}
 
 	@Override
@@ -70,18 +71,16 @@ public class BarrelModeBlock implements IBarrelMode {
 	
 	@Override
 	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
-		if (handler.getStackInSlot(0) != null)
+		if (!handler.getStackInSlot(0).isEmpty())
 			currenttip.add(handler.getStackInSlot(0).getDisplayName());
 		return currenttip;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, TileBarrel barrel,
-			BlockPos pos, IBlockState state, EntityPlayer player,
-			EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (handler.getStackInSlot(0) != null) {
+	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (!handler.getStackInSlot(0).isEmpty()) {
 			Util.dropItemInWorld(barrel, player, handler.getStackInSlot(0), 0.02);
-			handler.setStackInSlot(0, null);
+			handler.setStackInSlot(0, ItemStack.EMPTY);
 			barrel.setMode("null");
 			PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
 			return true;
@@ -95,7 +94,7 @@ public class BarrelModeBlock implements IBarrelMode {
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
 		handler.setBarrel(barrel);
 		ItemStack stack = handler.getStackInSlot(0);
-		if (stack == null)
+		if (stack.isEmpty())
 			return Util.getTextureFromBlockState(Blocks.AIR.getDefaultState());
 		return Util.getTextureFromBlockState(Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getItemDamage()));
 	}
@@ -117,7 +116,7 @@ public class BarrelModeBlock implements IBarrelMode {
 	@Override
 	public boolean addItem(ItemStack stack, TileBarrel barrel) {
 		handler.setBarrel(barrel);
-		if (handler.getStackInSlot(0) == null) {
+		if (handler.getStackInSlot(0).isEmpty()) {
 			handler.insertItem(0, stack, false);
 			return true;
 		}

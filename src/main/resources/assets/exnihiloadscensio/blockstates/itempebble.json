@@ -1,0 +1,31 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "type": {
+            "stone": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/itempebble"
+                }
+            },
+            "granite": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/itempebble"
+                }
+            },
+            "diorite": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/itempebble"
+                }
+            },
+            "andesite": {
+                "textures": {
+                    "layer0": "exnihiloadscensio:items/itempebble"
+                }
+            }
+        }
+    }
+}

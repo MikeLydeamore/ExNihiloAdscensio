@@ -3,30 +3,27 @@ package exnihiloadscensio.compatibility.jei.sieve;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
+import javax.annotation.Nonnull;
+
 public class SieveRecipeHandler implements IRecipeHandler<SieveRecipe> {
 
-	@Override
+	@Override @Nonnull
 	public Class<SieveRecipe> getRecipeClass() {
 		return SieveRecipe.class;
 	}
 
-	@Override
-	public String getRecipeCategoryUid() {
+	@Override @Nonnull
+	public String getRecipeCategoryUid(@Nonnull SieveRecipe recipe) {
 		return SieveRecipeCategory.UID;
 	}
 
-	@Override
-	public String getRecipeCategoryUid(SieveRecipe recipe) {
-		return SieveRecipeCategory.UID;
-	}
-
-	@Override
-	public IRecipeWrapper getRecipeWrapper(SieveRecipe recipe) {
+	@Override @Nonnull
+	public IRecipeWrapper getRecipeWrapper(@Nonnull SieveRecipe recipe) {
 		return recipe;
 	}
 
 	@Override
-	public boolean isRecipeValid(SieveRecipe recipe) {
+	public boolean isRecipeValid(@Nonnull SieveRecipe recipe) {
 		return true;
 	}
 

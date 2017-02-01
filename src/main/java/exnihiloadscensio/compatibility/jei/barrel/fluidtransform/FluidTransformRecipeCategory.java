@@ -1,9 +1,6 @@
 package exnihiloadscensio.compatibility.jei.barrel.fluidtransform;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.ENBlocks;
 import mezz.jei.api.IGuiHelper;
@@ -16,6 +13,9 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransformRecipe>
 {
@@ -35,26 +35,26 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
     
-    @Override
+    @Override @Nonnull
     public String getUid()
     {
         return UID;
     }
     
-    @Override
+    @Override @Nonnull
     public String getTitle()
     {
         return "Fluid Transform";
     }
     
-    @Override
+    @Override @Nonnull
     public IDrawable getBackground()
     {
         return background;
     }
     
     @Override
-    public void drawExtras(Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
         if (hasHighlight)
         {
@@ -62,14 +62,7 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
         }
     }
     
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-        
-    }
-    
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FluidTransformRecipe recipeWrapper)
+    private void setRecipe(IRecipeLayout recipeLayout, FluidTransformRecipe recipeWrapper)
     {
         recipeLayout.getItemStacks().init(0, true, 74, 9);
         recipeLayout.getItemStacks().init(1, true, 47, 9);
@@ -81,16 +74,18 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
         
         IFocus<?> focus = recipeLayout.getFocus();
         
-        if(focus.getMode() == IFocus.Mode.INPUT && focus.getValue() instanceof ItemStack)
-        {
-            ItemStack stack = (ItemStack) focus.getValue();
-            
-            for(ItemStack inputStack : recipeWrapper.getInputs().subList(1, recipeWrapper.getInputs().size()))
+        if (focus != null) {
+            if(focus.getMode() == IFocus.Mode.INPUT && focus.getValue() instanceof ItemStack)
             {
-                if(stack.isItemEqual(inputStack))
+                ItemStack stack = (ItemStack) focus.getValue();
+
+                for(ItemStack inputStack : recipeWrapper.getInputs().subList(1, recipeWrapper.getInputs().size()))
                 {
-                    noCycle = true;
-                    focusStack = ImmutableList.of(inputStack);
+                    if(stack.isItemEqual(inputStack))
+                    {
+                        noCycle = true;
+                        focusStack = ImmutableList.of(inputStack);
+                    }
                 }
             }
         }
@@ -102,7 +97,7 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
     }
     
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FluidTransformRecipe recipeWrapper, IIngredients ingredients)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull FluidTransformRecipe recipeWrapper, @Nonnull IIngredients ingredients)
     {
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);

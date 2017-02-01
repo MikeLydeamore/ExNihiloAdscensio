@@ -1,7 +1,5 @@
 package exnihiloadscensio.barrel.modes.mobspawn;
 
-import java.util.List;
-
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.items.ItemDoll;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
@@ -16,11 +14,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.List;
 
 public class BarrelModeMobSpawn implements IBarrelMode {
 	
@@ -42,7 +45,7 @@ public class BarrelModeMobSpawn implements IBarrelMode {
 	public void readFromNBT(NBTTagCompound tag) {
 		progress = tag.getFloat("progress");
 		
-		dollStack = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag.getTag("doll"));
+		dollStack = new ItemStack((NBTTagCompound) tag.getTag("doll"));
 	}
 
 	@Override
@@ -61,12 +64,11 @@ public class BarrelModeMobSpawn implements IBarrelMode {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state,
-			EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		return false;
 	}
 
-	@Override
+	@Override @SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
 		if (dollStack == null)
 			return null;

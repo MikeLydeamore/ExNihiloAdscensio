@@ -1,7 +1,5 @@
 package exnihiloadscensio.compatibility.jei.barrel.compost;
 
-import java.util.List;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.registries.types.Compostable;
@@ -17,6 +15,9 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
 {
@@ -36,71 +37,67 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
     
-    @Override
+    @Override @Nonnull
     public String getUid()
     {
         return UID;
     }
     
-    @Override
+    @Override @Nonnull
     public String getTitle()
     {
         return "Compost";
     }
     
-    @Override
+    @Override @Nonnull
     public IDrawable getBackground()
     {
         return background;
     }
     
     @Override
-    public void drawExtras(Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
         if (hasHighlight)
         {
             slotHighlight.draw(minecraft, highlightX, highlightY);
         }
     }
-    
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-        
-    }
-    
-    @Override
-    public void setRecipe(IRecipeLayout layout, CompostRecipe recipe)
+
+    private void setRecipe(IRecipeLayout layout, CompostRecipe recipe)
     {
         // Block
         layout.getItemStacks().init(0, false, 74, 9);
         layout.getItemStacks().set(0, (ItemStack) recipe.getOutputs().get(0));
         
         IFocus<?> focus = layout.getFocus();
-        boolean mightHaveHighlight = focus.getMode() == IFocus.Mode.INPUT;
-        hasHighlight = false;
 
-        ItemStack focusStack = (ItemStack) focus.getValue();
-        
-        int slotIndex = 1;
-        
-        for (int i = 0; i < recipe.getInputs().size(); i++)
-        {
-            final int slotX = 2 + (i % 9 * 18);
-            final int slotY = 36 + (i / 9 * 18);
-            
-            ItemStack inputStack = (ItemStack) recipe.getInputs().get(i);
-            
-            layout.getItemStacks().init(slotIndex + i, true, slotX, slotY);
-            layout.getItemStacks().set(slotIndex + i, inputStack);
-            
-            if (mightHaveHighlight && ItemStack.areItemsEqual(focusStack, inputStack))
+        if (focus != null) {
+            boolean mightHaveHighlight = focus.getMode() == IFocus.Mode.INPUT;
+            hasHighlight = false;
+
+            ItemStack focusStack = (ItemStack) focus.getValue();
+
+            int slotIndex = 1;
+
+            for (int i = 0; i < recipe.getInputs().size(); i++)
             {
-                highlightX = slotX;
-                highlightY = slotY;
-                
-                hasHighlight = true;
-                mightHaveHighlight = false;
+                final int slotX = 2 + (i % 9 * 18);
+                final int slotY = 36 + (i / 9 * 18);
+
+                ItemStack inputStack = (ItemStack) recipe.getInputs().get(i);
+
+                layout.getItemStacks().init(slotIndex + i, true, slotX, slotY);
+                layout.getItemStacks().set(slotIndex + i, inputStack);
+
+                if (mightHaveHighlight && ItemStack.areItemsEqual(focusStack, inputStack))
+                {
+                    highlightX = slotX;
+                    highlightY = slotY;
+
+                    hasHighlight = true;
+                    mightHaveHighlight = false;
+                }
             }
         }
         
@@ -108,7 +105,7 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
     }
     
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, CompostRecipe recipeWrapper, IIngredients ingredients)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull CompostRecipe recipeWrapper, @Nonnull IIngredients ingredients)
     {
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
@@ -123,7 +120,7 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
     private class CompostTooltipCallback implements ITooltipCallback<ItemStack>
     {
         @Override
-        public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip)
+        public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip)
         {
             if (input)
             {

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +34,7 @@ public class ItemInfo
     public ItemInfo(Block block, int blockMeta)
     {
         item = Item.getItemFromBlock(block);
-        meta = block == null ? -1 : blockMeta;
+        meta = block == Blocks.AIR ? -1 : blockMeta;
     }
     
     public ItemInfo(String string)
@@ -93,7 +94,7 @@ public class ItemInfo
     
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
-        tag.setString("item", Item.REGISTRY.getNameForObject(item).toString());
+        tag.setString("item", Item.REGISTRY.getNameForObject(item) == null ? "" : Item.REGISTRY.getNameForObject(item).toString());
         tag.setInteger("meta", meta);
         
         return tag;

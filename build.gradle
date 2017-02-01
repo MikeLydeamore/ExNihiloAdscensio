@@ -2,25 +2,33 @@
 // For those who want the bleeding edge
 buildscript {
     repositories {
+        mavenCentral()
+        mavenLocal()
         jcenter()
+
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
+        }
+
+        maven {
+            name = "gradle"
+            url "https://plugins.gradle.org/m2/"
+        }
+
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
     }
 }
+
 apply plugin: "net.minecraftforge.gradle.forge"
 
-/*
-// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
-*/
-version = "1.10.2-0.1.12"
+version = "1.11.2-0.1.0"
 group= "exnihiloadscensio" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloadscensio"
 
@@ -28,44 +36,41 @@ sourceCompatibility=1.8
 targetCompatibility=1.8
 
 minecraft {
-    version = "1.10.2-12.18.3.2185"
+    version = "1.11.2-13.20.0.2226"
     runDir = "run"
-	mappings = "snapshot_20160824"
+	mappings = "snapshot_20161220"
 }
 
 repositories
 {
     maven { 
+    	// Required for JEI and Mantle
     	name "DVS1 Maven FS" 
     	url "http://dvs1.progwml6.com/files/maven" 
     }
-    
-    maven { url "http://mobiusstrip.eu/maven" }
-    maven {	url 'http://maven.tterrag.com/' }
-    
-    maven { url 'http://maven.epoxide.xyz' }
-    maven { url 'http://files.minecraftforge.net/maven' }
-    
-    ivy {
-        url "http://ae-mod.info/builds"
-        layout "pattern", {
-            artifact "[module]-[revision](-[classifier])(.[ext])"
-        }
+
+    maven {
+        // Required for HWYLA
+        name "tehnut"
+        url "http://tehnut.info/maven"
     }
 }
 
 dependencies
 {
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.+:api"
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.+"
+    deobfCompile "mezz.jei:jei_1.11.2:4.2.0.+:api"
+    runtime "mezz.jei:jei_1.11.2:4.2.0.+"
     
-    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.0.+"
-    deobfCompile "slimeknights:TConstruct:1.10.2-2.5.+"
+    deobfCompile "slimeknights.mantle:Mantle:1.11-1.2.+"
+    // TODO: Add back TConstruct support once it has updated
+    // deobfCompile "slimeknights:TConstruct:1.10.2-2.6.+"
     
-    deobfCompile "com.enderio.core:EnderCore:1.10.2-0.4.1.60-beta"
-    deobfCompile "com.enderio:EnderIO:1.10.2-3.0.1.138_beta"
+    // TODO: Add back EnderIO support once it has updated [To fix AE2 Dependency Error]
+    // deobfCompile "com.enderio.core:EnderCore:1.10.2-0.4.1.65-beta"
+    // deobfCompile "com.enderio:EnderIO:1.10.2-3.1.+"
     
-    deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.7-B21_1.11:api"
+    runtime "mcp.mobius.waila:Hwyla:1.8.7-B21_1.11"
     
     compileOnly "org.projectlombok:lombok:1.16.10"
 }

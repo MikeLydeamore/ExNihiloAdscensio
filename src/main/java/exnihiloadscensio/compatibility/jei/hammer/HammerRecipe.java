@@ -1,18 +1,18 @@
 package exnihiloadscensio.compatibility.jei.hammer;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HammerReward;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class HammerRecipe implements IRecipeWrapper
 {
@@ -21,12 +21,12 @@ public class HammerRecipe implements IRecipeWrapper
     
     public HammerRecipe(IBlockState block)
     {
-        if(block != null && block.getBlock() != null)
+        if(block != null && block.getBlock() != Blocks.AIR)
         {
             List<HammerReward> rewards = HammerRegistry.getRewards(block);
             // Make sure no null rewards, Item or ItemStack
-            List<ItemStack> allOutputs = Lists.newArrayList(Lists.transform(rewards, reward -> reward.getStack() == null ? null : reward.getStack().copy()));
-            allOutputs.removeIf(stack -> stack == null || stack.getItem() == null);
+            List<ItemStack> allOutputs = Lists.newArrayList(Lists.transform(rewards, reward -> reward == null || reward.getStack().isEmpty() ? ItemStack.EMPTY : reward.getStack().copy()));
+            allOutputs.removeIf(stack -> stack == null || stack.getItem() == Items.AIR);
             
             inputs = Lists.newArrayList(new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block)));
             outputs = Lists.newArrayList();
@@ -39,7 +39,7 @@ public class HammerRecipe implements IRecipeWrapper
                 {
                     if(stack.getItem().equals(outputStack.getItem()) && stack.getMetadata() == outputStack.getMetadata())
                     {
-                        outputStack.stackSize += stack.stackSize;
+                        outputStack.grow(stack.getCount());
                         alreadyExists = true;
                         break;
                     }
@@ -54,56 +54,36 @@ public class HammerRecipe implements IRecipeWrapper
     }
 
     @Override
-    public void getIngredients(IIngredients ingredients)
+    public void getIngredients(@Nonnull IIngredients ingredients)
     {
         ingredients.setInputs(ItemStack.class, inputs);
         ingredients.setOutputs(ItemStack.class, outputs);
     }
 
-    @Override
     public List<ItemStack> getInputs()
     {
         return inputs;
     }
 
-    @Override
     public List<ItemStack> getOutputs()
     {
         return outputs;
     }
 
     @Override
-    public List<FluidStack> getFluidInputs()
-    {
-        return Collections.EMPTY_LIST;
-    }
-
-    @Override
-    public List<FluidStack> getFluidOutputs()
-    {
-        return Collections.EMPTY_LIST;
-    }
-
-    @Override
-    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
         
     }
 
-    @Override
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-        
-    }
-
-    @Override
+    @Override @Nonnull
     public List<String> getTooltipStrings(int mouseX, int mouseY)
     {
-        return Collections.EMPTY_LIST;
+        return Lists.newArrayList();
     }
 
     @Override
-    public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
     {
         return false;
     }

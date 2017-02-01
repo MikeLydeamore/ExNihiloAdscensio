@@ -1,8 +1,5 @@
 package exnihiloadscensio.items;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockInfestedLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -15,12 +12,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 public class ItemResource extends Item {
 
@@ -35,9 +36,9 @@ public class ItemResource extends Item {
 	public ItemResource() {
 		super();
 
+		setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		setUnlocalizedName("itemMaterial");
 		setRegistryName("itemMaterial");
-		setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		setHasSubtypes(true);
 		GameRegistry.register(this);
 
@@ -49,33 +50,38 @@ public class ItemResource extends Item {
 		names.add(5, DOLL_BASE);
 	}
 
-	@Override
+	@Override @Nonnull
 	public String getUnlocalizedName(ItemStack stack) {
 		return getUnlocalizedName() + "." + names.get(stack.getItemDamage());
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-		for (int i = 1; i < names.size(); i++)
+	@Override @SideOnly(Side.CLIENT)
+	public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
+		for (int i = 1; i < names.size(); i++) {
 			list.add(new ItemStack(this, 1, i));
+		}
 	}
 
-	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	@Override @Nonnull
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
+
 		if (stack.getItemDamage() == names.indexOf(SILKWORM)) {
 			IBlockState state = world.getBlockState(pos);
-			if (state != null && state.getBlock() != null && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2)) {
+			if (state != Blocks.AIR.getDefaultState() && state.getBlock() != Blocks.AIR && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2)) {
 			    BlockInfestedLeaves.infestLeafBlock(world, pos);
-				stack.stackSize--;
+				stack.shrink(1);
+
 				return EnumActionResult.SUCCESS;
 			}
 		}
 		if (stack.getItemDamage() == names.indexOf(ANCIENT_SPORES) || stack.getItemDamage() == names.indexOf(GRASS_SEEDS)) {
 			IBlockState state = world.getBlockState(pos);
-			if (state != null && state.getBlock() != null && state.getBlock() == Blocks.DIRT) {
+			if (state != Blocks.AIR.getDefaultState() && state.getBlock() != Blocks.AIR && state.getBlock() == Blocks.DIRT) {
 				IBlockState transformTo = stack.getItemDamage() == names.indexOf(ANCIENT_SPORES) ? Blocks.MYCELIUM.getDefaultState() : Blocks.GRASS.getDefaultState();
 				world.setBlockState(pos, transformTo);
-				stack.stackSize--;
+				stack.shrink(1);
+
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -87,6 +93,7 @@ public class ItemResource extends Item {
 	public void initModel()	{
 		for (int i = 0 ; i < names.size() ; i ++) {
 			String variant = "type="+names.get(i);
+
 			ModelLoader.setCustomModelResourceLocation(this, i, new ModelResourceLocation("exnihiloadscensio:itemMaterial", variant));
 		}
 	}

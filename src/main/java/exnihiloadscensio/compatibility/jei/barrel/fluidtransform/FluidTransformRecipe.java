@@ -1,10 +1,7 @@
 package exnihiloadscensio.compatibility.jei.barrel.fluidtransform;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
 import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.Util;
@@ -15,6 +12,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class FluidTransformRecipe implements IRecipeWrapper
 {
@@ -47,7 +47,7 @@ public class FluidTransformRecipe implements IRecipeWrapper
     }
     
     @Override
-    public void getIngredients(IIngredients ingredients)
+    public void getIngredients(@Nonnull IIngredients ingredients)
     {
         ingredients.setInputs(ItemStack.class, inputStacks);
         ingredients.setInput(FluidStack.class, inputFluid);
@@ -56,50 +56,40 @@ public class FluidTransformRecipe implements IRecipeWrapper
         ingredients.setOutput(FluidStack.class, outputFluid);
     }
 
-    @Override
     public List<ItemStack> getInputs()
     {
         return inputStacks;
     }
 
-    @Override
     public List<ItemStack> getOutputs()
     {
         return ImmutableList.of(outputBucket);
     }
 
-    @Override
     public List<FluidStack> getFluidInputs()
     {
         return ImmutableList.of(inputFluid);
     }
 
-    @Override
     public List<FluidStack> getFluidOutputs()
     {
         return ImmutableList.of(new FluidStack(outputFluid, 1000));
     }
 
     @Override
-    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
         
     }
 
-    @Override
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-        
-    }
-
-    @Override
+    @Override @Nonnull
     public List<String> getTooltipStrings(int mouseX, int mouseY)
     {
-        return null;
+        return Lists.newArrayList();
     }
 
     @Override
-    public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
     {
         return false;
     }

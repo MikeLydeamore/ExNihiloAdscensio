@@ -1,18 +1,8 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
 import exnihiloadscensio.json.CustomBlockInfoJson;
@@ -29,11 +19,21 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class OreRegistry {
 
@@ -80,10 +80,10 @@ public class OreRegistry {
 	}
 
 	// Inconsistency at its finest
-	@Deprecated
 	/**
 	 * Use register instead
 	 */
+	@Deprecated
 	public static Ore registerOre(String name, Color color, ItemInfo info) {
 		return register(name, color, info);
 	}
@@ -160,7 +160,7 @@ public class OreRegistry {
 	public static void initModels() {
 		final ItemMeshDefinition ORES = new ItemMeshDefinition() {
 			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
+			public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
 				switch (stack.getItemDamage()) {
 				case 0:
 					return new ModelResourceLocation("exnihiloadscensio:itemOre", "type=piece");
@@ -171,7 +171,7 @@ public class OreRegistry {
 				case 3:
 					return new ModelResourceLocation("exnihiloadscensio:itemOre", "type=ingot");
 				default:
-					return new ModelResourceLocation(stack.getItem().getRegistryName(), "inventory");
+					return new ModelResourceLocation(stack.getItem().getRegistryName() == null ? new ResourceLocation("exnihiloadscensio:itemOre") : stack.getItem().getRegistryName(), "inventory");
 				}
 			}
 		};

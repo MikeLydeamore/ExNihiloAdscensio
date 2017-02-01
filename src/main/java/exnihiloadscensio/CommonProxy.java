@@ -1,5 +1,7 @@
 package exnihiloadscensio;
 
+import java.io.File;
+
 public class CommonProxy {
 
 	public void initModels() {}
@@ -19,5 +21,9 @@ public class CommonProxy {
 	public void fixModels() {}
 
 	public void registerColorHandlers() {}
+
+	public void registerConfigs(File configDirectory) {
+
+	}
 
 }

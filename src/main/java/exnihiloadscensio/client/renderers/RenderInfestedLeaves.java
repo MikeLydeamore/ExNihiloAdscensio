@@ -1,12 +1,7 @@
 package exnihiloadscensio.client.renderers;
 
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.google.common.collect.Lists;
-
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -22,6 +17,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.LightUtil;
+import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfestedLeaves>
 {
@@ -35,8 +33,8 @@ public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfested
             
             IBlockState leafBlock = tile.getLeafBlock();
             IBakedModel leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(leafBlock);
-            
-            if(leafModel == null)
+
+            if(leafModel == Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel())
             {
                 leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.LEAVES.getDefaultState());
             }

@@ -1,21 +1,8 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.json.CustomItemStackJson;
 import exnihiloadscensio.registries.manager.IHammerDefaultRegistryProvider;
 import exnihiloadscensio.registries.manager.RegistryManager;
@@ -23,8 +10,12 @@ import exnihiloadscensio.util.ItemInfo;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.*;
 
 public class HammerRegistry
 {
@@ -80,10 +71,10 @@ public class HammerRegistry
 		}
 	}
 
-	@Deprecated
 	/**
 	 * Use register instead
 	 */
+	@Deprecated
 	 public static void addHammerRecipe(IBlockState state, ItemStack reward, int miningLevel, float chance, float fortuneChance)
 	{
 		register(state, reward, miningLevel, chance, fortuneChance);
@@ -142,6 +133,7 @@ public class HammerRegistry
 		return rewards;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static List<HammerReward> getRewards(IBlockState block)
 	{
 		return registry.getOrDefault(new ItemInfo(block), Collections.EMPTY_LIST);
@@ -160,7 +152,7 @@ public class HammerRegistry
 	}
 
 	// Legacy
-	@Deprecated
+	@Deprecated @SuppressWarnings("unchecked")
 	public static ArrayList<HammerReward> getRewards(IBlockState state, int miningLevel)
 	{
 		List<HammerReward> mapList = registry.getOrDefault(new ItemInfo(state), Collections.EMPTY_LIST);

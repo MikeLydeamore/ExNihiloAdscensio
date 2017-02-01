@@ -1,18 +1,12 @@
 package exnihiloadscensio.json;
 
-import java.lang.reflect.Type;
-
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
+import com.google.gson.*;
 import exnihiloadscensio.util.LogUtil;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import java.lang.reflect.Type;
 
 public class CustomItemStackJson implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack>
 {
@@ -31,6 +25,8 @@ public class CustomItemStackJson implements JsonDeserializer<ItemStack>, JsonSer
         {
             LogUtil.error("Error parsing JSON: Invalid Item: " + json.toString());
             LogUtil.error("This may result in crashing or other undefined behavior");
+
+            item = Items.AIR;
         }
         
         return new ItemStack(item, amount, meta);
@@ -41,8 +37,8 @@ public class CustomItemStackJson implements JsonDeserializer<ItemStack>, JsonSer
     {
         JsonObject jsonObject = new JsonObject();
         
-        jsonObject.addProperty("name", src.getItem().getRegistryName().toString());
-        jsonObject.addProperty("amount", src.stackSize);
+        jsonObject.addProperty("name", src.getItem().getRegistryName() == null ? "" : src.getItem().getRegistryName().toString());
+        jsonObject.addProperty("amount", src.getCount());
         jsonObject.addProperty("meta", src.getItemDamage());
         
         return jsonObject;

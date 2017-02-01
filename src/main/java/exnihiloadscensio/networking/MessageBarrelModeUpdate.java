@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageBarrelModeUpdate implements IMessage {
 
@@ -42,6 +44,7 @@ public class MessageBarrelModeUpdate implements IMessage {
 		this.modeName = ByteBufUtils.readUTF8String(buf);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static class MessageBarrelModeUpdateHandler implements IMessageHandler<MessageBarrelModeUpdate, IMessage> 
 	{
 		@Override
@@ -51,7 +54,7 @@ public class MessageBarrelModeUpdate implements IMessage {
 				@Override
 				public void run()
 				{
-					TileEntity entity =  Minecraft.getMinecraft().thePlayer.worldObj.getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
+					TileEntity entity =  Minecraft.getMinecraft().player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
 					if (entity instanceof TileBarrel)
 					{
 						TileBarrel te = (TileBarrel) entity;

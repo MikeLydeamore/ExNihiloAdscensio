@@ -1,12 +1,12 @@
 package exnihiloadscensio.items.ore;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+
+import javax.annotation.Nullable;
 
 /**
  * Helper class for those who are using a {@link FMLControlledNamespacedRegistry} to store objects that are used for
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
  */
 public class ItemFMLRegistryWrapper<T extends IForgeRegistryEntry<T>> {
 
-	 public static final int INVALID_ID = Short.MAX_VALUE - 1;
+    public static final int INVALID_ID = Short.MAX_VALUE - 1;
     private final FMLControlledNamespacedRegistry<T> registry;
     private final Item item;
     private String defaultPrefix = "minecraft";

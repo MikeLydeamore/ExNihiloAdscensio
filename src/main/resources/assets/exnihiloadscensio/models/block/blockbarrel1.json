@@ -1,0 +1,8 @@
+{
+    "parent": "exnihiloadscensio:block/blockbarrel0",
+    "textures": {
+        "particle": "minecraft:blocks/stone",
+        "texture": "minecraft:blocks/stone"
+    },
+    "name": "blockbarrel1"
+}

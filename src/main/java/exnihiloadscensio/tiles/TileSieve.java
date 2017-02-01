@@ -1,17 +1,11 @@
 package exnihiloadscensio.tiles;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.enchantments.ENEnchantments;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
 import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.LogUtil;
 import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
@@ -32,6 +26,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class TileSieve extends TileEntity {
 	
@@ -70,7 +70,7 @@ public class TileSieve extends TileEntity {
 			return true;
 		}
 		
-		if (meshStack != null && newMesh == null) {
+		if (!meshStack.isEmpty() && newMesh == null) {
 			//Removing
 			if (!simulate) {
 				meshStack = null;
@@ -107,23 +107,23 @@ public class TileSieve extends TileEntity {
         }
         
         // 4 ticks is the same period of holding down right click
-        if (worldObj.getTotalWorldTime() - lastSieveAction < 4)
+        if (getWorld().getTotalWorldTime() - lastSieveAction < 4)
         {
             return false;
         }
         
         // Really good chance that they're using a macro
-        if(worldObj.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
+        if(getWorld().getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
         {
             if(Config.setFireToMacroUsers)
             {
                 player.setFire(1);
             }
             
-            player.addChatMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
+            player.sendMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
         }
         
-        lastSieveAction = worldObj.getTotalWorldTime();
+        lastSieveAction = getWorld().getTotalWorldTime();
         lastPlayer = player.getUniqueID();
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
@@ -230,11 +230,11 @@ public class TileSieve extends TileEntity {
 	}
 	
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+	public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
 		return oldState.getBlock() != newState.getBlock();
 	}
 	
-	@Override
+	@Override @Nonnull
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		if (currentStack != null) {
 			NBTTagCompound stackTag = currentStack.writeToNBT(new NBTTagCompound());
@@ -260,7 +260,7 @@ public class TileSieve extends TileEntity {
 			currentStack = null;
 		
 		if (tag.hasKey("mesh"))
-			meshStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mesh"));
+			meshStack = new ItemStack(tag.getCompoundTag("mesh"));
 		else
 			meshStack = null;
 		
@@ -278,18 +278,17 @@ public class TileSieve extends TileEntity {
 		return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), tag);
 	}
 
-	@Override
+	@Override @SideOnly(Side.CLIENT)
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
 		NBTTagCompound tag = pkt.getNbtCompound();
 		readFromNBT(tag);
 	}
 
-	@Override
+	@Override @Nonnull
 	public NBTTagCompound getUpdateTag()
 	{
-		NBTTagCompound tag = writeToNBT(new NBTTagCompound());
-		return tag;
+		return writeToNBT(new NBTTagCompound());
 	}
 
 }

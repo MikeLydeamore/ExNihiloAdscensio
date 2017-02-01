@@ -1,12 +1,8 @@
 package exnihiloadscensio.compatibility.jei;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.blocks.ENBlocks;
@@ -29,12 +25,7 @@ import exnihiloadscensio.compatibility.jei.sieve.SieveRecipe;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeCategory;
 import exnihiloadscensio.compatibility.jei.sieve.SieveRecipeHandler;
 import exnihiloadscensio.items.ENItems;
-import exnihiloadscensio.registries.CompostRegistry;
-import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
-import exnihiloadscensio.registries.FluidOnTopRegistry;
-import exnihiloadscensio.registries.FluidTransformRegistry;
-import exnihiloadscensio.registries.HammerRegistry;
-import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.*;
 import exnihiloadscensio.registries.types.Compostable;
 import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.registries.types.FluidFluidBlock;
@@ -42,33 +33,36 @@ import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.LogUtil;
-import mezz.jei.api.IJeiRuntime;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Map;
 
 @JEIPlugin
 public class CompatJEI implements IModPlugin
 {
     @Override
-    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry)
+    public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry)
     {
     }
     
     @Override
-    public void registerIngredients(IModIngredientRegistration registry)
+    public void registerIngredients(@Nonnull IModIngredientRegistration registry)
     {
     }
     
-    @Override
-    public void register(IModRegistry registry)
+    @Override @SideOnly(Side.CLIENT)
+    public void register(@Nonnull IModRegistry registry)
     {
         LogUtil.info("Config Loaded: " + ExNihiloAdscensio.configsLoaded);
         
@@ -226,12 +220,12 @@ public class CompatJEI implements IModPlugin
             
             if(compostMeta == -1)
             {
-                List<ItemStack> subItems = Lists.newArrayList();
+                NonNullList<ItemStack> subItems = NonNullList.create();
                 compostItem.getSubItems(compostItem, null, subItems);
                 
                 for(ItemStack subItem : subItems)
                 {
-                    subItem.stackSize = compostCount;
+                    subItem.setCount(compostCount);
                     compostables.add(subItem);
                 }
             }
@@ -274,7 +268,7 @@ public class CompatJEI implements IModPlugin
     }
     
     @Override
-    public void onRuntimeAvailable(IJeiRuntime jeiRuntime)
+    public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime)
     {
     }
 }
