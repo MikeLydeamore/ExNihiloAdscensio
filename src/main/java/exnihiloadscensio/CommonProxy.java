@@ -8,6 +8,8 @@ public class CommonProxy {
 	
 	public void initOreModels() {}
 
+	public void initPackets() {}
+
 	public boolean runningOnServer()
 	{
 		return true;

@@ -6,6 +6,7 @@ import exnihiloadscensio.client.renderers.*;
 import exnihiloadscensio.entities.ProjectileStone;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ore.ItemOre;
+import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.tiles.TileBarrel;
@@ -32,6 +33,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void initOreModels() {
 		OreRegistry.initModels();
+	}
+
+	@Override
+	public void initPackets() {
+		PacketHandler.initPackets();
 	}
 
 	@Override
