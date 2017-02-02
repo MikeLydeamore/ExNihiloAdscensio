@@ -57,14 +57,13 @@ public class MessageFluidUpdate implements IMessage {
 		this.fluidName = ByteBufUtils.readUTF8String(buf);
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static class MessageFluidUpdateHandler implements IMessageHandler<MessageFluidUpdate, IMessage> 
 	{
-		@Override
+		@Override @SideOnly(Side.CLIENT)
 		public IMessage onMessage(final MessageFluidUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
+				@Override @SideOnly(Side.CLIENT)
 				public void run()
 				{
 					TileEntity entity =  Minecraft.getMinecraft().player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));

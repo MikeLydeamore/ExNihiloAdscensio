@@ -45,14 +45,13 @@ public class MessageFluidLevelUpdate implements IMessage {
 		this.fillAmount = buf.readInt();
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static class MessageFluidLevelUpdateHandler implements IMessageHandler<MessageFluidLevelUpdate, IMessage> 
 	{
-		@Override
+		@Override @SideOnly(Side.CLIENT)
 		public IMessage onMessage(final MessageFluidLevelUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
+				@Override @SideOnly(Side.CLIENT)
 				public void run()
 				{
 					TileEntity entity =  Minecraft.getMinecraft().player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));

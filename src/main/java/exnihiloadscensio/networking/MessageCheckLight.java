@@ -46,10 +46,9 @@ public class MessageCheckLight implements IMessage
         buffer.writeInt(z);
     }
 
-    @SideOnly(Side.CLIENT)
     public static class MessageCheckLightHandler implements IMessageHandler<MessageCheckLight, IMessage>
     {
-        @Override
+        @Override @SideOnly(Side.CLIENT)
         public IMessage onMessage(MessageCheckLight message, MessageContext ctx)
         {
             BlockPos pos = new BlockPos(message.getX(), message.getY(), message.getZ());

@@ -44,14 +44,13 @@ public class MessageBarrelModeUpdate implements IMessage {
 		this.modeName = ByteBufUtils.readUTF8String(buf);
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static class MessageBarrelModeUpdateHandler implements IMessageHandler<MessageBarrelModeUpdate, IMessage> 
 	{
-		@Override
+		@Override @SideOnly(Side.CLIENT)
 		public IMessage onMessage(final MessageBarrelModeUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
+				@Override @SideOnly(Side.CLIENT)
 				public void run()
 				{
 					TileEntity entity =  Minecraft.getMinecraft().player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));

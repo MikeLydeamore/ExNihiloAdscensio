@@ -9,6 +9,7 @@ import exnihiloadscensio.entities.ENEntities;
 import exnihiloadscensio.handlers.HandlerCrook;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
+import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.*;
 import exnihiloadscensio.registries.manager.ExNihiloDefaultRecipes;
 import exnihiloadscensio.util.LogUtil;
@@ -65,7 +66,8 @@ public class ExNihiloAdscensio {
 		ENEnchantments.init();
 		proxy.initModels();
 		proxy.registerRenderers();
-		proxy.initPackets();
+
+		PacketHandler.initPackets();
 		
 		defaultRecipes = new ExNihiloDefaultRecipes();
 

@@ -62,14 +62,13 @@ public class MessageCompostUpdate implements IMessage {
 		this.progress = buf.readFloat();
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static class MessageCompostAmountUpdateHandler implements IMessageHandler<MessageCompostUpdate, IMessage> 
 	{
-		@Override
+		@Override @SideOnly(Side.CLIENT)
 		public IMessage onMessage(final MessageCompostUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
+				@Override @SideOnly(Side.CLIENT)
 				public void run()
 				{
 					TileEntity entity =  Minecraft.getMinecraft().player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
