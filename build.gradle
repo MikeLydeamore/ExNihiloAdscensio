@@ -54,6 +54,18 @@ repositories
         name "tehnut"
         url "http://tehnut.info/maven"
     }
+
+    maven {
+        // Required for TheOneProbe
+        name "tterrag"
+        url "http://maven.tterrag.com"
+    }
+
+    maven {
+        // Required for CompatLayer which is required for TheOneProbe
+        name "mcjty"
+        url "http://maven.k-4u.nl"
+    }
 }
 
 dependencies
@@ -71,7 +83,10 @@ dependencies
     
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.7-B21_1.11:api"
     runtime "mcp.mobius.waila:Hwyla:1.8.7-B21_1.11"
-    
+
+    // runtime "com.github.mcjty:compatlayer:1.11.2-0.1.6" // Required for TheOneProbe
+    // runtime "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.1-51"
+
     compileOnly "org.projectlombok:lombok:1.16.10"
 }
 
@@ -93,4 +108,8 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude "mcmod.info"
     }
+}
+
+jar {
+    from(sourceSets.api.output)
 }
