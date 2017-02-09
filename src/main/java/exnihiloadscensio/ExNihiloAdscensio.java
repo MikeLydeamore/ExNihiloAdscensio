@@ -25,6 +25,7 @@ import exnihiloadscensio.registries.FluidTransformRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
+import exnihiloadscensio.registries.RegistryReloadedEvent;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.manager.ExNihiloDefaultRecipes;
 import exnihiloadscensio.registries.manager.RegistryManager;
@@ -138,6 +139,8 @@ public class ExNihiloAdscensio {
 		CrookRegistry.loadJson(new File(configDirectory, "CrookRegistry.json"));
 		FluidTransformRegistry.loadJson(new File(configDirectory, "FluidTransformRegistry.json"));
 		BarrelLiquidBlacklistRegistry.loadJson(new File(configDirectory, "BarrelLiquidBlacklistRegistry.json"));
+		
+		MinecraftForge.EVENT_BUS.post(new RegistryReloadedEvent());
 
 	}
 
