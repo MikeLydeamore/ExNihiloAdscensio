@@ -111,7 +111,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, IProbe
 					return true;
 				}
 			}
-			if (heldItem == null && te.getMeshStack() != null && player.isSneaking() && te.setMesh(null, true)) {
+			if (player.getHeldItemMainhand() == null && te.getMeshStack() != null && player.isSneaking() && te.setMesh(null, true)) {
 				//Removing a mesh.
 				Util.dropItemInWorld(te, player, te.getMeshStack(), 0.02f);
 				te.setMesh(null);
