@@ -69,6 +69,8 @@ public class Util {
 		droppedEntity.motionX *= speedfactor;
 		droppedEntity.motionY *= speedfactor;
 		droppedEntity.motionZ *= speedfactor;
+		
+		droppedEntity.setNoPickupDelay();
 
 		source.getWorld().spawnEntityInWorld(droppedEntity);
 	}
