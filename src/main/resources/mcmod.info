@@ -7,8 +7,8 @@
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["Insaneau"],
-  "credits": "Insaneau, for, you know, being the author, and SnakeFang12 for, like, doing a bunch of stuff.",
+  "authorList": ["Insaneau", "OhYea777"],
+  "credits": "Insaneau, for, you know, being the author, and SnakeFang12 for, like, doing a bunch of stuff. Also OhYea777 for porting to 1.11.2.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

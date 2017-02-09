@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,8 +27,8 @@ public class BlockInfo
     
     public BlockInfo(ItemStack stack)
     {
-        block = (stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemBlock)) ? null : Block.getBlockFromItem(stack.getItem());
-        meta = (stack == null || stack.getItem() == null) ? null : stack.getItemDamage();
+        block = (stack == null || stack.getItem() == Items.AIR || !(stack.getItem() instanceof ItemBlock)) ? null : Block.getBlockFromItem(stack.getItem());
+        meta = (stack == null || stack.getItem() == Items.AIR) ? 0 : stack.getItemDamage();
     }
     
     public BlockInfo(String string)

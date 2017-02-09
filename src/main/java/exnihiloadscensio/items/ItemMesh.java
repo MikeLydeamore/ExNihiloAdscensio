@@ -1,16 +1,17 @@
 package exnihiloadscensio.items;
 
-import java.util.List;
-
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class ItemMesh extends Item {
 	
@@ -41,20 +42,14 @@ public class ItemMesh extends Item {
 	    }
 	}
 	
-	@Override
-	public boolean isItemTool(ItemStack stack)
-	{
-	    return true;
-	}
-	
-	@Override
+	@Override @Nonnull
 	public String getUnlocalizedName(ItemStack stack) {
 	    return super.getUnlocalizedName() + "." + stack.getItemDamage();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> subItems)
+    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
         for (int i = 1 ; i < MeshType.values().length ; i++) { //0 is the "none" case.
         	subItems.add(new ItemStack(item, 1, i));

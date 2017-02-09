@@ -4,12 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,12 +37,14 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 		if (entity instanceof EntitySkeleton) {
 			
 			EntitySkeleton skeleton = (EntitySkeleton) entity;
-			if (skeleton.getSkeletonType() == SkeletonType.NORMAL) {
-				skeleton.setSkeletonType(SkeletonType.WITHER);
-				skeleton.setHealth(skeleton.getMaxHealth());
-				
-				return;
-			}
+			skeleton.setDead();
+
+			EntityWitherSkeleton witherSkeleton = new EntityWitherSkeleton(world);
+			witherSkeleton.setLocationAndAngles(skeleton.posX, skeleton.posY, skeleton.posZ, skeleton.rotationYaw, skeleton.rotationPitch);
+			witherSkeleton.renderYawOffset = skeleton.renderYawOffset;
+			witherSkeleton.setHealth(witherSkeleton.getMaxHealth());
+
+			world.spawnEntity(witherSkeleton);
 		}
 		
 		if (entity instanceof EntityCreeper) {
@@ -69,7 +66,7 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 			caveSpider.renderYawOffset = spider.renderYawOffset;
 			caveSpider.setHealth(caveSpider.getMaxHealth());
 			
-			world.spawnEntityInWorld(caveSpider);
+			world.spawnEntity(caveSpider);
 			
 			return;
 		}
@@ -83,13 +80,14 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 			ghast.renderYawOffset = squid.renderYawOffset;
 			ghast.setHealth(ghast.getMaxHealth());
 			
-			world.spawnEntityInWorld(ghast);
+			world.spawnEntity(ghast);
 			
 			return;
 		}
 		
 		if (entity instanceof EntityAnimal) {
-			((EntityAnimal) entity).onStruckByLightning(null);
+			entity.onStruckByLightning(null);
+
 			return;
 		}
 		

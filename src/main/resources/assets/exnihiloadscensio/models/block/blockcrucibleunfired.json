@@ -1,0 +1,10 @@
+{
+    "parent": "exnihiloadscensio:block/blockcrucible",
+    "textures": {
+        "particle": "exnihiloadscensio:blocks/blockcrucibleunfired",
+        "top": "exnihiloadscensio:blocks/blockcrucibleunfired",
+        "bottom": "exnihiloadscensio:blocks/blockcrucibleunfired",
+        "side": "exnihiloadscensio:blocks/blockcrucibleunfired",
+        "inside": "exnihiloadscensio:blocks/blockcrucibleunfired"
+    }
+}

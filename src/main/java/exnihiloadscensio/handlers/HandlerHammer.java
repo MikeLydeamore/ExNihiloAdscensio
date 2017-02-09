@@ -1,13 +1,14 @@
 package exnihiloadscensio.handlers;
 
-import java.util.List;
-
 import exnihiloadscensio.items.tools.IHammer;
 import exnihiloadscensio.registries.HammerRegistry;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.List;
 
 public class HandlerHammer {
 	
@@ -35,7 +36,7 @@ public class HandlerHammer {
 
 	public boolean isHammer(ItemStack stack)
 	{
-		if (stack == null || stack.getItem() == null)
+		if (stack == null || stack.getItem() == Items.AIR)
 			return false;
 		
 		if (stack.getItem() instanceof IHammer)

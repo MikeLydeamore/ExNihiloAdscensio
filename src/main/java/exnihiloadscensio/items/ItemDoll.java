@@ -1,8 +1,5 @@
 package exnihiloadscensio.items;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.ENBlocks;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -11,6 +8,7 @@ import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -20,6 +18,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+
 public class ItemDoll extends Item {
 	
 	public static final String BLAZE = "blaze";
@@ -28,7 +30,6 @@ public class ItemDoll extends Item {
 	private static ArrayList<String> names = new ArrayList<String>();
 	
 	public ItemDoll() {
-		
 		super();
 		setUnlocalizedName("itemDoll");
 		setRegistryName("itemDoll");
@@ -56,23 +57,23 @@ public class ItemDoll extends Item {
 			EntityBlaze blaze = new EntityBlaze(world);
 			blaze.setPosition(pos.getX(), pos.getY()+1, pos.getZ());
 
-			return world.spawnEntityInWorld(blaze);
+			return world.spawnEntity(blaze);
 		}
 		else {
 			EntityEnderman enderman = new EntityEnderman(world);
 			enderman.setPosition(pos.getX(), pos.getY()+2, pos.getZ());
 			
-			return world.spawnEntityInWorld(enderman);
+			return world.spawnEntity(enderman);
 		}
 	}
 	
-	@Override
+	@Override @Nonnull
 	public String getUnlocalizedName(ItemStack stack) {
 		return getUnlocalizedName() + "." + names.get(stack.getItemDamage());
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
+	@Override @SideOnly(Side.CLIENT)
+	public void getSubItems(@Nullable Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
 		for (int i = 0; i < names.size(); i++)
 			list.add(new ItemStack(this, 1, i));
 	}

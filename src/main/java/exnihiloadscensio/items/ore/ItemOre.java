@@ -1,20 +1,20 @@
 package exnihiloadscensio.items.ore;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import lombok.Getter;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
 
 @SuppressWarnings("deprecation")
 public class ItemOre extends Item {
@@ -37,9 +37,8 @@ public class ItemOre extends Item {
 		GameRegistry.<Item>register(this);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+	@Override @SideOnly(Side.CLIENT)
+	public void getSubItems(@Nonnull Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		subItems.add(new ItemStack(this, 1, 0)); //Piece
 		subItems.add(new ItemStack(this, 1, 1)); //Chunk
 		subItems.add(new ItemStack(this, 1, 2)); //Dust
@@ -57,8 +56,8 @@ public class ItemOre extends Item {
 			ModelLoader.setCustomModelResourceLocation(this, 3, new ModelResourceLocation("exnihiloadscensio:itemOre", "type=ingot"));
 	}
 
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
+	@Override @Nonnull
+	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		String name = ore.getName();
 		String pre = "";
 		switch (stack.getItemDamage()) {

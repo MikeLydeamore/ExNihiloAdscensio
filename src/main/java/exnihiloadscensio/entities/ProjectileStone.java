@@ -41,19 +41,19 @@ public class ProjectileStone extends EntityThrowable
         {
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), (int) (Math.random() * (4.0F / 3.0F)));
         }
-        else if (!worldObj.isRemote)
+        else if (!getEntityWorld().isRemote)
         {
             setDead();
             
             if(stack != null)
             {
-                worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, stack));
+                getEntityWorld().spawnEntity(new EntityItem(getEntityWorld(), posX, posY, posZ, stack));
             }
         }
         
         for (int j = 0; j < 8; ++j)
         {
-            worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 0.0D, 0.0D, 0.0D, new int[] { Block.getStateId(Blocks.STONE.getDefaultState()) });
+            getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(Blocks.STONE.getDefaultState()));
         }
     }
     
@@ -75,7 +75,7 @@ public class ProjectileStone extends EntityThrowable
         
         if(tag.hasKey("pebbleStack"))
         {
-            stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag.getTag("pebbleStack"));
+            stack = new ItemStack((NBTTagCompound) tag.getTag("pebbleStack"));
         }
         else
         {

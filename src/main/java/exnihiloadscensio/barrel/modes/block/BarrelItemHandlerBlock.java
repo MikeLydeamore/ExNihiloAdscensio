@@ -7,6 +7,8 @@ import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class BarrelItemHandlerBlock extends ItemStackHandler
 {
     @Setter
@@ -17,14 +19,15 @@ public class BarrelItemHandlerBlock extends ItemStackHandler
         super(1);
         this.barrel = barrel;
     }
-    
-    protected int getStackLimit(int slot, ItemStack stack)
+
+    @Override
+    protected int getStackLimit(int slot, @Nonnull ItemStack stack)
     {
         return stack.getMaxStackSize();
     }
     
-    @Override
-    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+    @Override @Nonnull
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
     {
         ItemStack returned = super.insertItem(slot, stack, simulate);
         
@@ -36,7 +39,7 @@ public class BarrelItemHandlerBlock extends ItemStackHandler
         return returned;
     }
     
-    @Override
+    @Override @Nonnull
     public ItemStack extractItem(int slot, int amount, boolean simulate)
     {
         ItemStack ret = super.extractItem(slot, amount, simulate);
@@ -47,7 +50,7 @@ public class BarrelItemHandlerBlock extends ItemStackHandler
     }
     
     @Override
-    public void setStackInSlot(int slot, ItemStack stack)
+    public void setStackInSlot(int slot, @Nonnull ItemStack stack)
     {
         super.setStackInSlot(slot, stack);
         
@@ -56,7 +59,7 @@ public class BarrelItemHandlerBlock extends ItemStackHandler
     
     private void checkEmpty()
     {
-        if (getStackInSlot(0) == null)
+        if (getStackInSlot(0).isEmpty())
         {
             barrel.setMode("null");
             PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);

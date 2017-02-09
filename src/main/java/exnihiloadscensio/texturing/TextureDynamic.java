@@ -1,15 +1,14 @@
 package exnihiloadscensio.texturing;
 
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 public class TextureDynamic extends TextureAtlasSprite {
 
@@ -92,9 +91,8 @@ public class TextureDynamic extends TextureAtlasSprite {
 	    try
 	    {
 	      IResource res = manager.getResource(location);
-	      BufferedImage imgOutput = ImageIO.read(res.getInputStream());
 	      
-	      return imgOutput;
+	      return ImageIO.read(res.getInputStream());
 	    }
 	    catch (Exception e)
 	    {

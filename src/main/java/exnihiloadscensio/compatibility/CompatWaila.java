@@ -1,7 +1,6 @@
 package exnihiloadscensio.compatibility;
 
-import java.util.List;
-
+import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockBarrel;
 import exnihiloadscensio.blocks.BlockCrucible;
 import exnihiloadscensio.blocks.BlockInfestedLeaves;
@@ -11,10 +10,7 @@ import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.tiles.TileCrucible;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.tiles.TileSieve;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -23,26 +19,34 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CompatWaila implements IWailaDataProvider {
+import java.util.List;
+
+@WailaPlugin(ExNihiloAdscensio.MODID)
+public class CompatWaila implements IWailaPlugin, IWailaDataProvider {
 
 	@Override
-	public ItemStack getWailaStack(IWailaDataAccessor accessor,
-			IWailaConfigHandler config) {
+	public void register(IWailaRegistrar registrar) {
+		registrar.registerBodyProvider(this, BlockBarrel.class);
+		registrar.registerBodyProvider(this, BlockSieve.class);
+		registrar.registerBodyProvider(this, BlockInfestedLeaves.class);
+		registrar.registerBodyProvider(this, BlockCrucible.class);
+	}
+
+	@Override
+	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
 		return null;
 	}
 
 	@Override
-	public List<String> getWailaHead(ItemStack itemStack,
-			List<String> currenttip, IWailaDataAccessor accessor,
-			IWailaConfigHandler config) {
+	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 		return currenttip;
 	}
 
-	@Override
-	public List<String> getWailaBody(ItemStack itemStack,
-			List<String> currenttip, IWailaDataAccessor accessor,
-			IWailaConfigHandler config) {
+	@Override @SideOnly(Side.CLIENT)
+	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 		if (accessor.getBlock() instanceof BlockBarrel) {
 			TileBarrel barrel = (TileBarrel) accessor.getTileEntity();
 			
@@ -90,9 +94,9 @@ public class CompatWaila implements IWailaDataProvider {
 		    
 		    ItemStack toMelt = tile.getItemHandler().getStackInSlot(0);
 		    
-		    if(toMelt != null)
+		    if(!toMelt.isEmpty())
 		    {
-		        solidAmount += CrucibleRegistry.getMeltable(toMelt).getAmount() * toMelt.stackSize;
+		        solidAmount += CrucibleRegistry.getMeltable(toMelt).getAmount() * toMelt.getCount();
 		    }
 		    
             currenttip.add(String.format("Solid (%s): %d", solidName, solidAmount));
@@ -104,24 +108,13 @@ public class CompatWaila implements IWailaDataProvider {
 	}
 
 	@Override
-	public List<String> getWailaTail(ItemStack itemStack,
-			List<String> currenttip, IWailaDataAccessor accessor,
-			IWailaConfigHandler config) {
+	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 		return currenttip;
 	}
 
 	@Override
-	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te,
-			NBTTagCompound tag, World world, BlockPos pos) {
+	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
 		return tag;
-	}
-	
-	public static void callbackRegister(IWailaRegistrar registrar) {
-		CompatWaila instance = new CompatWaila();
-		registrar.registerBodyProvider(instance, BlockBarrel.class);
-		registrar.registerBodyProvider(instance, BlockSieve.class);
-		registrar.registerBodyProvider(instance, BlockInfestedLeaves.class);
-		registrar.registerBodyProvider(instance, BlockCrucible.class);
 	}
 
 }

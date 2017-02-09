@@ -1,28 +1,24 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import exnihiloadscensio.blocks.ENBlocks;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 public class BarrelLiquidBlacklistRegistry
 {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final Map<Integer, List<String>> blacklist = new HashMap<>();
     private static final Map<Integer, List<String>> externalBlacklist = new HashMap<>();
-    
+
+    @SuppressWarnings("unchecked")
     public static boolean isBlacklisted(int level, String fluid)
     {
         return level < 0 || blacklist.getOrDefault(level, Collections.EMPTY_LIST).contains(fluid);

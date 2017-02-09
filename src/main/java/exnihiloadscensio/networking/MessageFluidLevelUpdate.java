@@ -9,6 +9,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageFluidLevelUpdate implements IMessage {
 	
@@ -45,14 +47,14 @@ public class MessageFluidLevelUpdate implements IMessage {
 
 	public static class MessageFluidLevelUpdateHandler implements IMessageHandler<MessageFluidLevelUpdate, IMessage> 
 	{
-		@Override
+		@Override @SideOnly(Side.CLIENT)
 		public IMessage onMessage(final MessageFluidLevelUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
+				@Override @SideOnly(Side.CLIENT)
 				public void run()
 				{
-					TileEntity entity =  Minecraft.getMinecraft().thePlayer.worldObj.getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
+					TileEntity entity =  Minecraft.getMinecraft().player.getEntityWorld().getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
 					if (entity instanceof TileBarrel)
 					{
 						TileBarrel te = (TileBarrel) entity;

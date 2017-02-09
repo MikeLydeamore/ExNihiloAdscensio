@@ -13,7 +13,7 @@ public class PacketHandler {
 	
 	public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(ExNihiloAdscensio.MODID);
 	private static int id = 0;
-	
+
 	public static void initPackets()
 	{
 		INSTANCE.registerMessage(MessageBarrelModeUpdate.MessageBarrelModeUpdateHandler.class, MessageBarrelModeUpdate.class, id++, Side.CLIENT);

@@ -1,10 +1,5 @@
 package exnihiloadscensio.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
@@ -22,7 +17,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -31,6 +25,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockBarrel extends BlockBase implements ITileEntityProvider, IProbeInfoAccessor {
 
@@ -47,7 +46,7 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, IProb
 	
 	@SuppressWarnings("deprecation")
     @Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+	public int getLightValue(@Nonnull IBlockState state, IBlockAccess world, @Nonnull BlockPos pos)
 	{
 	    TileEntity te = world.getTileEntity(pos);
 	    
@@ -101,51 +100,51 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, IProb
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		if (world.isRemote)
+		if (world.isRemote || world.getTileEntity(pos) == null)
 			return true;
 
-		return ((TileBarrel) world.getTileEntity(pos)).onBlockActivated(world, pos, state, player, side, hitX, hitY, hitZ);
+		return ((TileBarrel) world.getTileEntity(pos)).onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
 	}
 	
-	@Override
+	@Override @Deprecated
 	public boolean isFullyOpaque(IBlockState state)
 	{
 		return false;
 	}
 	
-	@Override
+	@Override @Deprecated
 	 public boolean isFullBlock(IBlockState state)
     {
         return false;
     }
 	
-	@Override
+	@Override @Deprecated
 	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) 
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
 	{
 		return new TileBarrel(this);
 	}
 
-	@Override
+	@Override @Nonnull @Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		return boundingBox;
 	}
 	
     @Override
-    public boolean isBlockSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
+    public boolean isBlockSolid(IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side)
     {
         return false;
     }
     
-    @Override
+    @Override @Deprecated
     public boolean isFullCube(IBlockState state)
     {
         return false;

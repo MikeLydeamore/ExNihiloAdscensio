@@ -18,6 +18,8 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class TileInfestedLeaves extends TileEntity implements ITickable
 {
     private static int tileId = 0;
@@ -45,12 +47,12 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
             {
                 progress = 1.0F;
                 
-                worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+                getWorld().notifyBlockUpdate(pos, getWorld().getBlockState(pos), getWorld().getBlockState(pos), 3);
             }
         }
         
         // Don't update unless there's leaves nearby, or we haven't checked for leavesUpdateFrequency ticks. And only update on the server
-        if (!worldObj.isRemote && hasNearbyLeaves || worldObj.getTotalWorldTime() % Config.leavesUpdateFrequency == updateIndex)
+        if (!getWorld().isRemote && hasNearbyLeaves || getWorld().getTotalWorldTime() % Config.leavesUpdateFrequency == updateIndex)
         {
             hasNearbyLeaves = false;
             
@@ -61,15 +63,15 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
                     for (int z = -1; z <= 1; z++)
                     {
                         BlockPos newPos = new BlockPos(pos.add(x, y, z));
-                        IBlockState state = worldObj.getBlockState(newPos);
+                        IBlockState state = getWorld().getBlockState(newPos);
                         
-                        if (state != null && state.getBlock() != null && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2))
+                        if (state != Blocks.AIR.getDefaultState() && state.getBlock() != Blocks.AIR && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2))
                         {
                             hasNearbyLeaves = true;
                             
-                            if (worldObj.rand.nextFloat() < Config.leavesSpreadChance)
+                            if (getWorld().rand.nextFloat() < Config.leavesSpreadChance)
                             {
-                                BlockInfestedLeaves.infestLeafBlock(worldObj, newPos);
+                                BlockInfestedLeaves.infestLeafBlock(getWorld(), newPos);
                             }
                         }
                     }
@@ -88,13 +90,13 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
     @SideOnly(Side.CLIENT)
     public int getColor()
     {
-        if (worldObj == null || pos == null)
+        if (pos == null)
         {
             return Util.whiteColor.toInt();
         }
         else
         {
-            Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(worldObj, pos));
+            Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(getWorld(), pos));
             return Color.average(green, Util.whiteColor, (float) Math.pow(progress, 2)).toInt();
         }
     }
@@ -111,11 +113,11 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
         markDirty();
     }
     
-    @Override
+    @Override @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
         tag.setFloat("progress", progress);
-        tag.setString("leafBlock", leafBlock.getBlock().getRegistryName().toString());
+        tag.setString("leafBlock", leafBlock.getBlock().getRegistryName() == null ? "" : leafBlock.getBlock().getRegistryName().toString());
         tag.setInteger("leafBlockMeta", leafBlock.getBlock().getMetaFromState(leafBlock));
         return super.writeToNBT(tag);
     }
@@ -128,7 +130,11 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
         
         if (tag.hasKey("leafBlock") && tag.hasKey("leafBlockMeta"))
         {
-            leafBlock = Block.getBlockFromName(tag.getString("leafBlock")).getStateFromMeta(tag.getInteger("leafBlockMeta"));
+            try {
+                leafBlock = Block.getBlockFromName(tag.getString("leafBlock")).getStateFromMeta(tag.getInteger("leafBlockMeta"));
+            } catch (Exception e) {
+                leafBlock = Blocks.LEAVES.getDefaultState();
+            }
         }
         else
         {
@@ -144,13 +150,13 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
         return new SPacketUpdateTileEntity(this.pos, this.getBlockMetadata(), getUpdateTag());
     }
     
-    @Override
+    @Override @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
     {
         readFromNBT(packet.getNbtCompound());
     }
     
-    @Override
+    @Override @Nonnull
     public NBTTagCompound getUpdateTag()
     {
         return writeToNBT(new NBTTagCompound());

@@ -1,7 +1,5 @@
 package exnihiloadscensio.barrel.modes.fluid;
 
-import java.util.List;
-
 import exnihiloadscensio.barrel.BarrelFluidHandler;
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.barrel.modes.transform.BarrelModeFluidTransform;
@@ -29,15 +27,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.List;
 
 public class BarrelModeFluid implements IBarrelMode {
 
@@ -89,28 +84,26 @@ public class BarrelModeFluid implements IBarrelMode {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state,
-			EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+	public boolean onBlockActivated(World world, TileBarrel barrel, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack != null) {
+		if (!stack.isEmpty()) {
 			ItemStack remainder = getHandler(barrel).insertItem(0, stack, false);
 
-			int size = remainder == null ? 0 : remainder.stackSize;
+			int size = remainder.isEmpty() ? 0 : remainder.getCount();
 
 			if (stack.getItem().hasContainerItem(stack)) {
 				ItemStack container = stack.getItem().getContainerItem(stack);
 
 				// Should always be 1 but LET'S JUST MAKE SURE
-				container.stackSize = stack.stackSize - size;
+				container.setCount(stack.getCount() - size);
 
 				if (!player.inventory.addItemStackToInventory(container)) {
-					player.worldObj.spawnEntityInWorld(
-							new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, container));
+					player.getEntityWorld().spawnEntity(new EntityItem(player.getEntityWorld(), player.posX, player.posY, player.posZ, container));
 				}
 			}
 
-			player.setHeldItem(EnumHand.MAIN_HAND, remainder);
+			player.setHeldItem(hand, remainder);
 		}
 
 		return false;
@@ -139,7 +132,7 @@ public class BarrelModeFluid implements IBarrelMode {
 		// Fluids on top.
 		if (barrel.getTank().getFluid() != null) {
 			FluidTank tank = barrel.getTank();
-			if (tank.getFluid().amount != tank.getCapacity())
+			if (tank.getFluid() == null || tank.getFluid().amount != tank.getCapacity())
 				return;
 
 			Fluid fluidInBarrel = tank.getFluid().getFluid();
@@ -154,8 +147,8 @@ public class BarrelModeFluid implements IBarrelMode {
 						? FluidRegistry.WATER : FluidRegistry.LAVA;
 			}
 
-			if (onTop != null && onTop instanceof IFluidBlock) {
-				fluidOnTop = ((BlockFluidBase) onTop).getFluid();
+			if (!onTop.equals(Blocks.AIR) && onTop instanceof IFluidBlock) {
+				fluidOnTop = ((IFluidBlock) onTop).getFluid();
 			}
 
 			if (FluidOnTopRegistry.isValidRecipe(fluidInBarrel, fluidOnTop)) {
@@ -164,7 +157,7 @@ public class BarrelModeFluid implements IBarrelMode {
 				barrel.setMode("block");
 				PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("block", barrel.getPos()), barrel);
 
-				barrel.getMode().addItem(info.getItemStack(), barrel);
+				barrel.getMode().addItem(info == null || info.getItemStack() == null ? ItemStack.EMPTY : info.getItemStack(), barrel);
 
 				return;
 			}

@@ -12,6 +12,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+
 public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidBlockTransformRecipe>
 {
     public static final String UID = "exnihiloadscensio:fluid_block_transform";
@@ -24,38 +26,31 @@ public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidB
         this.background = helper.createDrawable(texture, 0, 0, 166, 63);
     }
     
-    @Override
+    @Override @Nonnull
     public String getUid()
     {
         return UID;
     }
     
-    @Override
+    @Override @Nonnull
     public String getTitle()
     {
         return "Fluid Block Transform";
     }
     
-    @Override
+    @Override @Nonnull
     public IDrawable getBackground()
     {
         return background;
     }
     
     @Override
-    public void drawExtras(Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
         
     }
-    
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-        
-    }
-    
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FluidBlockTransformRecipe recipeWrapper)
+
+    private void setRecipe(IRecipeLayout recipeLayout, FluidBlockTransformRecipe recipeWrapper)
     {
         recipeLayout.getItemStacks().init(0, true, 74, 36);
         recipeLayout.getItemStacks().init(1, true, 47, 36);
@@ -69,7 +64,7 @@ public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidB
     }
     
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FluidBlockTransformRecipe recipeWrapper, IIngredients ingredients)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull FluidBlockTransformRecipe recipeWrapper, @Nonnull IIngredients ingredients)
     {
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
