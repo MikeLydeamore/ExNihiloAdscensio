@@ -41,11 +41,11 @@ public class ItemMesh extends Item {
 	    }
 	}
 	
-	/*@Override
-	public boolean isItemTool(ItemStack stack)
+	@Override
+	public boolean isEnchantable(ItemStack stack)
 	{
 	    return true;
-	}*/
+	}
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
