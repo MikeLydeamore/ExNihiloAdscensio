@@ -137,6 +137,8 @@ public class OreRegistry {
 
 	public static void doRecipes() {
 		for (ItemOre ore : itemOreRegistry) {
+			OreDictionary.registerOre("ore"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 1));
+			OreDictionary.registerOre("dust"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 2));
 			GameRegistry.addRecipe(new ItemStack(ore, 1, 1),
 					new Object[] { "xx", "xx", 'x', new ItemStack(ore, 1, 0) });
 
