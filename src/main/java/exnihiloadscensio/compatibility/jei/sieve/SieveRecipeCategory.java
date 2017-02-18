@@ -1,5 +1,6 @@
 package exnihiloadscensio.compatibility.jei.sieve;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.HashMultiset;
@@ -136,4 +137,9 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
     {
         return null;
     }
+
+	@Override
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
+		return Collections.emptyList();
+	}
 }

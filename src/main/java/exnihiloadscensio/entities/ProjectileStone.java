@@ -41,19 +41,19 @@ public class ProjectileStone extends EntityThrowable
         {
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), (int) (Math.random() * (4.0F / 3.0F)));
         }
-        else if (!worldObj.isRemote)
+        else if (!world.isRemote)
         {
             setDead();
             
             if(stack != null)
             {
-                worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, stack));
+                world.spawnEntity(new EntityItem(world, posX, posY, posZ, stack));
             }
         }
         
         for (int j = 0; j < 8; ++j)
         {
-            worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 0.0D, 0.0D, 0.0D, new int[] { Block.getStateId(Blocks.STONE.getDefaultState()) });
+            world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 0.0D, 0.0D, 0.0D, new int[] { Block.getStateId(Blocks.STONE.getDefaultState()) });
         }
     }
     

@@ -1,5 +1,6 @@
 package exnihiloadscensio.compatibility.jei.barrel.fluidtransform;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -113,4 +114,9 @@ public class FluidTransformRecipeCategory implements IRecipeCategory<FluidTransf
     {
         return null;
     }
+
+	@Override
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
+		return Collections.emptyList();
+	}
 }

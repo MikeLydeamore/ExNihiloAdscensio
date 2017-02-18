@@ -105,8 +105,8 @@ public class BarrelModeFluid implements IBarrelMode {
 				container.stackSize = stack.stackSize - size;
 
 				if (!player.inventory.addItemStackToInventory(container)) {
-					player.worldObj.spawnEntityInWorld(
-							new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, container));
+					player.world.spawnEntity(
+							new EntityItem(player.world, player.posX, player.posY, player.posZ, container));
 				}
 			}
 

@@ -57,7 +57,7 @@ public class TileCrucible extends TileEntity implements ITickable {
     @Override
     public void update()
     {
-        if (worldObj.isRemote)
+        if (world.isRemote)
             return;
         
         ticksSinceLast++;
@@ -136,7 +136,7 @@ public class TileCrucible extends TileEntity implements ITickable {
     public int getHeatRate()
     {
         BlockPos posBelow = pos.add(0, -1, 0);
-        IBlockState stateBelow = worldObj.getBlockState(posBelow);
+        IBlockState stateBelow = world.getBlockState(posBelow);
         
         if (stateBelow == null)
         {
@@ -150,7 +150,7 @@ public class TileCrucible extends TileEntity implements ITickable {
             return heat;
         }
         
-        TileEntity tile = worldObj.getTileEntity(posBelow);
+        TileEntity tile = world.getTileEntity(posBelow);
         
         if(tile != null && tile.hasCapability(CapabilityHeatManager.HEAT_CAPABILITY, EnumFacing.UP))
         {

@@ -1,5 +1,6 @@
 package exnihiloadscensio.compatibility.jei.barrel.compost;
 
+import java.util.Collections;
 import java.util.List;
 
 import exnihiloadscensio.ExNihiloAdscensio;
@@ -133,4 +134,9 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
             }
         }
     }
+
+	@Override
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
+		return Collections.emptyList();
+	}
 }

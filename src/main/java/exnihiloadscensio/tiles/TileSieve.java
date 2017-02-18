@@ -107,23 +107,23 @@ public class TileSieve extends TileEntity {
         }
         
         // 4 ticks is the same period of holding down right click
-        if (worldObj.getTotalWorldTime() - lastSieveAction < 4)
+        if (world.getTotalWorldTime() - lastSieveAction < 4)
         {
             return false;
         }
         
         // Really good chance that they're using a macro
-        if(worldObj.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
+        if(world.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
         {
             if(Config.setFireToMacroUsers)
             {
                 player.setFire(1);
             }
             
-            player.addChatMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
+            player.sendStatusMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
         }
         
-        lastSieveAction = worldObj.getTotalWorldTime();
+        lastSieveAction = world.getTotalWorldTime();
         lastPlayer = player.getUniqueID();
         
         int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);

@@ -56,13 +56,13 @@ public class ItemDoll extends Item {
 			EntityBlaze blaze = new EntityBlaze(world);
 			blaze.setPosition(pos.getX(), pos.getY()+1, pos.getZ());
 
-			return world.spawnEntityInWorld(blaze);
+			return world.spawnEntity(blaze);
 		}
 		else {
 			EntityEnderman enderman = new EntityEnderman(world);
 			enderman.setPosition(pos.getX(), pos.getY()+2, pos.getZ());
 			
-			return world.spawnEntityInWorld(enderman);
+			return world.spawnEntity(enderman);
 		}
 	}
 	

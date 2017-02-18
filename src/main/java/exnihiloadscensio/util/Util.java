@@ -28,7 +28,7 @@ public class Util {
 	
 	public static void dropItemInWorld(TileEntity source, EntityPlayer player, ItemStack stack, double speedfactor) 
 	{
-		int hitOrientation = player == null ? 0 : MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		int hitOrientation = player == null ? 0 : MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		double stackCoordX = 0.0D, stackCoordY = 0.0D, stackCoordZ = 0.0D;
 
 		switch (hitOrientation) {
@@ -63,7 +63,7 @@ public class Util {
 			droppedEntity.motionY = motion.yCoord;
 			droppedEntity.motionZ = motion.zCoord;
 			double offset = 0.25D;
-			droppedEntity.moveEntity(motion.xCoord * offset, motion.yCoord * offset, motion.zCoord * offset);
+			droppedEntity.move(motion.xCoord * offset, motion.yCoord * offset, motion.zCoord * offset);
 		}
 
 		droppedEntity.motionX *= speedfactor;
@@ -72,7 +72,7 @@ public class Util {
 		
 		droppedEntity.setNoPickupDelay();
 
-		source.getWorld().spawnEntityInWorld(droppedEntity);
+		source.getWorld().spawnEntity(droppedEntity);
 	}
 	
 	public static TextureAtlasSprite getTextureFromBlockState(IBlockState state) {
