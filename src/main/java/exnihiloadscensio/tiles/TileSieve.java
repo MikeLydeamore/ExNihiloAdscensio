@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -32,6 +33,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 public class TileSieve extends TileEntity {
 	
@@ -189,7 +193,20 @@ public class TileSieve extends TileEntity {
                 drops.add(new ItemStack(Items.FISH, 1, fishMeta));
             }
             
-            drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
+            TileEntity container = world.getTileEntity(pos.add(0, -1, 0));
+            if (Config.sievesAutoOutput && 
+            		container != null && container.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+            	IItemHandler handler = (IItemHandler) container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+				for (ItemStack drop : drops) {
+					ItemStack remaining = ItemHandlerHelper.insertItem(handler, drop, false);
+					if (remaining != null) {
+						Util.dropItemInWorld(this, null, remaining, 1);
+					}
+				}
+            }
+            else {
+            	drops.forEach(stack -> Util.dropItemInWorld(this, player, stack, 1));
+            }
             
             resetSieve();
         }

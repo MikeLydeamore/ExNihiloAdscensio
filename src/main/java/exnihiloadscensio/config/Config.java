@@ -11,6 +11,7 @@ public class Config {
 	public static boolean enableCrucible;
 	public static boolean shouldBarrelsFillWithRain;
     public static boolean fakePlayersCanSieve;
+    public static boolean sievesAutoOutput;
 	
 	public static int compostingTicks;
 	public static int infestedLeavesTicks;
@@ -61,6 +62,7 @@ public class Config {
 		doTICCompat = config.get("Compatibilitiy", "TinkersConstruct", true).getBoolean();
 		
 		setFireToMacroUsers = config.get("Sieving", "setFireToMacroUsers", false).getBoolean();
+		sievesAutoOutput = config.get("Sieving", "sievesAutoOutput", false).getBoolean();
 		
 		numberOfTimesToTestVanillaDrops = config.get("Crooking", "numberOfVanillaDropRuns", 3).getInt();
 		
