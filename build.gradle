@@ -28,9 +28,9 @@ sourceCompatibility=1.8
 targetCompatibility=1.8
 
 minecraft {
-    version = "1.10.2-12.18.3.2185"
+    version = "1.10.2-12.18.3.2221"
     runDir = "run"
-	mappings = "snapshot_20160824"
+	mappings = "stable_29"
 }
 
 repositories
@@ -56,14 +56,14 @@ repositories
 
 dependencies
 {
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.+:api"
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.+"
+    deobfCompile "mezz.jei:jei_1.10.2:3.14.+:api"
+    deobfCompile "mezz.jei:jei_1.10.2:3.14.+"
     
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.0.+"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.5.+"
     
-    deobfCompile "com.enderio.core:EnderCore:1.10.2-0.4.1.60-beta"
-    deobfCompile "com.enderio:EnderIO:1.10.2-3.0.1.138_beta"
+    deobfCompile "com.enderio.core:EnderCore:1.10.2-0.4.1.65-beta"
+    deobfCompile "com.enderio:EnderIO:1.10.2-3.1.169"
     
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     
