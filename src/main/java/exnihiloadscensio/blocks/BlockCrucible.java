@@ -2,6 +2,7 @@ package exnihiloadscensio.blocks;
 
 import java.util.List;
 
+import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.items.ItemBlockMeta;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.tiles.TileCrucible;
@@ -32,7 +33,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCrucible extends Block implements IProbeInfoAccessor {
+public class BlockCrucible extends Block implements ITOPInfoProvider {
 
 	public static final PropertyBool FIRED = PropertyBool.create("fired");
 

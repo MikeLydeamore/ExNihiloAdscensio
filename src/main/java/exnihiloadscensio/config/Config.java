@@ -30,6 +30,7 @@ public class Config {
 	
 	public static boolean doEnderIOCompat;
 	public static boolean doTICCompat;
+	public static boolean doTOPCompat;
 	
 	public static boolean setFireToMacroUsers;
 	
@@ -60,6 +61,7 @@ public class Config {
 		
 		doEnderIOCompat = config.get("Compatibilitiy", "EnderIO", true).getBoolean();
 		doTICCompat = config.get("Compatibilitiy", "TinkersConstruct", true).getBoolean();
+		doTOPCompat = config.get("Compatibilitiy", "TheOneProbe", true).getBoolean();
 		
 		setFireToMacroUsers = config.get("Sieving", "setFireToMacroUsers", false).getBoolean();
 		sievesAutoOutput = config.get("Sieving", "sievesAutoOutput", false).getBoolean();

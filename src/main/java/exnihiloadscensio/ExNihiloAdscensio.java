@@ -7,6 +7,7 @@ import exnihiloadscensio.capabilities.ENCapabilities;
 import exnihiloadscensio.command.CommandReloadConfig;
 import exnihiloadscensio.compatibility.CompatEIO;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
+import exnihiloadscensio.compatibility.theoneprobe.CompatTOP;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.enchantments.ENEnchantments;
 import exnihiloadscensio.entities.ENEntities;
@@ -112,6 +113,10 @@ public class ExNihiloAdscensio {
 
 		FMLInterModComms.sendMessage("Waila", "register",
 				"exnihiloadscensio.compatibility.CompatWaila.callbackRegister");
+		
+		if (Loader.isModLoaded("theoneprobe") && Config.doTOPCompat) {
+			CompatTOP.init();
+		}
 	}
 
 	@EventHandler
@@ -123,6 +128,7 @@ public class ExNihiloAdscensio {
 		if (Loader.isModLoaded("EnderIO") && Config.doEnderIOCompat) {
 			CompatEIO.postInit();
 		}
+		
 	}
 
 	public static void loadConfigs() {

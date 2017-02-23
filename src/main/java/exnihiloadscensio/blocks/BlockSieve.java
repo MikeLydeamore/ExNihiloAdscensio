@@ -3,6 +3,7 @@ package exnihiloadscensio.blocks;
 import java.util.ArrayList;
 import java.util.Map;
 
+import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ItemMesh;
 import exnihiloadscensio.networking.PacketHandler;
@@ -10,9 +11,7 @@ import exnihiloadscensio.tiles.TileSieve;
 import exnihiloadscensio.util.Util;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoAccessor;
 import mcjty.theoneprobe.api.ProbeMode;
-import mcjty.theoneprobe.api.TextStyleClass;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -33,7 +32,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class BlockSieve extends BlockBase implements ITileEntityProvider, IProbeInfoAccessor {
+public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPInfoProvider {
 
 	public enum MeshType implements IStringSerializable {
 		NONE(0, "none"), STRING(1, "string"), FLINT(2, "flint"), IRON(3, "iron"), DIAMOND(4, "diamond");

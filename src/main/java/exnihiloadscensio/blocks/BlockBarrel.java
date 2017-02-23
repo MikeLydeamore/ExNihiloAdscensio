@@ -9,6 +9,7 @@ import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
 import exnihiloadscensio.barrel.modes.transform.BarrelModeFluidTransform;
+import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.Util;
@@ -32,7 +33,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBarrel extends BlockBase implements ITileEntityProvider, IProbeInfoAccessor {
+public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPInfoProvider {
 
 	private AxisAlignedBB boundingBox = new AxisAlignedBB(0.0625f, 0, 0.0625f, 0.9375f, 1f, 0.9375f);
 	@Getter
@@ -157,7 +158,7 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, IProb
 		TileBarrel barrel = (TileBarrel) world.getTileEntity(data.getPos());
 		if (barrel == null)
 			return;
-		
+		System.out.println("test");
 		if (mode == ProbeMode.EXTENDED)
 			probeInfo.text(TextFormatting.GREEN + "Mode: "+StringUtils.capitalize(barrel.getMode().getName()));
 		

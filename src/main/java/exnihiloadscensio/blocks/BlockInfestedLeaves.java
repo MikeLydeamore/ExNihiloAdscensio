@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.tools.ICrook;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider, IProbeInfoAccessor {
+public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider, ITOPInfoProvider {
 
 	public BlockInfestedLeaves() {
 		super();
