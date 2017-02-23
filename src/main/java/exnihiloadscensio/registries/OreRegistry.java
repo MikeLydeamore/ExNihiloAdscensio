@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
 import exnihiloadscensio.json.CustomBlockInfoJson;
@@ -137,8 +138,10 @@ public class OreRegistry {
 
 	public static void doRecipes() {
 		for (ItemOre ore : itemOreRegistry) {
-			OreDictionary.registerOre("ore"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 1));
-			OreDictionary.registerOre("dust"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 2));
+			if (Config.shouldOreDictOreChunks)
+				OreDictionary.registerOre("ore"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 1));
+			if (Config.shouldOreDictOreDusts)
+				OreDictionary.registerOre("dust"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 2));
 			GameRegistry.addRecipe(new ItemStack(ore, 1, 1),
 					new Object[] { "xx", "xx", 'x', new ItemStack(ore, 1, 0) });
 
