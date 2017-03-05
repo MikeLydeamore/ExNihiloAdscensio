@@ -76,8 +76,13 @@ public class Util {
 	}
 	
 	public static TextureAtlasSprite getTextureFromBlockState(IBlockState state) {
-		return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+		if (state == null)
+			return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+		
+		TextureAtlasSprite ret = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
 		.getTexture(state);
+		
+		return ret != null ? ret : Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
 	}
 
     public static TextureAtlasSprite getTextureFromFluidStack(FluidStack stack)
