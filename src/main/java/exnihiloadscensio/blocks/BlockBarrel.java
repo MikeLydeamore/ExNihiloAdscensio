@@ -158,7 +158,6 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPI
 		TileBarrel barrel = (TileBarrel) world.getTileEntity(data.getPos());
 		if (barrel == null)
 			return;
-		System.out.println("test");
 		if (mode == ProbeMode.EXTENDED)
 			probeInfo.text(TextFormatting.GREEN + "Mode: "+StringUtils.capitalize(barrel.getMode().getName()));
 		
