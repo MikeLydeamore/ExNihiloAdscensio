@@ -32,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPInfoProvider {
 
@@ -46,6 +47,21 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPI
 		this.setHardness(2.0f);
 	}
 	
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+		if (te != null && te instanceof TileBarrel) {
+			TileBarrel barrel = (TileBarrel) te;
+			
+			if (barrel.getMode() != null && barrel.getMode().getName().equals("block")) {
+				ItemStack stack = barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(0);
+				if (stack != null)
+					Util.dropItemInWorld(te, null, stack, 0);
+			}
+		}
+		
+		super.breakBlock(world, pos, state);
+	}
 	@SuppressWarnings("deprecation")
     @Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
