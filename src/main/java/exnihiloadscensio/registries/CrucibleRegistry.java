@@ -10,8 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.types.Meltable;
+import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -23,7 +25,8 @@ public class CrucibleRegistry
     private static Map<ItemInfo, Meltable> registry = new HashMap<>();
     private static Map<ItemInfo, Meltable> externalRegistry = new HashMap<>();
 	
-	private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson()).create();
+	private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson())
+			.registerTypeAdapter(BlockInfo.class,  new CustomBlockInfoJson()).create();
     
     public static void register(ItemInfo item, Fluid fluid, int amount)
     {

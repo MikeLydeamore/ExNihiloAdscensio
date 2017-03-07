@@ -188,21 +188,33 @@ public class TileCrucible extends TileEntity implements ITickable {
 		}
 		
 		double fluidProportion = ((double) tank.getFluidAmount()) / tank.getCapacity();
+		
 		if (fluidProportion > solidProportion) {
 			if (tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluid().getFluid().getBlock() == null)
 				return null;
 			
-			return Util.getTextureFromBlockState(tank.getFluid().getFluid().getBlock().getDefaultState());
+			return Util.getTextureFromFluidStack(tank.getFluid());
 		}
 		else {
 			if (currentItem != null) {
-				IBlockState block = Block.getBlockFromItem(currentItem.getItem())
-						.getStateFromMeta(currentItem.getMeta());
+				Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
+				BlockInfo override = meltable.getTextureOverride();
+				IBlockState block = null;
+				
+				if (override == null) {
+					if (Block.getBlockFromItem(currentItem.getItem()) != null) {
+						block = Block.getBlockFromItem(currentItem.getItem())
+								.getStateFromMeta(currentItem.getMeta());
+					}
+				}
+				else {
+					block = override.getBlockState();
+				}
+				
 				return Util.getTextureFromBlockState(block);
 			}
-			IBlockState block = Block.getBlockFromItem(itemHandler.getStackInSlot(0).getItem())
-					.getStateFromMeta(itemHandler.getStackInSlot(0).getItemDamage());
-			return Util.getTextureFromBlockState(block);
+			
+			return Util.getTextureFromBlockState(null);
 		}
 	}
 	
