@@ -5,6 +5,7 @@ import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.types.Meltable;
+import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.LogUtil;
@@ -12,6 +13,7 @@ import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -218,6 +220,62 @@ public class TileCrucible extends TileEntity implements ITickable {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
+	@SideOnly(Side.CLIENT)
+	public Color getColor() {
+		int noItems = itemHandler.getStackInSlot(0) == null ? 0 : 
+			itemHandler.getStackInSlot(0).stackSize;
+		if (noItems == 0 && currentItem == null && tank.getFluidAmount() == 0) //Empty!
+			return Util.whiteColor;
+		
+		if (noItems == 0 && currentItem == null) //Nothing being melted.
+			return new Color(tank.getFluid().getFluid().getColor(), false);
+		
+		double solidProportion = ((double) noItems) / MAX_ITEMS;
+		
+		if (currentItem != null)
+		{
+			Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
+			
+			if(meltable != null)
+			{
+			    solidProportion += ((double) solidAmount) / (MAX_ITEMS * meltable.getAmount());
+			}
+			// already logged null error in getTexture()
+		}
+		
+		double fluidProportion = ((double) tank.getFluidAmount()) / tank.getCapacity();
+		
+		if (fluidProportion > solidProportion) {
+			if (tank.getFluid() == null || tank.getFluid().getFluid() == null)
+				return Util.whiteColor;
+			return new Color(tank.getFluid().getFluid().getColor(), false);
+		}
+		else {
+			if (currentItem != null) {
+				Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
+				BlockInfo override = meltable.getTextureOverride();
+				IBlockState block = null;
+				
+				if (override == null) {
+					if (Block.getBlockFromItem(currentItem.getItem()) != null) {
+						block = Block.getBlockFromItem(currentItem.getItem())
+								.getStateFromMeta(currentItem.getMeta());
+					}
+				}
+				else {
+					block = override.getBlockState();
+				}
+				
+				if(block != null) { // pull from the inventory color tint
+					return new Color(Minecraft.getMinecraft().getBlockColors().colorMultiplier(block, world, pos, 0), true);
+				}
+			}
+			
+			return Util.whiteColor;
+		}
+	}
+	
 	@SideOnly(Side.CLIENT)
 	public float getFilledAmount() {
 		int noItems = itemHandler.getStackInSlot(0) == null ? 0 : itemHandler.getStackInSlot(0).stackSize;
@@ -231,7 +289,9 @@ public class TileCrucible extends TileEntity implements ITickable {
 		float solidProportion = ((float) noItems) / MAX_ITEMS;
 		if (currentItem != null) {
 			Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
-			solidProportion += ((double) solidAmount) / (MAX_ITEMS * meltable.getAmount() );
+			if(meltable != null) {
+				solidProportion += ((double) solidAmount) / (MAX_ITEMS * meltable.getAmount() );
+			}
 		}
 
 		return solidProportion > fluidProportion ? solidProportion : fluidProportion;
