@@ -6,6 +6,7 @@ import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.types.Meltable;
 import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.texturing.SpriteColor;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.LogUtil;
@@ -164,14 +165,15 @@ public class TileCrucible extends TileEntity implements ITickable {
 	
 	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
-	public TextureAtlasSprite getTexture() {
+	public SpriteColor getSpriteAndColor() {
 		int noItems = itemHandler.getStackInSlot(0) == null ? 0 : 
 			itemHandler.getStackInSlot(0).stackSize;
 		if (noItems == 0 && currentItem == null && tank.getFluidAmount() == 0) //Empty!
 			return null;
 		
+		FluidStack fluid = tank.getFluid();
 		if (noItems == 0 && currentItem == null) //Nothing being melted.
-			return Util.getTextureFromBlockState(tank.getFluid().getFluid().getBlock().getDefaultState());
+			return new SpriteColor(Util.getTextureFromFluidStack(fluid), new Color(fluid.getFluid().getColor(), false));
 		
 		double solidProportion = ((double) noItems) / MAX_ITEMS;
 		
@@ -192,16 +194,18 @@ public class TileCrucible extends TileEntity implements ITickable {
 		double fluidProportion = ((double) tank.getFluidAmount()) / tank.getCapacity();
 		
 		if (fluidProportion > solidProportion) {
-			if (tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluid().getFluid().getBlock() == null)
+			if (fluid == null || fluid.getFluid() == null)
 				return null;
 			
-			return Util.getTextureFromFluidStack(tank.getFluid());
+			return new SpriteColor(Util.getTextureFromFluidStack(fluid), new Color(fluid.getFluid().getColor(), false));
 		}
 		else {
+			IBlockState block = null;
+			Color color = Util.whiteColor;
+			
 			if (currentItem != null) {
 				Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
 				BlockInfo override = meltable.getTextureOverride();
-				IBlockState block = null;
 				
 				if (override == null) {
 					if (Block.getBlockFromItem(currentItem.getItem()) != null) {
@@ -213,66 +217,12 @@ public class TileCrucible extends TileEntity implements ITickable {
 					block = override.getBlockState();
 				}
 				
-				return Util.getTextureFromBlockState(block);
-			}
-			
-			return Util.getTextureFromBlockState(null);
-		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	@SideOnly(Side.CLIENT)
-	public Color getColor() {
-		int noItems = itemHandler.getStackInSlot(0) == null ? 0 : 
-			itemHandler.getStackInSlot(0).stackSize;
-		if (noItems == 0 && currentItem == null && tank.getFluidAmount() == 0) //Empty!
-			return Util.whiteColor;
-		
-		if (noItems == 0 && currentItem == null) //Nothing being melted.
-			return new Color(tank.getFluid().getFluid().getColor(), false);
-		
-		double solidProportion = ((double) noItems) / MAX_ITEMS;
-		
-		if (currentItem != null)
-		{
-			Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
-			
-			if(meltable != null)
-			{
-			    solidProportion += ((double) solidAmount) / (MAX_ITEMS * meltable.getAmount());
-			}
-			// already logged null error in getTexture()
-		}
-		
-		double fluidProportion = ((double) tank.getFluidAmount()) / tank.getCapacity();
-		
-		if (fluidProportion > solidProportion) {
-			if (tank.getFluid() == null || tank.getFluid().getFluid() == null)
-				return Util.whiteColor;
-			return new Color(tank.getFluid().getFluid().getColor(), false);
-		}
-		else {
-			if (currentItem != null) {
-				Meltable meltable = CrucibleRegistry.getMeltable(currentItem);
-				BlockInfo override = meltable.getTextureOverride();
-				IBlockState block = null;
-				
-				if (override == null) {
-					if (Block.getBlockFromItem(currentItem.getItem()) != null) {
-						block = Block.getBlockFromItem(currentItem.getItem())
-								.getStateFromMeta(currentItem.getMeta());
-					}
-				}
-				else {
-					block = override.getBlockState();
-				}
-				
-				if(block != null) { // pull from the inventory color tint
-					return new Color(Minecraft.getMinecraft().getBlockColors().colorMultiplier(block, world, pos, 0), true);
+				if(block != null) {
+					color = new Color(Minecraft.getMinecraft().getBlockColors().colorMultiplier(block, world, pos, 0), true);
 				}
 			}
-			
-			return Util.whiteColor;
+
+			return new SpriteColor(Util.getTextureFromBlockState(block), color);
 		}
 	}
 	

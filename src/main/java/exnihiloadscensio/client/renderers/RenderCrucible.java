@@ -3,6 +3,7 @@ package exnihiloadscensio.client.renderers;
 import org.lwjgl.opengl.GL11;
 
 import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.texturing.SpriteColor;
 import exnihiloadscensio.tiles.TileCrucible;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -24,16 +25,17 @@ public class RenderCrucible extends TileEntitySpecialRenderer<TileCrucible> {
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		if (te.getTexture() != null)
+		SpriteColor sprite = te.getSpriteAndColor();
+		if (sprite != null)
 		{
-			TextureAtlasSprite icon = te.getTexture();
+			TextureAtlasSprite icon = sprite.getSprite();
 			double minU = (double) icon.getMinU();
 			double maxU = (double) icon.getMaxU();
 			double minV = (double) icon.getMinV();
 			double maxV = (double) icon.getMaxV();
 			
-			// determine the tint for the fluid
-			Color color = te.getColor();
+			// determine the tint for the fluid/block
+			Color color = sprite.getColor();
 
 			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
