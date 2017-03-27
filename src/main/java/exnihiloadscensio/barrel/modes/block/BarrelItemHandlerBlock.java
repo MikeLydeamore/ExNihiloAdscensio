@@ -56,7 +56,7 @@ public class BarrelItemHandlerBlock extends ItemStackHandler
     
     private void checkEmpty()
     {
-        if (getStackInSlot(0) == null)
+        if (getStackInSlot(0) == null && barrel != null)
         {
             barrel.setMode("null");
             PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);

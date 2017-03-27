@@ -167,7 +167,7 @@ public class SieveRegistry
                 for (Map.Entry<String, ArrayList<Siftable>> input : gsonInput.entrySet())
                 {
                     BlockInfo block = new BlockInfo(input.getKey());
-                    
+                    if (block.getBlock() == null)
                     registry.put(block, input.getValue());
                 }
             }
