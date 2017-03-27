@@ -16,6 +16,9 @@ import com.google.gson.reflect.TypeToken;
 import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemStackJson;
+import exnihiloadscensio.registries.manager.ICompostDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.ICrookDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.registries.types.CrookReward;
 import exnihiloadscensio.util.BlockInfo;
 import net.minecraft.block.Block;
@@ -88,12 +91,13 @@ public class CrookRegistry {
 
 		return (ArrayList<CrookReward>) registry.get(info);
 	}
-
+	
 	public static void registerDefaults()
-    {
-        registerInternal(new BlockInfo(Blocks.LEAVES, -1), ItemResource.getResourceStack(ItemResource.SILKWORM), 0.1f, 0f);
-        registerInternal(new BlockInfo(Blocks.LEAVES2, -1), ItemResource.getResourceStack(ItemResource.SILKWORM), 0.1f, 0f);
-    }
+	{
+		for (ICrookDefaultRegistryProvider provider : RegistryManager.getDefaultCrookRecipeHandlers()) {
+			provider.registerCrookRecipeDefaults();
+		}
+	}
     
     private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(ItemStack.class, new CustomItemStackJson()).registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson()).create();
     

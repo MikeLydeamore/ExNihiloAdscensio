@@ -12,6 +12,9 @@ import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
+import exnihiloadscensio.registries.manager.ICompostDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.ICrucibleDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.registries.types.Meltable;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
@@ -79,7 +82,9 @@ public class CrucibleRegistry
     
     public static void registerDefaults()
     {
-        registerInternal(new ItemStack(Blocks.COBBLESTONE), FluidRegistry.LAVA, 250);
+    	for (ICrucibleDefaultRegistryProvider provider : RegistryManager.getDefaultCrucibleRecipeHandlers()) {
+			provider.registerCrucibleRecipeDefaults();
+		}
     }
     
 	public static void loadJson(File file)

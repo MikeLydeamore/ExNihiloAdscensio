@@ -4,6 +4,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.items.ENItems;
@@ -12,20 +14,34 @@ import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.seeds.ItemSeedBase;
 import exnihiloadscensio.registries.CompostRegistry;
+import exnihiloadscensio.registries.CrookRegistry;
+import exnihiloadscensio.registries.CrucibleRegistry;
+import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
+import exnihiloadscensio.registries.FluidOnTopRegistry;
+import exnihiloadscensio.registries.FluidTransformRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
+import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import exnihiloadscensio.util.Util;
 
 public class ExNihiloDefaultRecipes implements ISieveDefaultRegistryProvider, IHammerDefaultRegistryProvider,
-ICompostDefaultRegistryProvider {
+ICompostDefaultRegistryProvider, ICrookDefaultRegistryProvider, ICrucibleDefaultRegistryProvider, IFluidBlockDefaultRegistryProvider,
+IFluidTransformDefaultRegistryProvider, IFluidOnTopDefaultRegistryProvider, IHeatDefaultRegistryProvider, IOreDefaultRegistryProvider {
 
 	public ExNihiloDefaultRecipes() {
 		RegistryManager.registerSieveDefaultRecipeHandler(this);
 		RegistryManager.registerHammerDefaultRecipeHandler(this);
 		RegistryManager.registerCompostDefaultRecipeHandler(this);
+		RegistryManager.registerCrookDefaultRecipeHandler(this);
+		RegistryManager.registerCrucibleDefaultRecipeHandler(this);
+		RegistryManager.registerFluidBlockDefaultRecipeHandler(this);
+		RegistryManager.registerFluidTransformDefaultRecipeHandler(this);
+		RegistryManager.registerFluidOnTopDefaultRecipeHandler(this);
+		RegistryManager.registerHeatDefaultRecipeHandler(this);
 	}
 
 	@Override
@@ -196,5 +212,80 @@ ICompostDefaultRegistryProvider {
 		CompostRegistry.register(Items.NETHER_WART, 0, 0.10f, dirtState, new Color("FF2B52"));
 		CompostRegistry.register(Items.REEDS, 0, 0.08f, dirtState, new Color("9BFF8A"));
 		CompostRegistry.register(Items.STRING, 0, 0.04f, dirtState, Util.whiteColor);
+	}
+
+	public void registerCrookRecipeDefaults() {
+		CrookRegistry.register(new BlockInfo(Blocks.LEAVES, -1), ItemResource.getResourceStack(ItemResource.SILKWORM), 0.1f, 0f);
+        CrookRegistry.register(new BlockInfo(Blocks.LEAVES2, -1), ItemResource.getResourceStack(ItemResource.SILKWORM), 0.1f, 0f);
+	}
+	
+	public void registerCrucibleRecipeDefaults() {
+		CrucibleRegistry.register(new ItemStack(Blocks.COBBLESTONE), FluidRegistry.LAVA, 250);
+	}
+	
+	public void registerFluidBlockRecipeDefaults() {
+		FluidBlockTransformerRegistry.register(FluidRegistry.WATER, new ItemInfo(new ItemStack(ENBlocks.dust)), new ItemInfo(new ItemStack(Blocks.CLAY)));
+		FluidBlockTransformerRegistry.register(FluidRegistry.LAVA, new ItemInfo(new ItemStack(Items.REDSTONE)), new ItemInfo(new ItemStack(Blocks.NETHERRACK)));
+		FluidBlockTransformerRegistry.register(FluidRegistry.LAVA, new ItemInfo(new ItemStack(Items.GLOWSTONE_DUST)), new ItemInfo(new ItemStack(Blocks.END_STONE)));
+		FluidBlockTransformerRegistry.register(ENBlocks.fluidWitchwater, new ItemInfo(new ItemStack(Blocks.SAND)), new ItemInfo(new ItemStack(Blocks.SOUL_SAND)));
+	}
+	
+	public void registerFluidTransformRecipeDefaults() {
+		FluidTransformRegistry.register("water", "witchwater", 12000, new BlockInfo[] { new BlockInfo(Blocks.MYCELIUM.getDefaultState()) }, new BlockInfo[] { new BlockInfo(Blocks.BROWN_MUSHROOM.getDefaultState()), new BlockInfo(Blocks.RED_MUSHROOM.getDefaultState()) });
+	}
+	
+	public void registerFluidOnTopRecipeDefaults() {
+		FluidOnTopRegistry.register(FluidRegistry.LAVA, FluidRegistry.WATER, new ItemInfo(Blocks.OBSIDIAN.getDefaultState()));
+		FluidOnTopRegistry.register(FluidRegistry.WATER, FluidRegistry.LAVA, new ItemInfo(Blocks.COBBLESTONE.getDefaultState()));
+	}
+	
+	public void registerHeatRecipeDefaults() {
+        // Vanilla fluids are weird, the "flowing" variant is simply a temporary state of checking if it can flow.
+        // So, once the lava has spread out all the way, it will all actually be "still" lava.
+        // Thanks Mojang <3
+        HeatRegistry.register(new BlockInfo(Blocks.FLOWING_LAVA, -1), 3);
+        HeatRegistry.register(new BlockInfo(Blocks.LAVA, -1), 3);
+        HeatRegistry.register(new BlockInfo(Blocks.FIRE, -1), 4);
+        HeatRegistry.register(new BlockInfo(Blocks.TORCH, -1), 1);
+		
+	}
+
+	@SuppressWarnings("deprecation")
+	public void registerOreRecipeDefaults() {
+		OreRegistry.registerOre("gold", new Color("FFFF00"), new ItemInfo(Items.GOLD_INGOT, 0));
+		OreRegistry.registerOre("iron", new Color("BF8040"), new ItemInfo(Items.IRON_INGOT, 0));
+
+		if (OreDictionary.getOres("oreCopper").size() > 0) {
+			OreRegistry.registerOre("copper", new Color("FF9933"), null);
+		}
+
+		if (OreDictionary.getOres("oreTin").size() > 0) {
+			OreRegistry.registerOre("tin", new Color("E6FFF2"), null);
+		}
+
+		if (OreDictionary.getOres("oreAluminium").size() > 0 || OreDictionary.getOres("oreAluminum").size() > 0) {
+			OreRegistry.registerOre("aluminium", new Color("BFBFBF"), null);
+		}
+
+		if (OreDictionary.getOres("oreLead").size() > 0) {
+			OreRegistry.registerOre("lead", new Color("330066"), null);
+		}
+
+		if (OreDictionary.getOres("oreSilver").size() > 0) {
+			OreRegistry.registerOre("silver", new Color("F2F2F2"), null);
+		}
+
+		if (OreDictionary.getOres("oreNickel").size() > 0) {
+			OreRegistry.registerOre("nickel", new Color("FFFFCC"), null);
+		}
+
+		if (OreDictionary.getOres("oreArdite").size() > 0) {
+			OreRegistry.registerOre("ardite", new Color("FF751A"), null);
+		}
+
+		if (OreDictionary.getOres("oreCobalt").size() > 0) {
+			OreRegistry.registerOre("cobalt", new Color("3333FF"), null);
+		}
+		
 	}
 }
