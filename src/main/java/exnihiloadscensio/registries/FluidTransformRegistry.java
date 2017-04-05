@@ -35,7 +35,7 @@ public class FluidTransformRegistry
     
     public static void register(FluidTransformer transformer)
     {
-        register(transformer);
+        registerInternal(transformer);
         externalRegistry.add(transformer);
     }
     
