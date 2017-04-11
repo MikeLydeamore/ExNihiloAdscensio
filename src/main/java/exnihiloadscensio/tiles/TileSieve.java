@@ -103,105 +103,100 @@ public class TileSieve extends TileEntity {
 
 		return false;
 	}
+    
+    public boolean doSieving(EntityPlayer player)
+    {
+        if (currentStack == null) {
+            return false;
+        }
+        
+        // 4 ticks is the same period of holding down right click
+        if (world.getTotalWorldTime() - lastSieveAction < 4)
+        {
+            return false;
+        }
+        
+        // Really good chance that they're using a macro
+        if(world.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
+        {
+            if(Config.setFireToMacroUsers)
+            {
+                player.setFire(1);
+            }
+            
+            player.sendStatusMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
+        }
+        
+        lastSieveAction = world.getTotalWorldTime();
+        lastPlayer = player.getUniqueID();
+        
+        int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
+        efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
+        
+        int fortune = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.fortune, meshStack);
+        fortune += EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
+        fortune += player.getLuck();
+        
+        int luckOfTheSea = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.luckOfTheSea, meshStack);
+        luckOfTheSea += EnchantmentHelper.getEnchantmentLevel(Enchantments.LUCK_OF_THE_SEA, meshStack);
+        
+        if(luckOfTheSea > 0)
+        {
+            luckOfTheSea += player.getLuck();
+        }
+        
+        progress += 10 + 5 * efficiency;
+        PacketHandler.sendNBTUpdate(this);
+        
+        if (progress >= 100)
+        {
+            List<ItemStack> drops = SieveRegistry.getRewardDrops(rand, currentStack.getBlockState(), meshStack.getMetadata(), fortune);
+            
+            if (drops == null)
+            {
+                drops = new ArrayList<>();
+            }
+            
+            // Fancy math to make the average fish dropped ~ luckOfTheSea / 2 fish, which is what it was before
+            
+            int fishToDrop = (int) Math.round(rand.nextGaussian() + (luckOfTheSea / 2.0));
+            
+            fishToDrop = Math.min(fishToDrop, 0);
+            fishToDrop = Math.max(fishToDrop, luckOfTheSea);
 
-	public boolean doSieving(EntityPlayer player)
-	{
-		if (currentStack == null) {
-			return false;
-		}
-
-		// 4 ticks is the same period of holding down right click
-		if (worldObj.getTotalWorldTime() - lastSieveAction < 4)
-		{
-			return false;
-		}
-
-		// Really good chance that they're using a macro
-		if(player != null && worldObj.getTotalWorldTime() - lastSieveAction == 0 && lastPlayer.equals(player.getUniqueID()))
-		{
-			if(Config.setFireToMacroUsers)
-			{
-				player.setFire(1);
-			}
-
-			player.addChatMessage(new TextComponentString("Bad").setStyle(new Style().setColor(TextFormatting.RED).setBold(true)));
-		}
-
-		lastSieveAction = worldObj.getTotalWorldTime();
-		if (player != null)
-			lastPlayer = player.getUniqueID();
-
-		int efficiency = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.efficiency, meshStack);
-		efficiency += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, meshStack);
-
-		int fortune = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.fortune, meshStack);
-		fortune += EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, meshStack);
-		if (player != null)
-			fortune += player.getLuck();
-
-		int luckOfTheSea = EnchantmentHelper.getEnchantmentLevel(ENEnchantments.luckOfTheSea, meshStack);
-		luckOfTheSea += EnchantmentHelper.getEnchantmentLevel(Enchantments.LUCK_OF_THE_SEA, meshStack);
-
-		if(player != null && luckOfTheSea > 0)
-		{
-			luckOfTheSea += player.getLuck();
-		}
-
-		progress += 10 + 5 * efficiency;
-		PacketHandler.sendNBTUpdate(this);
-
-		if (progress >= 100)
-		{
-			List<ItemStack> drops = SieveRegistry.getRewardDrops(rand, currentStack.getBlockState(), meshStack.getMetadata(), fortune);
-
-			if (drops == null)
-			{
-				drops = new ArrayList<>();
-			}
-
-			// Fancy math to make the average fish dropped ~ luckOfTheSea / 2 fish, which is what it was before
-
-			int fishToDrop = (int) Math.round(rand.nextGaussian() + (luckOfTheSea / 2.0));
-
-			fishToDrop = Math.min(fishToDrop, 0);
-			fishToDrop = Math.max(fishToDrop, luckOfTheSea);
-
-			for(int i = 0; i < fishToDrop; i++)
-			{
-				/*
-				 * Gives fish following chances:
-				 *  Normal: 43% (3/7)
-				 *  Salmon: 29% (2/7)
-				 *  Clown:  14% (1/7)
-				 *  Puffer: 14% (1/7)
-				 */
-
-				int fishMeta = 0;
-
-				switch(rand.nextInt(7))
-				{
-				case 3:
-				case 4:
-					fishMeta = 1;
-					break;
-				case 5:
-					fishMeta = 2;
-					break;
-				case 6:
-					fishMeta = 3;
-					break;
-				}
-
-				drops.add(new ItemStack(Items.FISH, 1, fishMeta));
-			}
-
-			//Check for press above and inventory below
-			TileEntity teAbove = worldObj.getTileEntity(pos.add(0, 1, 0));
-			TileEntity teBelow = worldObj.getTileEntity(pos.add(0, -1, 0));
-			if (player == null && 
-					teAbove != null && teAbove instanceof TileSievePress
-					&& teBelow != null && teBelow.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
-				IItemHandler handler = (IItemHandler) teBelow.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+            for(int i = 0; i < fishToDrop; i++)
+            {
+                /*
+                 * Gives fish following chances:
+                 *  Normal: 43% (3/7)
+                 *  Salmon: 29% (2/7)
+                 *  Clown:  14% (1/7)
+                 *  Puffer: 14% (1/7)
+                 */
+                
+                int fishMeta = 0;
+                
+                switch(rand.nextInt(7))
+                {
+                    case 3:
+                    case 4:
+                        fishMeta = 1;
+                        break;
+                    case 5:
+                        fishMeta = 2;
+                        break;
+                    case 6:
+                        fishMeta = 3;
+                        break;
+                }
+                
+                drops.add(new ItemStack(Items.FISH, 1, fishMeta));
+            }
+            
+            TileEntity container = world.getTileEntity(pos.add(0, -1, 0));
+            if (Config.sievesAutoOutput && 
+            		container != null && container.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+            	IItemHandler handler = (IItemHandler) container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 				for (ItemStack drop : drops) {
 					ItemStack remaining = ItemHandlerHelper.insertItem(handler, drop, false);
 					if (remaining != null) {
@@ -235,7 +230,7 @@ public class TileSieve extends TileEntity {
 				progress == sieve.getProgress() &&
 				sieve.getCurrentStack() == null;
 	}
-
+    
 	private void resetSieve() {
 		progress = 0;
 		currentStack = null;

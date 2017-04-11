@@ -7,6 +7,7 @@ import exnihiloadscensio.capabilities.ENCapabilities;
 import exnihiloadscensio.command.CommandReloadConfig;
 import exnihiloadscensio.compatibility.CompatEIO;
 import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
+import exnihiloadscensio.compatibility.theoneprobe.CompatTOP;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.enchantments.ENEnchantments;
 import exnihiloadscensio.entities.ENEntities;
@@ -25,7 +26,10 @@ import exnihiloadscensio.registries.FluidTransformRegistry;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HeatRegistry;
 import exnihiloadscensio.registries.OreRegistry;
+import exnihiloadscensio.registries.RegistryReloadedEvent;
 import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.manager.ExNihiloDefaultRecipes;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.util.LogUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -59,6 +63,8 @@ public class ExNihiloAdscensio {
 	public static File configDirectory;
 
 	public static boolean configsLoaded = false;
+	
+	public static ExNihiloDefaultRecipes defaultRecipes;
 
 	static {
 		FluidRegistry.enableUniversalBucket();
@@ -80,6 +86,8 @@ public class ExNihiloAdscensio {
 		ENEnchantments.init();
 		proxy.initModels();
 		proxy.registerRenderers();
+		
+		defaultRecipes = new ExNihiloDefaultRecipes();
 
 		MinecraftForge.EVENT_BUS.register(new HandlerHammer());
 
@@ -105,6 +113,10 @@ public class ExNihiloAdscensio {
 
 		FMLInterModComms.sendMessage("Waila", "register",
 				"exnihiloadscensio.compatibility.CompatWaila.callbackRegister");
+		
+		if (Loader.isModLoaded("theoneprobe") && Config.doTOPCompat) {
+			CompatTOP.init();
+		}
 	}
 
 	@EventHandler
@@ -116,6 +128,7 @@ public class ExNihiloAdscensio {
 		if (Loader.isModLoaded("EnderIO") && Config.doEnderIOCompat) {
 			CompatEIO.postInit();
 		}
+		
 	}
 
 	public static void loadConfigs() {
@@ -132,6 +145,8 @@ public class ExNihiloAdscensio {
 		CrookRegistry.loadJson(new File(configDirectory, "CrookRegistry.json"));
 		FluidTransformRegistry.loadJson(new File(configDirectory, "FluidTransformRegistry.json"));
 		BarrelLiquidBlacklistRegistry.loadJson(new File(configDirectory, "BarrelLiquidBlacklistRegistry.json"));
+		
+		MinecraftForge.EVENT_BUS.post(new RegistryReloadedEvent());
 
 	}
 

@@ -51,7 +51,7 @@ public class MessageCheckLight implements IMessage
         {
             BlockPos pos = new BlockPos(message.getX(), message.getY(), message.getZ());
             
-            Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().theWorld.checkLight(pos));
+            Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().world.checkLight(pos));
             
             return null;
         }

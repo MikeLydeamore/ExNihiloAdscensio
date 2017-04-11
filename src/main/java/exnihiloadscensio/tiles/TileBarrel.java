@@ -27,10 +27,12 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileBarrel extends TileEntity implements ITickable {
@@ -75,6 +77,18 @@ public class TileBarrel extends TileEntity implements ITickable {
                 
                 return true;
             }
+            
+            //Check for more fluid
+            IFluidHandler tank = (IFluidHandler) this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+            FluidStack bucketStack = FluidUtil.getFluidContained(stack);
+            FluidStack tankStack = tank.drain(Integer.MAX_VALUE, false);
+            if (bucketStack != null && tankStack != null 
+            		&& bucketStack.getFluid() == tankStack.getFluid()
+            		&& tank.fill(FluidUtil.getFluidContained(stack), false) != 0) {
+            	tank.drain(Fluid.BUCKET_VOLUME, true);
+               	FluidUtil.interactWithFluidHandler(stack, tank, player);
+               	PacketHandler.sendNBTUpdate(this);
+            }
         }
         
         if (mode == null)
@@ -93,7 +107,7 @@ public class TileBarrel extends TileEntity implements ITickable {
                         PacketHandler.sendToAllAround(new MessageBarrelModeUpdate(mode.getName(), this.pos), this);
                         mode.onBlockActivated(world, this, pos, state, player, side, hitX, hitY, hitZ);
                         this.markDirty();
-                        this.worldObj.setBlockState(pos, state);
+                        this.world.setBlockState(pos, state);
                         
                         if(getBlockType().getLightValue(state, world, pos) != world.getLight(pos))
                         {
@@ -125,12 +139,12 @@ public class TileBarrel extends TileEntity implements ITickable {
 	@Override
 	public void update()
 	{
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			return;
 
 		if (Config.shouldBarrelsFillWithRain && (mode == null || mode.getName() == "fluid")) {
 			BlockPos plusY = new BlockPos(pos.getX(), pos.getY()+1, pos.getZ());
-			if(worldObj.isRainingAt(plusY)) {
+			if(world.isRainingAt(plusY)) {
 				FluidStack stack = new FluidStack(FluidRegistry.WATER, 2);
 				tank.fill(stack, true);
 			}
@@ -138,9 +152,9 @@ public class TileBarrel extends TileEntity implements ITickable {
 		if (mode != null)
 			mode.update(this);
         
-		if(getBlockType().getLightValue(worldObj.getBlockState(pos), worldObj, pos) != worldObj.getLight(pos))
+		if(getBlockType().getLightValue(world.getBlockState(pos), world, pos) != world.getLight(pos))
         {
-            worldObj.checkLight(pos);
+            world.checkLight(pos);
             PacketHandler.sendToAllAround(new MessageCheckLight(pos), this);
         }
 	}

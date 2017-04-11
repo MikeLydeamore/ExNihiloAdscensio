@@ -14,10 +14,10 @@ public class TileSievePress extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			return;
 		
-		TileEntity te = worldObj.getTileEntity(pos.add(0, -1, 0));
+		TileEntity te = world.getTileEntity(pos.add(0, -1, 0));
 		if (te == null || !(te instanceof TileSieve))
 			return;
 		

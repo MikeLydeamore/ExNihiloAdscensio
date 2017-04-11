@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -38,6 +39,8 @@ public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel>
                 }
                 
                 TextureAtlasSprite icon = tile.getMode().getTextureForRender(tile);
+                if (icon == null)
+                	icon = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
                 
                 double minU = (double) icon.getMinU();
                 double maxU = (double) icon.getMaxU();

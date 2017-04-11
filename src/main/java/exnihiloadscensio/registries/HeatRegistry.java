@@ -11,6 +11,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.json.CustomBlockInfoJson;
+import exnihiloadscensio.registries.manager.IHeatDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.util.BlockInfo;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -45,13 +47,9 @@ public class HeatRegistry {
     
     public static void registerDefaults()
     {
-        // Vanilla fluids are weird, the "flowing" variant is simply a temporary state of checking if it can flow.
-        // So, once the lava has spread out all the way, it will all actually be "still" lava.
-        // Thanks Mojang <3
-        registerInternal(new BlockInfo(Blocks.FLOWING_LAVA, -1), 3);
-        registerInternal(new BlockInfo(Blocks.LAVA, -1), 3);
-        registerInternal(new BlockInfo(Blocks.FIRE, -1), 4);
-        registerInternal(new BlockInfo(Blocks.TORCH, -1), 1);
+		for (IHeatDefaultRegistryProvider provider : RegistryManager.getDefaultHeatRecipeHandlers()) {
+			provider.registerHeatRecipeDefaults();
+		}
     }
     
     public static int getHeatAmount(ItemStack stack)

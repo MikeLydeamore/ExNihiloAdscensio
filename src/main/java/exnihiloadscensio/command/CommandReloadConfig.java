@@ -19,13 +19,13 @@ public class CommandReloadConfig extends CommandBase
     }
     
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "enreloadconfig";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender)
+    public String getUsage(ICommandSender sender)
     {
         return "enreloadconfig";
     }
@@ -35,6 +35,6 @@ public class CommandReloadConfig extends CommandBase
     {
         ExNihiloAdscensio.loadConfigs();
         Config.doNormalConfig(new File(ExNihiloAdscensio.configDirectory, "ExNihiloAdscensio.cfg"));
-        sender.addChatMessage(new TextComponentTranslation("commands.enreloadconfig.confirm"));
+        sender.sendMessage(new TextComponentTranslation("commands.enreloadconfig.confirm"));
     }
 }

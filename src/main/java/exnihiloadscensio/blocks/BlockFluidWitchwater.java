@@ -69,7 +69,7 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 			caveSpider.renderYawOffset = spider.renderYawOffset;
 			caveSpider.setHealth(caveSpider.getMaxHealth());
 			
-			world.spawnEntityInWorld(caveSpider);
+			world.spawnEntity(caveSpider);
 			
 			return;
 		}
@@ -83,7 +83,7 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 			ghast.renderYawOffset = squid.renderYawOffset;
 			ghast.setHealth(ghast.getMaxHealth());
 			
-			world.spawnEntityInWorld(ghast);
+			world.spawnEntity(ghast);
 			
 			return;
 		}

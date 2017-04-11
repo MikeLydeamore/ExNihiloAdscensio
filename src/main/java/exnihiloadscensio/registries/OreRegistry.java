@@ -13,11 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.json.CustomOreJson;
+import exnihiloadscensio.registries.manager.IOreDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
@@ -43,39 +46,8 @@ public class OreRegistry {
 	private static HashSet<ItemOre> itemOreRegistry = new HashSet<ItemOre>();
 
 	public static void registerDefaults() {
-		registerOre("gold", new Color("FFFF00"), new ItemInfo(Items.GOLD_INGOT, 0));
-		registerOre("iron", new Color("BF8040"), new ItemInfo(Items.IRON_INGOT, 0));
-
-		if (OreDictionary.getOres("oreCopper").size() > 0) {
-			registerOre("copper", new Color("FF9933"), null);
-		}
-
-		if (OreDictionary.getOres("oreTin").size() > 0) {
-			registerOre("tin", new Color("E6FFF2"), null);
-		}
-
-		if (OreDictionary.getOres("oreAluminium").size() > 0 || OreDictionary.getOres("oreAluminum").size() > 0) {
-			registerOre("aluminium", new Color("BFBFBF"), null);
-		}
-
-		if (OreDictionary.getOres("oreLead").size() > 0) {
-			registerOre("lead", new Color("330066"), null);
-		}
-
-		if (OreDictionary.getOres("oreSilver").size() > 0) {
-			registerOre("silver", new Color("F2F2F2"), null);
-		}
-
-		if (OreDictionary.getOres("oreNickel").size() > 0) {
-			registerOre("nickel", new Color("FFFFCC"), null);
-		}
-
-		if (OreDictionary.getOres("oreArdite").size() > 0) {
-			registerOre("ardite", new Color("FF751A"), null);
-		}
-
-		if (OreDictionary.getOres("oreCobalt").size() > 0) {
-			registerOre("cobalt", new Color("3333FF"), null);
+		for (IOreDefaultRegistryProvider provider : RegistryManager.getDefaultOreRecipeHandlers()) {
+			provider.registerOreRecipeDefaults();
 		}
 	}
 
@@ -137,6 +109,10 @@ public class OreRegistry {
 
 	public static void doRecipes() {
 		for (ItemOre ore : itemOreRegistry) {
+			if (Config.shouldOreDictOreChunks)
+				OreDictionary.registerOre("ore"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 1));
+			if (Config.shouldOreDictOreDusts)
+				OreDictionary.registerOre("dust"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 2));
 			GameRegistry.addRecipe(new ItemStack(ore, 1, 1),
 					new Object[] { "xx", "xx", 'x', new ItemStack(ore, 1, 0) });
 

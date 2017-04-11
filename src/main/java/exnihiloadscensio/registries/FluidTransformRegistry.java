@@ -12,6 +12,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import exnihiloadscensio.json.CustomBlockInfoJson;
+import exnihiloadscensio.registries.manager.IFluidTransformDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
 import lombok.Getter;
@@ -33,7 +35,7 @@ public class FluidTransformRegistry
     
     public static void register(FluidTransformer transformer)
     {
-        register(transformer);
+        registerInternal(transformer);
         externalRegistry.add(transformer);
     }
     
@@ -79,7 +81,9 @@ public class FluidTransformRegistry
     
     public static void registerDefaults()
     {
-        registerInternal("water", "witchwater", 12000, new BlockInfo[] { new BlockInfo(Blocks.MYCELIUM.getDefaultState()) }, new BlockInfo[] { new BlockInfo(Blocks.BROWN_MUSHROOM.getDefaultState()), new BlockInfo(Blocks.RED_MUSHROOM.getDefaultState()) });
+		for (IFluidTransformDefaultRegistryProvider provider : RegistryManager.getDefaultFluidTransformRecipeHandlers()) {
+			provider.registerFluidTransformRecipeDefaults();
+		}
     }
     
     private static Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson()).create();

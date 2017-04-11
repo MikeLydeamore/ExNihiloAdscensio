@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.tools.ICrook;
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.util.Util;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoAccessor;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -29,62 +34,55 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider {
+public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider, ITOPInfoProvider {
 
-	public BlockInfestedLeaves()
-	{
+	public BlockInfestedLeaves() {
 		super();
 		this.setUnlocalizedName("blockInfestedLeaves");
 		this.setRegistryName("blockInfestedLeaves");
 		GameRegistry.<Block>register(this);
 		GameRegistry.register(new ItemBlock(this).setRegistryName("blockInfestedLeaves"));
-		this.setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, false));
+		this.setDefaultState(
+				this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, false));
 		this.leavesFancy = true;
 	}
-	
-	public EnumBlockRenderType getRenderType(IBlockState state)
-	{
-	    return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
-	
-	public static void infestLeafBlock(World world, BlockPos pos)
-	{
-	    IBlockState block = world.getBlockState(pos);
-	    
-	    if(block.getBlock().isLeaves(block, world, pos) && !block.getBlock().equals(ENBlocks.infestedLeaves))
-	    {
-	        world.setBlockState(pos, ENBlocks.infestedLeaves.getDefaultState());
-	        
-	        TileInfestedLeaves tile = (TileInfestedLeaves) world.getTileEntity(pos);
-	        
-	        if(tile != null)
-	        {
-	            tile.setLeafBlock(block);
-	        }
-	    }
+
+	public static void infestLeafBlock(World world, BlockPos pos) {
+		IBlockState block = world.getBlockState(pos);
+
+		if (block.getBlock().isLeaves(block, world, pos) && !block.getBlock().equals(ENBlocks.infestedLeaves)) {
+			world.setBlockState(pos, ENBlocks.infestedLeaves.getDefaultState());
+
+			TileInfestedLeaves tile = (TileInfestedLeaves) world.getTileEntity(pos);
+
+			if (tile != null) {
+				tile.setLeafBlock(block);
+			}
+		}
 	}
-	
-	public void initModel()
-	{
-	    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+
+	public void initModel() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
+				new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
-	
+
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {CHECK_DECAY, DECAYABLE});
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { CHECK_DECAY, DECAYABLE });
 	}
-	
+
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(CHECK_DECAY, meta == 0 || meta == 1 ? true : false)
 				.withProperty(DECAYABLE, meta == 0 || meta == 2 ? true : false);
 	}
-	
+
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		boolean checkDecay = state.getValue(CHECK_DECAY);
 		boolean decayable = state.getValue(DECAYABLE);
 		if (checkDecay && decayable)
@@ -97,66 +95,69 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	}
 
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		return new ArrayList<ItemStack>();
-	}
-	
-	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-	{
-		
 	}
 
 	@Override
-    public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player)
-    {
-        if (!world.isRemote && !player.isCreative())
-        {
-            TileEntity tile = world.getTileEntity(pos);
-            
-            if(tile != null)
-            {
-                if(tile instanceof TileInfestedLeaves)
-                {
-                    TileInfestedLeaves leaves = (TileInfestedLeaves) tile;
-        
-                    if (leaves != null && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ICrook)
-                    {
-                        if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance)
-                        {
-                            Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
-                        }
-        
-                        if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance / 4.0d)
-                        {
-                            Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
-                        }
-                    }
-                }
-                
-                world.removeTileEntity(pos);
-            }
-        }
-    }
-	
-    @Override
-    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
-    {
-    	ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-    	ret.add(new ItemStack(this));
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+	}
+
+	@Override
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		if (!world.isRemote && !player.isCreative()) {
+			TileEntity tile = world.getTileEntity(pos);
+
+			if (tile != null) {
+				if (tile instanceof TileInfestedLeaves) {
+					TileInfestedLeaves leaves = (TileInfestedLeaves) tile;
+
+					if (leaves != null && player.getHeldItemMainhand() != null
+							&& player.getHeldItemMainhand().getItem() instanceof ICrook) {
+						if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance) {
+							Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
+						}
+
+						if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance / 4.0d) {
+							Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
+						}
+					}
+				}
+
+				world.removeTileEntity(pos);
+			}
+		}
+	}
+
+	@Override
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ret.add(new ItemStack(this));
 		return ret;
 	}
 
 	@Override
-	public EnumType getWoodType(int meta)
-	{
+	public EnumType getWoodType(int meta) {
 		return null;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) 
-	{
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileInfestedLeaves();
-    }
+	}
+
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
+			IBlockState blockState, IProbeHitData data) {
+
+		TileInfestedLeaves tile = (TileInfestedLeaves) world.getTileEntity(data.getPos());
+
+		if (tile.getProgress() >= 1.0F) {
+			probeInfo.text("Progress: Done");
+		} else {
+			probeInfo.progress((int) (tile.getProgress()*100), 100);
+		}
+
+	}
 }

@@ -1,5 +1,6 @@
 package exnihiloadscensio.compatibility.jei.hammer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -187,4 +188,9 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
             }
         }
     }
+
+	@Override
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
+		return Collections.emptyList();
+	}
 }

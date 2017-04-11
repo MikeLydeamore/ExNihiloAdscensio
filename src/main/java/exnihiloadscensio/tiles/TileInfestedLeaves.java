@@ -45,12 +45,12 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
             {
                 progress = 1.0F;
                 
-                worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
             }
         }
         
         // Don't update unless there's leaves nearby, or we haven't checked for leavesUpdateFrequency ticks. And only update on the server
-        if (!worldObj.isRemote && hasNearbyLeaves || worldObj.getTotalWorldTime() % Config.leavesUpdateFrequency == updateIndex)
+        if (!world.isRemote && hasNearbyLeaves || world.getTotalWorldTime() % Config.leavesUpdateFrequency == updateIndex)
         {
             hasNearbyLeaves = false;
             
@@ -61,15 +61,15 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
                     for (int z = -1; z <= 1; z++)
                     {
                         BlockPos newPos = new BlockPos(pos.add(x, y, z));
-                        IBlockState state = worldObj.getBlockState(newPos);
+                        IBlockState state = world.getBlockState(newPos);
                         
                         if (state != null && state.getBlock() != null && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2))
                         {
                             hasNearbyLeaves = true;
                             
-                            if (worldObj.rand.nextFloat() < Config.leavesSpreadChance)
+                            if (world.rand.nextFloat() < Config.leavesSpreadChance)
                             {
-                                BlockInfestedLeaves.infestLeafBlock(worldObj, newPos);
+                                BlockInfestedLeaves.infestLeafBlock(world, newPos);
                             }
                         }
                     }
@@ -88,13 +88,13 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
     @SideOnly(Side.CLIENT)
     public int getColor()
     {
-        if (worldObj == null || pos == null)
+        if (world == null || pos == null)
         {
             return Util.whiteColor.toInt();
         }
         else
         {
-            Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(worldObj, pos));
+            Color green = new Color(BiomeColorHelper.getFoliageColorAtPos(world, pos));
             return Color.average(green, Util.whiteColor, (float) Math.pow(progress, 2)).toInt();
         }
     }

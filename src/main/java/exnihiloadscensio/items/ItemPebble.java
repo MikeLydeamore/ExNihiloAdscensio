@@ -64,7 +64,7 @@ public class ItemPebble extends Item
             ProjectileStone projectile = new ProjectileStone(world, player);
             projectile.setStack(thrown);
             projectile.setHeadingFromThrower(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 0.5F);
-            world.spawnEntityInWorld(projectile);
+            world.spawnEntity(projectile);
         }
         
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);

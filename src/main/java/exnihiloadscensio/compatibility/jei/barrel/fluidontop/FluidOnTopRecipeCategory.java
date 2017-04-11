@@ -1,5 +1,8 @@
 package exnihiloadscensio.compatibility.jei.barrel.fluidontop;
 
+import java.util.Collections;
+import java.util.List;
+
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.ENBlocks;
 import mezz.jei.api.IGuiHelper;
@@ -80,4 +83,9 @@ public class FluidOnTopRecipeCategory implements IRecipeCategory<FluidOnTopRecip
     {
         return null;
     }
+
+	@Override
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
+		return Collections.emptyList();
+	}
 }

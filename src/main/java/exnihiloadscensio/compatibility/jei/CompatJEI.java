@@ -72,7 +72,7 @@ public class CompatJEI implements IModPlugin
     {
         LogUtil.info("Config Loaded: " + ExNihiloAdscensio.configsLoaded);
         
-        if(ExNihiloAdscensio.configsLoaded)
+        if(!ExNihiloAdscensio.configsLoaded)
         {
             ExNihiloAdscensio.loadConfigs();
         }

@@ -11,7 +11,10 @@ public class Config {
 	public static boolean enableCrucible;
 	public static boolean shouldBarrelsFillWithRain;
     public static boolean fakePlayersCanSieve;
+
     public static boolean enableSievePress;
+
+    public static boolean sievesAutoOutput;
 	
 	public static int compostingTicks;
 	public static int infestedLeavesTicks;
@@ -30,6 +33,10 @@ public class Config {
 	
 	public static boolean doEnderIOCompat;
 	public static boolean doTICCompat;
+	public static boolean doTOPCompat;
+	
+	public static boolean shouldOreDictOreChunks;
+	public static boolean shouldOreDictOreDusts;
 	
 	public static boolean setFireToMacroUsers;
 	
@@ -61,8 +68,12 @@ public class Config {
 		
 		doEnderIOCompat = config.get("Compatibilitiy", "EnderIO", true).getBoolean();
 		doTICCompat = config.get("Compatibilitiy", "TinkersConstruct", true).getBoolean();
+		doTOPCompat = config.get("Compatibilitiy", "TheOneProbe", true).getBoolean();
+		shouldOreDictOreChunks = config.get("Compatibilitiy", "OreDictOreChunks", true).getBoolean();
+		shouldOreDictOreDusts = config.get("Compatibilitiy", "OreDictOreDusts", true).getBoolean();
 		
 		setFireToMacroUsers = config.get("Sieving", "setFireToMacroUsers", false).getBoolean();
+		sievesAutoOutput = config.get("Sieving", "sievesAutoOutput", false).getBoolean();
 		
 		numberOfTimesToTestVanillaDrops = config.get("Crooking", "numberOfVanillaDropRuns", 3).getInt();
 		

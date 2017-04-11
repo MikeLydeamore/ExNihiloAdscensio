@@ -105,8 +105,8 @@ public class BarrelModeFluid implements IBarrelMode {
 				container.stackSize = stack.stackSize - size;
 
 				if (!player.inventory.addItemStackToInventory(container)) {
-					player.worldObj.spawnEntityInWorld(
-							new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, container));
+					player.world.spawnEntity(
+							new EntityItem(player.world, player.posX, player.posY, player.posZ, container));
 				}
 			}
 
@@ -119,10 +119,7 @@ public class BarrelModeFluid implements IBarrelMode {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
-		if (barrel.getTank().getFluid() != null)
-			return Util.getTextureFromBlockState(barrel.getTank().getFluid().getFluid().getBlock().getDefaultState());
-
-		return Util.getTextureFromBlockState(Blocks.WATER.getDefaultState());
+		return Util.getTextureFromFluidStack(barrel.getTank().getFluid());
 	}
 
 	@Override

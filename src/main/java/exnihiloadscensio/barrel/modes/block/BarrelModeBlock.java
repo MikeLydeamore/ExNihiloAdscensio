@@ -31,9 +31,9 @@ public class BarrelModeBlock implements IBarrelMode {
 
 	@Getter @Setter
 	private ItemInfo block;
-	
+
 	private BarrelItemHandlerBlock handler = new BarrelItemHandlerBlock(null);
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		if (block != null) {
@@ -49,7 +49,7 @@ public class BarrelModeBlock implements IBarrelMode {
 		if (tag.hasKey("block")) {
 			block = new ItemInfo(tag.getString("block"));
 		}
-		
+
 		handler.setStackInSlot(0, ItemStack.loadItemStackFromNBT(tag));
 	}
 
@@ -67,7 +67,7 @@ public class BarrelModeBlock implements IBarrelMode {
 	public String getName() {
 		return "block";
 	}
-	
+
 	@Override
 	public List<String> getWailaTooltip(TileBarrel barrel, List<String> currenttip) {
 		if (handler.getStackInSlot(0) != null)
@@ -81,6 +81,7 @@ public class BarrelModeBlock implements IBarrelMode {
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (handler.getStackInSlot(0) != null) {
 			Util.dropItemInWorld(barrel, player, handler.getStackInSlot(0), 0.02);
+			handler.setBarrel(barrel);
 			handler.setStackInSlot(0, null);
 			barrel.setMode("null");
 			PacketHandler.sendToAllAround(new MessageBarrelModeUpdate("null", barrel.getPos()), barrel);
@@ -95,8 +96,9 @@ public class BarrelModeBlock implements IBarrelMode {
 	public TextureAtlasSprite getTextureForRender(TileBarrel barrel) {
 		handler.setBarrel(barrel);
 		ItemStack stack = handler.getStackInSlot(0);
-		if (stack == null)
-			return Util.getTextureFromBlockState(Blocks.AIR.getDefaultState());
+		if (stack == null || Block.getBlockFromItem(stack.getItem()) == null)
+			return Util.getTextureFromBlockState(null);
+
 		return Util.getTextureFromBlockState(Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getItemDamage()));
 	}
 
