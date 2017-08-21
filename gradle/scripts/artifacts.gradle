@@ -1,0 +1,52 @@
+task sourcesJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.allJava
+
+    classifier = 'sources'
+}
+
+task javadocAPI(type: Javadoc) {
+    source = sourceSets.api.java
+
+    classpath = sourceSets.api.compileClasspath
+}
+
+task javadocJar(type: Jar, dependsOn: javadocAPI) {
+    from javadocAPI.destinationDir
+
+    classifier = 'javadoc'
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.api.output
+
+    classifier = 'api'
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    from configurations.shade.collect { it.isDirectory() ? it : zipTree(it) }
+
+    classifier 'dev'
+}
+
+task signJar(type: SignJar, dependsOn: ['jar', 'devJar']) {
+    onlyIf {
+        project.hasProperty('JAR_SIGNING_KEYSTORE_LOCATION')
+    }
+
+    keyStore = project.hasProperty('JAR_SIGNING_KEYSTORE_LOCATION') ? project.getProperty('JAR_SIGNING_KEYSTORE_LOCATION') : ''
+    storePass = project.hasProperty('JAR_SIGNING_KEYSTORE_PASSWORD') ? project.getProperty('JAR_SIGNING_KEYSTORE_PASSWORD') : ''
+    alias = project.hasProperty('JAR_SIGNING_KEYSTORE_ALIAS') ? project.getProperty('JAR_SIGNING_KEYSTORE_ALIAS') : ''
+    keyPass = project.hasProperty('JAR_SIGNING_KEYSTORE_PASSWORD') ? project.getProperty('JAR_SIGNING_KEYSTORE_PASSWORD') : ''
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+build.dependsOn sourcesJar, javadocJar, apiJar, devJar, signJar
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+    archives apiJar
+    archives devJar
+}

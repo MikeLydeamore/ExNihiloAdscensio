@@ -1,16 +1,24 @@
 [
-{
-  "modid": "exnihiloadscensio",
-  "name": "Ex Nihilo Adscensio",
-  "description": "\"From nothing, with progression\"",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["Insaneau"],
-  "credits": "Insaneau, for, you know, being the author, and SnakeFang12 for, like, doing a bunch of stuff.",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+    {
+        "modid": "${mod_modid}",
+        
+        "name": "${mod_name}",
+        "description": "${mod_description}",
+
+        "version": "${version}",
+        "mcversion": "${mcversion}",
+
+        "url": "https://github.com/${mod_github}",
+        "updateUrl": "",
+
+        "authorList": [
+            "${mod_author_id}"
+        ],
+
+        "credits": "Insaneau, for, you know, being the author, and SnakeFang12 for, like, doing a bunch of stuff.",
+
+        "logoFile": "",
+        "screenshots": [],
+        "dependencies": []
+    }
 ]
