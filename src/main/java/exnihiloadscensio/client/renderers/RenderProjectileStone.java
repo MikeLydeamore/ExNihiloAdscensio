@@ -1,13 +1,11 @@
 package exnihiloadscensio.client.renderers;
 
-import org.lwjgl.opengl.GL11;
-
 import exnihiloadscensio.entities.ProjectileStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -16,6 +14,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nonnull;
 
 public class RenderProjectileStone extends Render<ProjectileStone>
 {
@@ -25,18 +26,18 @@ public class RenderProjectileStone extends Render<ProjectileStone>
     }
     
     @Override
-    protected ResourceLocation getEntityTexture(ProjectileStone stone)
+    protected ResourceLocation getEntityTexture(@Nonnull ProjectileStone stone)
     {
         return new ResourceLocation("minecraft:blocks/stone");
     }
     
     @Override
-    public void doRender(ProjectileStone entity, double x, double y, double z, float entityYaw, float partialTicks)
+    public void doRender(@Nonnull ProjectileStone entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         TextureAtlasSprite texture = getTexture(Blocks.STONE.getDefaultState());
         
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
@@ -68,7 +69,7 @@ public class RenderProjectileStone extends Render<ProjectileStone>
         GlStateManager.popMatrix();
     }
     
-    private static void bufferCuboid(VertexBuffer buffer, double size, double minU, double minV, double maxU, double maxV, double x1, double y1, double z1, double x2, double y2, double z2)
+    private static void bufferCuboid(BufferBuilder buffer, double size, double minU, double minV, double maxU, double maxV, double x1, double y1, double z1, double x2, double y2, double z2)
     {
         size /= 16.0;
         

@@ -1,10 +1,5 @@
 package exnihiloadscensio.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
@@ -16,7 +11,6 @@ import exnihiloadscensio.util.Util;
 import lombok.Getter;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoAccessor;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -33,6 +27,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPInfoProvider {
 
@@ -42,21 +42,26 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPI
 	
 	public BlockBarrel(int tier, Material material)
 	{
-		super(material, "blockBarrel" + tier);
+		super(material, "blockbarrel" + tier);
         this.tier = tier;
 		this.setHardness(2.0f);
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null && te instanceof TileBarrel) {
 			TileBarrel barrel = (TileBarrel) te;
 			
 			if (barrel.getMode() != null && barrel.getMode().getName().equals("block")) {
-				ItemStack stack = barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(0);
-				if (stack != null)
-					Util.dropItemInWorld(te, null, stack, 0);
+				IItemHandler itemHandler = barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+				if (itemHandler != null) {
+					ItemStack stack = itemHandler.getStackInSlot(0);
+
+					if (!stack.isEmpty())
+						Util.dropItemInWorld(te, null, stack, 0);
+				}
 			}
 		}
 		
@@ -116,22 +121,17 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPI
 	    
 	    return super.getLightValue(state, world, pos);
 	}
-	
+
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-	{
-		if (world.isRemote)
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (worldIn.isRemote)
 			return true;
 
-		return ((TileBarrel) world.getTileEntity(pos)).onBlockActivated(world, pos, state, player, side, hitX, hitY, hitZ);
+		TileEntity tileEntity = worldIn.getTileEntity(pos);
+
+		return tileEntity != null && ((TileBarrel) tileEntity).onBlockActivated(worldIn, pos, state, playerIn, facing, hitX, hitY, hitZ);
 	}
-	
-	@Override
-	public boolean isFullyOpaque(IBlockState state)
-	{
-		return false;
-	}
-	
+
 	@Override
 	 public boolean isFullBlock(IBlockState state)
     {
@@ -145,23 +145,19 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPI
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) 
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
 	{
 		return new TileBarrel(this);
 	}
 
 	@Override
+	@Deprecated
+	@Nonnull
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		return boundingBox;
 	}
-	
-    @Override
-    public boolean isBlockSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
-    {
-        return false;
-    }
-    
+
     @Override
     public boolean isFullCube(IBlockState state)
     {

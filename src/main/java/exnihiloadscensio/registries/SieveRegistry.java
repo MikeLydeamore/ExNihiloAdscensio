@@ -1,26 +1,9 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import exnihiloadscensio.blocks.BlockSieve.MeshType;
-import exnihiloadscensio.blocks.ENBlocks;
-import exnihiloadscensio.items.ENItems;
-import exnihiloadscensio.items.ItemPebble;
-import exnihiloadscensio.items.ItemResource;
-import exnihiloadscensio.items.ore.ItemOre;
-import exnihiloadscensio.items.seeds.ItemSeedBase;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.manager.ISieveDefaultRegistryProvider;
@@ -30,9 +13,12 @@ import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.*;
 
 public class SieveRegistry
 {

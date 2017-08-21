@@ -1,7 +1,5 @@
 package exnihiloadscensio.barrel;
 
-import javax.annotation.Nullable;
-
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.MessageFluidUpdate;
 import exnihiloadscensio.networking.PacketHandler;
@@ -12,6 +10,8 @@ import exnihiloadscensio.tiles.TileBarrel;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+
+import javax.annotation.Nullable;
 
 public class BarrelFluidHandler extends FluidTank {
 	
@@ -48,7 +48,7 @@ public class BarrelFluidHandler extends FluidTank {
     
     @Override
     public boolean canFill() {
-    	return barrel.getMode() == null ? true : barrel.getMode().canFillWithFluid(barrel);
+    	return barrel.getMode() == null || barrel.getMode().canFillWithFluid(barrel);
     }
     
     @Override

@@ -1,6 +1,4 @@
-package exnihiloadscensio.compatibility.tconstruct;
-
-import java.util.List;
+/* package exnihiloadscensio.compatibility.tconstruct;
 
 import exnihiloadscensio.registries.HammerRegistry;
 import net.minecraft.enchantment.Enchantment;
@@ -15,6 +13,8 @@ import slimeknights.tconstruct.library.tools.ToolNBT;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
+
+import java.util.List;
 
 public class ModifierSmashing extends ModifierTrait
 {
@@ -65,4 +65,4 @@ public class ModifierSmashing extends ModifierTrait
             event.getDrops().addAll(rewards);
         }
     }
-}
+} */

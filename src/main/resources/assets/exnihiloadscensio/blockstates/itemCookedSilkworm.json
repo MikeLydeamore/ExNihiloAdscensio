@@ -8,7 +8,7 @@
         "type": {
             "silkwormcooked": {
                 "textures": {
-                    "layer0": "exnihiloadscensio:items/silkwormCooked"
+                    "layer0": "exnihiloadscensio:items/silkwormcooked"
                 }
             }
         }

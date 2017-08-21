@@ -1,24 +1,21 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.registries.manager.IFluidOnTopDefaultRegistryProvider;
 import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.registries.types.FluidFluidBlock;
 import exnihiloadscensio.util.ItemInfo;
 import lombok.Getter;
-import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FluidOnTopRegistry
 {

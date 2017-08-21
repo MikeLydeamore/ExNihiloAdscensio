@@ -14,6 +14,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class ProjectileStone extends EntityThrowable
 {
     @Setter
@@ -35,7 +37,7 @@ public class ProjectileStone extends EntityThrowable
     }
     
     @Override
-    protected void onImpact(RayTraceResult result)
+    protected void onImpact(@Nonnull RayTraceResult result)
     {
         if (result.entityHit != null)
         {
@@ -53,7 +55,7 @@ public class ProjectileStone extends EntityThrowable
         
         for (int j = 0; j < 8; ++j)
         {
-            world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 0.0D, 0.0D, 0.0D, new int[] { Block.getStateId(Blocks.STONE.getDefaultState()) });
+            world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(Blocks.STONE.getDefaultState()));
         }
     }
     
@@ -75,7 +77,7 @@ public class ProjectileStone extends EntityThrowable
         
         if(tag.hasKey("pebbleStack"))
         {
-            stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag.getTag("pebbleStack"));
+            stack = new ItemStack((NBTTagCompound) tag.getTag("pebbleStack"));
         }
         else
         {

@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+
 @AllArgsConstructor
 public class ItemInfo
 {
@@ -85,10 +87,11 @@ public class ItemInfo
     {
         return Item.REGISTRY.getNameForObject(item) + (meta == -1 ? "" : (":" + meta));
     }
-    
+
+    @Nonnull
     public ItemStack getItemStack()
     {
-        return item == null ? null : new ItemStack(item, 1, meta == -1 ? 0 : meta);
+        return item == null ? ItemStack.EMPTY : new ItemStack(item, 1, meta == -1 ? 0 : meta);
     }
     
     public NBTTagCompound writeToNBT(NBTTagCompound tag)

@@ -18,6 +18,8 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class TileInfestedLeaves extends TileEntity implements ITickable
 {
     private static int tileId = 0;
@@ -63,7 +65,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
                         BlockPos newPos = new BlockPos(pos.add(x, y, z));
                         IBlockState state = world.getBlockState(newPos);
                         
-                        if (state != null && state.getBlock() != null && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2))
+                        if (state.getBlock() != Blocks.AIR && (state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2))
                         {
                             hasNearbyLeaves = true;
                             
@@ -112,6 +114,7 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
     }
     
     @Override
+    @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
         tag.setFloat("progress", progress);
@@ -145,12 +148,14 @@ public class TileInfestedLeaves extends TileEntity implements ITickable
     }
     
     @Override
+    @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
     {
         readFromNBT(packet.getNbtCompound());
     }
     
     @Override
+    @Nonnull
     public NBTTagCompound getUpdateTag()
     {
         return writeToNBT(new NBTTagCompound());

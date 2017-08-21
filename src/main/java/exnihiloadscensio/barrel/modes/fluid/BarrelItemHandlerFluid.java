@@ -13,6 +13,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class BarrelItemHandlerFluid extends ItemStackHandler {
 	
 	@Setter
@@ -24,7 +26,8 @@ public class BarrelItemHandlerFluid extends ItemStackHandler {
 	}
     
     @Override
-    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+    @Nonnull
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
     {
         FluidTank tank = barrel.getTank();
         
@@ -45,21 +48,16 @@ public class BarrelItemHandlerFluid extends ItemStackHandler {
                     
                     barrel.getMode().addItem(info.getItemStack(), barrel);
                 }
-                
-                if(stack.getItem().hasContainerItem(stack))
-                {
-                    
-                }
 
                 ItemStack ret = stack.copy();
-                ret.stackSize--;
+                ret.shrink(1);
                 
-                return ret.stackSize == 0 ? null : ret;
+                return ret;
             }
             
         }
         
-        if (stack != null && tank.getFluidAmount() == tank.getCapacity() && stack.getItem() instanceof ItemDoll
+        if (!stack.isEmpty() && tank.getFluidAmount() == tank.getCapacity() && stack.getItem() instanceof ItemDoll
 				&& ((ItemDoll) stack.getItem()).getSpawnFluid(stack) == tank.getFluid().getFluid()) {
 			if (!simulate) {
 				barrel.getTank().drain(Fluid.BUCKET_VOLUME, true);
@@ -68,7 +66,7 @@ public class BarrelItemHandlerFluid extends ItemStackHandler {
 				PacketHandler.sendNBTUpdate(barrel);
 			}
 			ItemStack ret = stack.copy();
-			ret.stackSize--;
+			ret.shrink(1);
 			
 			return ret;
 		}
@@ -77,8 +75,9 @@ public class BarrelItemHandlerFluid extends ItemStackHandler {
     }
     
     @Override
+    @Nonnull
     public ItemStack extractItem(int slot, int amount, boolean simulate)
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 }

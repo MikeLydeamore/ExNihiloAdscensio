@@ -1,7 +1,7 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "exnihiloadscensio:blockSieve"
+        "model": "exnihiloadscensio:blocksieve"
     },
     "variants": {
         "mesh": {
@@ -9,28 +9,28 @@
             "string": {
                 "submodel": {
                     "mesh": {
-                        "model": "exnihiloadscensio:meshString"
+                        "model": "exnihiloadscensio:meshstring"
                     }
                 }
             },
             "flint": {
                 "submodel": {
                     "mesh": {
-                        "model": "exnihiloadscensio:meshFlint"
+                        "model": "exnihiloadscensio:meshflint"
                     }
                 }
             },
             "iron": {
                 "submodel": {
                     "mesh": {
-                        "model": "exnihiloadscensio:meshIron"
+                        "model": "exnihiloadscensio:meshiron"
                     }
                 }
             },
             "diamond": {
                 "submodel": {
                     "mesh": {
-                        "model": "exnihiloadscensio:meshDiamond"
+                        "model": "exnihiloadscensio:meshdiamond"
                     }
                 }
             }

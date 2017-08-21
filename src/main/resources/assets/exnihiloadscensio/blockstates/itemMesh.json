@@ -1,7 +1,7 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "exnihiloadscensio:item/itemMeshString",
+        "model": "exnihiloadscensio:item/itemmeshstring",
         "textures": {
             "mesh": "blocks/wool_colored_cyan"
         }

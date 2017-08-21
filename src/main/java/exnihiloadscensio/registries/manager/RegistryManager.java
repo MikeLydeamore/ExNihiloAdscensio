@@ -1,8 +1,8 @@
 package exnihiloadscensio.registries.manager;
 
-import java.util.ArrayList;
-
 import lombok.Getter;
+
+import java.util.ArrayList;
 
 public class RegistryManager {
 	

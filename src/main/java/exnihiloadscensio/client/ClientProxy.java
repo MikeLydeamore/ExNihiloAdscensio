@@ -2,12 +2,7 @@ package exnihiloadscensio.client;
 
 import exnihiloadscensio.CommonProxy;
 import exnihiloadscensio.blocks.ENBlocks;
-import exnihiloadscensio.client.renderers.RenderBarrel;
-import exnihiloadscensio.client.renderers.RenderCrucible;
-import exnihiloadscensio.client.renderers.RenderInfestedLeaves;
-import exnihiloadscensio.client.renderers.RenderOrePiece;
-import exnihiloadscensio.client.renderers.RenderProjectileStone;
-import exnihiloadscensio.client.renderers.RenderSieve;
+import exnihiloadscensio.client.renderers.*;
 import exnihiloadscensio.entities.ProjectileStone;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ore.ItemOre;
@@ -19,7 +14,10 @@ import exnihiloadscensio.tiles.TileSieve;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
 	public void initModels()

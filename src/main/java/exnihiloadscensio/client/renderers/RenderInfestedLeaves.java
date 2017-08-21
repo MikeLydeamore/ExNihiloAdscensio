@@ -1,32 +1,29 @@
 package exnihiloadscensio.client.renderers;
 
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.google.common.collect.Lists;
-
 import exnihiloadscensio.tiles.TileInfestedLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.LightUtil;
+import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfestedLeaves>
 {
     @Override
-    public void renderTileEntityAt(TileInfestedLeaves tile, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileInfestedLeaves tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         if(tile != null)
         {
@@ -35,12 +32,7 @@ public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfested
             
             IBlockState leafBlock = tile.getLeafBlock();
             IBakedModel leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(leafBlock);
-            
-            if(leafModel == null)
-            {
-                leafModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.LEAVES.getDefaultState());
-            }
-            
+
             List<BakedQuad> leafQuads = Lists.newArrayList();
             
             for(EnumFacing side : EnumFacing.VALUES)
@@ -52,7 +44,7 @@ public class RenderInfestedLeaves extends TileEntitySpecialRenderer<TileInfested
             }
             
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer buffer = tessellator.getBuffer();
+            BufferBuilder buffer = tessellator.getBuffer();
             
             bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             

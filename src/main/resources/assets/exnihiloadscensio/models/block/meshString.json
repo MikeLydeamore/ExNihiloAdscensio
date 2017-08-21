@@ -1,5 +1,5 @@
 {
-    "parent": "exnihiloadscensio:block/meshBase",
+    "parent": "exnihiloadscensio:block/meshbase",
     "textures": {
         "texture": "minecraft:blocks/wool_colored_white"
     }

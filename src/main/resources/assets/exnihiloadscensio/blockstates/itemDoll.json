@@ -13,12 +13,12 @@
         	},
         	"blaze": {
         		"textures": {
-        			"layer0": "exnihiloadscensio:items/dollBlaze"
+        			"layer0": "exnihiloadscensio:items/dollblaze"
         		}
         	},
             "enderman": {
                 "textures": {
-                    "layer0": "exnihiloadscensio:items/dollEnder"
+                    "layer0": "exnihiloadscensio:items/dollender"
                 }
             }
         }

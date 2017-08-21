@@ -9,6 +9,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageFluidLevelUpdate implements IMessage {
 	
@@ -45,10 +47,12 @@ public class MessageFluidLevelUpdate implements IMessage {
 
 	public static class MessageFluidLevelUpdateHandler implements IMessageHandler<MessageFluidLevelUpdate, IMessage> 
 	{
+		@SideOnly(Side.CLIENT)
 		@Override
 		public IMessage onMessage(final MessageFluidLevelUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@SideOnly(Side.CLIENT)
 				@Override
 				public void run()
 				{

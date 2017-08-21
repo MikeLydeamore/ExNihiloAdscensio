@@ -1,7 +1,5 @@
 package exnihiloadscensio.command;
 
-import java.io.File;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.config.Config;
 import net.minecraft.command.CommandBase;
@@ -9,6 +7,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
+
+import javax.annotation.Nonnull;
+import java.io.File;
 
 public class CommandReloadConfig extends CommandBase
 {
@@ -19,19 +20,21 @@ public class CommandReloadConfig extends CommandBase
     }
     
     @Override
+    @Nonnull
     public String getName()
     {
         return "enreloadconfig";
     }
 
     @Override
-    public String getUsage(ICommandSender sender)
+    @Nonnull
+    public String getUsage(@Nonnull ICommandSender sender)
     {
         return "enreloadconfig";
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+    public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException
     {
         ExNihiloAdscensio.loadConfigs();
         Config.doNormalConfig(new File(ExNihiloAdscensio.configDirectory, "ExNihiloAdscensio.cfg"));

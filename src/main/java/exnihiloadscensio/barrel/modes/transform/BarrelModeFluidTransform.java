@@ -1,9 +1,5 @@
 package exnihiloadscensio.barrel.modes.transform;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.FluidTransformRegistry;
@@ -27,6 +23,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BarrelModeFluidTransform implements IBarrelMode {
 

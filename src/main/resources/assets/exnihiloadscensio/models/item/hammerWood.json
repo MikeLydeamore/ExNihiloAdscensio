@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "exnihiloadscensio:items/hammerWood"
+        "layer0": "exnihiloadscensio:items/hammerwood"
     }
 }

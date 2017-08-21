@@ -7,6 +7,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 // When all else fails, do it yourself
 // (I couldn't find any way to force a lighting update on the client without some blockstate hackery)
@@ -46,6 +48,7 @@ public class MessageCheckLight implements IMessage
     
     public static class MessageCheckLightHandler implements IMessageHandler<MessageCheckLight, IMessage>
     {
+        @SideOnly(Side.CLIENT)
         @Override
         public IMessage onMessage(MessageCheckLight message, MessageContext ctx)
         {

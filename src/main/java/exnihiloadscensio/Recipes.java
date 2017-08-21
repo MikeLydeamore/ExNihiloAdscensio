@@ -17,7 +17,9 @@ public class Recipes {
 	
 	public static void init()
 	{
-		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.hammerWood, new Object[] { " x ", " yx", "y  ", 'x', "plankWood", 'y', "stickWood"}));
+		// TODO
+
+		/* GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.hammerWood, new Object[] { " x ", " yx", "y  ", 'x', "plankWood", 'y', "stickWood"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.hammerStone, new Object[] { " x ", " yx", "y  ", 'x', "cobblestone", 'y', "stickWood"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.hammerIron, new Object[] { " x ", " yx", "y  ", 'x', "ingotIron", 'y', "stickWood"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ENItems.hammerGold, new Object[] { " x ", " yx", "y  ", 'x', "ingotGold", 'y', "stickWood"}));
@@ -53,6 +55,6 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 4), new Object[] {"xyx"," x ", "x x", 'x', "clayPorcelain", 'y', "gemDiamond"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ItemResource.getResourceStack("doll", 6), new Object[] {"xyx"," x ", "x x", 'x', "clayPorcelain", 'y', "gemEmerald"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.dolls, 1, 0), new Object[] {"xyx", "zwz", "xvx", 'x', Items.BLAZE_POWDER, 'v', Items.NETHER_WART, 'w', ItemResource.getResourceStack("doll"), 'y', "dustRedstone", 'z', "dustGlowstone"}));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.dolls, 1, 1), new Object[] {"xyx", "zwz", "xvx", 'v', Items.NETHER_WART, 'x', "dyeBlack", 'w', ItemResource.getResourceStack("doll"), 'y', "dustRedstone", 'z', "dustGlowstone"}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENItems.dolls, 1, 1), new Object[] {"xyx", "zwz", "xvx", 'v', Items.NETHER_WART, 'x', "dyeBlack", 'w', ItemResource.getResourceStack("doll"), 'y', "dustRedstone", 'z', "dustGlowstone"})); */
 	}
 }

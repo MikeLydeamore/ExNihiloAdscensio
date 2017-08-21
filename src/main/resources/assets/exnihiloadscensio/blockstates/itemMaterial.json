@@ -8,12 +8,12 @@
         "type": {
         	"removed": {
         		"textures": {
-        			"layer0": "exnihiloadscensio:items/itemPebble"
+        			"layer0": "exnihiloadscensio:items/itempebble"
         		}
         	},
             "porcelain_clay": {
                 "textures": {
-                    "layer0": "exnihiloadscensio:items/porcelainClay"
+                    "layer0": "exnihiloadscensio:items/porcelainclay"
                 }
             },
             "silkworm": {
@@ -23,12 +23,12 @@
             },
             "ancient_spores": {
                 "textures": {
-                    "layer0": "exnihiloadscensio:items/ancientSpores"
+                    "layer0": "exnihiloadscensio:items/ancientspores"
                 }
             },
             "grass_seeds": {
                 "textures": {
-                    "layer0": "exnihiloadscensio:items/grassSeeds"
+                    "layer0": "exnihiloadscensio:items/grassseeds"
                 }
             },
             "doll": {

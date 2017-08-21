@@ -1,8 +1,5 @@
 package exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform;
 
-import java.util.Collections;
-import java.util.List;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.ENBlocks;
 import mezz.jei.api.IGuiHelper;
@@ -15,6 +12,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
+
 public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidBlockTransformRecipe>
 {
     public static final String UID = "exnihiloadscensio:fluid_block_transform";
@@ -26,20 +27,29 @@ public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidB
     {
         this.background = helper.createDrawable(texture, 0, 0, 166, 63);
     }
-    
+
     @Override
+    @Nonnull
+    public String getModName() {
+        return "ExNihiloAdscensio";
+    }
+
+    @Override
+    @Nonnull
     public String getUid()
     {
         return UID;
     }
     
     @Override
+    @Nonnull
     public String getTitle()
     {
         return "Fluid Block Transform";
     }
     
     @Override
+    @Nonnull
     public IDrawable getBackground()
     {
         return background;
@@ -50,14 +60,7 @@ public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidB
     {
         
     }
-    
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-        
-    }
-    
-    @Override
+
     public void setRecipe(IRecipeLayout recipeLayout, FluidBlockTransformRecipe recipeWrapper)
     {
         recipeLayout.getItemStacks().init(0, true, 74, 36);
@@ -72,7 +75,7 @@ public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidB
     }
     
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FluidBlockTransformRecipe recipeWrapper, IIngredients ingredients)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull FluidBlockTransformRecipe recipeWrapper, @Nonnull IIngredients ingredients)
     {
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
@@ -85,6 +88,7 @@ public class FluidBlockTransformRecipeCategory implements IRecipeCategory<FluidB
     }
 
 	@Override
+    @Nonnull
 	public List<String> getTooltipStrings(int mouseX, int mouseY) {
 		return Collections.emptyList();
 	}

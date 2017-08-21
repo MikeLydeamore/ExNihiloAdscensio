@@ -1,11 +1,7 @@
 package exnihiloadscensio.compatibility.jei.sieve;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.registries.types.Siftable;
@@ -23,6 +19,10 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
+
 public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 
 	public static final String UID = "exnihiloadscensio:sieve";
@@ -39,18 +39,27 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
         this.background = helper.createDrawable(texture, 0, 0, 166, 128);
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
-    
+
 	@Override
+	@Nonnull
+	public String getModName() {
+		return "ExNihiloAdscensio";
+	}
+
+	@Override
+	@Nonnull
 	public String getUid() {
 		return UID;
 	}
 
 	@Override
+	@Nonnull
 	public String getTitle() {
 		return "Sieve";
 	}
 
 	@Override
+	@Nonnull
 	public IDrawable getBackground() {
 		return background;
 	}
@@ -62,11 +71,6 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 		}		
 	}
 
-	@Override
-	public void drawAnimations(Minecraft minecraft) {
-	}
-
-	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, final SieveRecipe recipeWrapper) {
 		//Mesh
 		recipeLayout.getItemStacks().init(0, true, 61, 9);
@@ -87,7 +91,7 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 			recipeLayout.getItemStacks().set(slotIndex+i, outputStack);
 
 			ItemStack focusStack = (ItemStack) focus.getValue();
-			if(focus.getMode() == IFocus.Mode.OUTPUT && focusStack != null
+			if(focus.getMode() == IFocus.Mode.OUTPUT && !focusStack.isEmpty()
 					&& focusStack.getItem() == outputStack.getItem()
 					&& focusStack.getItemDamage() == outputStack.getItemDamage()) {
 				highlightX = slotX;
@@ -97,7 +101,7 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 		
 		recipeLayout.getItemStacks().addTooltipCallback(new ITooltipCallback<ItemStack>() {
 			@Override
-			public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
+			public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
 				if(!input) {
 					ItemStack mesh = (ItemStack) recipeWrapper.getInputs().get(0);
 					Multiset<String> condensedTooltips = HashMultiset.create();
@@ -127,7 +131,7 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, SieveRecipe recipeWrapper, IIngredients ingredients) {
+	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SieveRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
 		setRecipe(recipeLayout, recipeWrapper); //I'm sure this is bad.
 
 	}
@@ -139,6 +143,7 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipe> {
     }
 
 	@Override
+	@Nonnull
 	public List<String> getTooltipStrings(int mouseX, int mouseY) {
 		return Collections.emptyList();
 	}

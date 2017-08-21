@@ -35,17 +35,17 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    deobfCompile "mezz.jei:jei_1.12.1:4.7.5.+:api"
+    compileOnly "mezz.jei:jei_1.12.1:4.7.5.+:api"
     runtime "mezz.jei:jei_1.12.1:4.7.5.+"
 
-    deobfCompile "slimeknights:TConstruct:1.12-2.8.+:lib"
+    compileOnly "slimeknights:TConstruct:1.12-2.8.+:lib"
     runtime "slimeknights:TConstruct:1.12-2.8.+"
     runtime "slimeknights.mantle:Mantle:1.12-1.3.1.+"
 
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12:api"
+    compileOnly "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12:api"
     runtime "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12"
 
-    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.17-9:api"
+    compileOnly "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.17-9:api"
     runtime "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.17-9"
 
     compileOnly "org.projectlombok:lombok:1.16.10"

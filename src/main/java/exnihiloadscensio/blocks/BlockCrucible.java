@@ -1,18 +1,14 @@
 package exnihiloadscensio.blocks;
 
-import java.util.List;
-
 import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.items.ItemBlockMeta;
 import exnihiloadscensio.registries.CrucibleRegistry;
 import exnihiloadscensio.tiles.TileCrucible;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoAccessor;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,14 +20,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class BlockCrucible extends Block implements ITOPInfoProvider {
 
@@ -39,17 +38,17 @@ public class BlockCrucible extends Block implements ITOPInfoProvider {
 
 	public BlockCrucible() {
 		super(Material.ROCK);
-		String name = "blockCrucible";
+		String name = "blockcrucible";
 		setUnlocalizedName(name);
 		setRegistryName(name);
-		GameRegistry.<Block>register(this);
-		GameRegistry.register(new ItemBlockMeta(this).setRegistryName(name));
+		ForgeRegistries.BLOCKS.register(this);
+		ForgeRegistries.ITEMS.register(new ItemBlockMeta(this).setRegistryName(name));
 		this.setHardness(2.0f);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FIRED, false));
 	}
 
 	@Override
-	public TileEntity createTileEntity(World worldIn, IBlockState state) {
+	public TileEntity createTileEntity(@Nonnull World worldIn, @Nonnull IBlockState state) {
 		if (state.getValue(FIRED))
 			return new TileCrucible();
 
@@ -62,13 +61,15 @@ public class BlockCrucible extends Block implements ITOPInfoProvider {
 	}
 
 	@Override
+	@Nonnull
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FIRED });
+		return new BlockStateContainer(this, FIRED);
 	}
 
 	@Override
+	@Nonnull
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FIRED, meta == 0 ? false : true);
+		return getDefaultState().withProperty(FIRED, meta != 0);
 	}
 
 	@Override
@@ -82,34 +83,31 @@ public class BlockCrucible extends Block implements ITOPInfoProvider {
 	}
 
 	@Override
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-		list.add(new ItemStack(itemIn, 1, 0));
-		list.add(new ItemStack(itemIn, 1, 1));
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
+	@Nonnull
+	public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
 			EntityPlayer player) {
 		return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(world.getBlockState(pos)));
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
-			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote)
 			return true;
 
 		TileCrucible te = (TileCrucible) world.getTileEntity(pos);
 		if (te != null)
-			return te.onBlockActivated(heldItem, player);
+			return te.onBlockActivated(player.getHeldItem(hand), player);
 		else
 			return true;
 	}
 
-	@Override
-	public boolean isFullyOpaque(IBlockState state) {
-		return false;
-	}
+
 
 	@Override
 	public boolean isFullBlock(IBlockState state) {
@@ -128,10 +126,12 @@ public class BlockCrucible extends Block implements ITOPInfoProvider {
 
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
-				new ModelResourceLocation(getRegistryName(), "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 1,
-				new ModelResourceLocation(getRegistryName(), "inventory"));
+		if (getRegistryName() != null) {
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
+					new ModelResourceLocation(getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 1,
+					new ModelResourceLocation(getRegistryName(), "inventory"));
+		}
 	}
 
 	@Override
@@ -152,8 +152,8 @@ public class BlockCrucible extends Block implements ITOPInfoProvider {
 
 		ItemStack toMelt = crucible.getItemHandler().getStackInSlot(0);
 
-		if (toMelt != null) {
-			solidAmount += CrucibleRegistry.getMeltable(toMelt).getAmount() * toMelt.stackSize;
+		if (!toMelt.isEmpty()) {
+			solidAmount += CrucibleRegistry.getMeltable(toMelt).getAmount() * toMelt.getCount();
 		}
 
 		probeInfo.text(String.format("Solid (%s): %d", solidName, solidAmount));

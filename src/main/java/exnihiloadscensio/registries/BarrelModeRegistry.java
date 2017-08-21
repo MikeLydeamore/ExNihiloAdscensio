@@ -1,15 +1,15 @@
 package exnihiloadscensio.registries;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.barrel.modes.block.BarrelModeBlock;
 import exnihiloadscensio.barrel.modes.compost.BarrelModeCompost;
 import exnihiloadscensio.barrel.modes.fluid.BarrelModeFluid;
 import exnihiloadscensio.barrel.modes.mobspawn.BarrelModeMobSpawn;
 import exnihiloadscensio.barrel.modes.transform.BarrelModeFluidTransform;
+
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
 
 public class BarrelModeRegistry {
 	

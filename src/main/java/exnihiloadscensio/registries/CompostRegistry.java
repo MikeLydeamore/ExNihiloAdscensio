@@ -1,5 +1,25 @@
 package exnihiloadscensio.registries;
 
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import exnihiloadscensio.json.CustomItemInfoJson;
+import exnihiloadscensio.registries.manager.ICompostDefaultRegistryProvider;
+import exnihiloadscensio.registries.manager.RegistryManager;
+import exnihiloadscensio.registries.types.Compostable;
+import exnihiloadscensio.texturing.Color;
+import exnihiloadscensio.util.ItemInfo;
+import lombok.Getter;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -7,31 +27,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import exnihiloadscensio.json.CustomItemInfoJson;
-import exnihiloadscensio.registries.manager.ICompostDefaultRegistryProvider;
-import exnihiloadscensio.registries.manager.RegistryManager;
-import exnihiloadscensio.registries.types.Compostable;
-import exnihiloadscensio.texturing.Color;
-import exnihiloadscensio.util.ItemInfo;
-import exnihiloadscensio.util.Util;
-import lombok.Getter;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class CompostRegistry {
 
@@ -153,8 +149,8 @@ public class CompostRegistry {
 	        {
 	            ItemFood food = (ItemFood) item;
 	            
-	            List<ItemStack> stacks = Lists.newArrayList();
-	            food.getSubItems(food, null, stacks);
+	            NonNullList<ItemStack> stacks = NonNullList.create();
+	            food.getSubItems(null, stacks);
 	            
 	            for(ItemStack foodStack : stacks)
 	            {

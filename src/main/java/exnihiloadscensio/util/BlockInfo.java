@@ -26,8 +26,8 @@ public class BlockInfo
     
     public BlockInfo(ItemStack stack)
     {
-        block = (stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemBlock)) ? null : Block.getBlockFromItem(stack.getItem());
-        meta = (stack == null || stack.getItem() == null) ? null : stack.getItemDamage();
+        block = (stack == null || stack.isEmpty() || !(stack.getItem() instanceof ItemBlock)) ? null : Block.getBlockFromItem(stack.getItem());
+        meta = (stack == null || stack.isEmpty()) ? 0 : stack.getItemDamage();
     }
     
     public BlockInfo(String string)

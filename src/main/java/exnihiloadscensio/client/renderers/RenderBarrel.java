@@ -1,26 +1,25 @@
 package exnihiloadscensio.client.renderers;
 
-import org.lwjgl.opengl.GL11;
-
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import exnihiloadscensio.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
 
 public class RenderBarrel extends TileEntitySpecialRenderer<TileBarrel>
 {
     @Override
-    public void renderTileEntityAt(TileBarrel tile, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileBarrel tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);

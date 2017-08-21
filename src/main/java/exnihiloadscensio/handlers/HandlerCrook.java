@@ -1,8 +1,5 @@
 package exnihiloadscensio.handlers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.tools.ICrook;
 import exnihiloadscensio.registries.CrookRegistry;
@@ -13,6 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class HandlerCrook {
 
@@ -75,7 +75,7 @@ public class HandlerCrook {
 		if (stack == null)
 			return false;
 
-		if (stack.getItem() == null)
+		if (stack.isEmpty())
 			return false;
 
 		if (stack.getItem() instanceof ICrook)

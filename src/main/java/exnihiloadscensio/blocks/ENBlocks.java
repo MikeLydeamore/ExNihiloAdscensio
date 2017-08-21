@@ -29,37 +29,36 @@ public class ENBlocks {
 
 	public static void init()
 	{
-        dust = new BlockBaseFalling(SoundType.CLOTH, "blockDust");
+        dust = new BlockBaseFalling(SoundType.CLOTH, "blockdust");
         dust.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
         dust.setHardness(0.7F);
         
-        netherrackCrushed = new BlockBaseFalling(SoundType.GROUND, "blockNetherrackCrushed");
+        netherrackCrushed = new BlockBaseFalling(SoundType.GROUND, "blocknetherrackcrushed");
         netherrackCrushed.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
         netherrackCrushed.setHardness(0.7F);
 
-        endstoneCrushed = new BlockBaseFalling(SoundType.GROUND, "blockEndstoneCrushed");
+        endstoneCrushed = new BlockBaseFalling(SoundType.GROUND, "blockendstonecrushed");
         endstoneCrushed.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
         endstoneCrushed.setHardness(0.7F);
         
         barrelWood = new BlockBarrel(0, Material.WOOD);
         barrelWood.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
-        GameRegistry.registerTileEntity(TileBarrel.class, "blockBarrel0");
+        GameRegistry.registerTileEntity(TileBarrel.class, "blockbarrel");
         
         barrelStone = new BlockBarrel(1, Material.ROCK);
         barrelStone.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
-        GameRegistry.registerTileEntity(TileBarrel.class, "blockBarrel1");
 		
 		infestedLeaves = new BlockInfestedLeaves();
-		GameRegistry.registerTileEntity(TileInfestedLeaves.class, "blockInfestedLeaves");
+		GameRegistry.registerTileEntity(TileInfestedLeaves.class, "blockinfestedleaves");
 		infestedLeaves.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
 		crucible = new BlockCrucible();
 		crucible.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
-		GameRegistry.registerTileEntity(TileCrucible.class, "blockCrucible");
+		GameRegistry.registerTileEntity(TileCrucible.class, "blockcrucible");
 		
 		sieve = new BlockSieve();
 		sieve.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
-		GameRegistry.registerTileEntity(TileSieve.class, "blockSieve");
+		GameRegistry.registerTileEntity(TileSieve.class, "blocksieve");
 		
 		fluidWitchwater = new FluidWitchWater();
 		blockWitchwater = new BlockFluidWitchwater();

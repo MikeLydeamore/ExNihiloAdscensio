@@ -1,8 +1,5 @@
 package exnihiloadscensio.barrel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
 import exnihiloadscensio.networking.PacketHandler;
 import exnihiloadscensio.registries.BarrelModeRegistry;
@@ -11,6 +8,10 @@ import exnihiloadscensio.tiles.TileBarrel;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BarrelItemHandler extends ItemStackHandler {
 
@@ -23,12 +24,13 @@ public class BarrelItemHandler extends ItemStackHandler {
 	}
 
 	@Override
-	protected int getStackLimit(int slot, ItemStack stack)
+	protected int getStackLimit(int slot, @Nonnull ItemStack stack)
 	{
 		return 1;
 	}
     
     @Override
+	@Nonnull
     public ItemStack getStackInSlot(int slot)
     {
         if (barrel.getMode() != null && barrel.getMode().getHandler(barrel) != null)
@@ -36,11 +38,11 @@ public class BarrelItemHandler extends ItemStackHandler {
             return barrel.getMode().getHandler(barrel).getStackInSlot(slot);
         }
         
-        return null;
+        return ItemStack.EMPTY;
     }
     
     @Override
-    public void setStackInSlot(int slot, ItemStack stack)
+    public void setStackInSlot(int slot, @Nonnull ItemStack stack)
     {
         if(barrel.getMode() != null && barrel.getMode().isTriggerItemStack(stack))
         {
@@ -79,6 +81,7 @@ public class BarrelItemHandler extends ItemStackHandler {
     }
     
 	@Override
+	@Nonnull
 	public ItemStack extractItem(int slot, int amount, boolean simulate)
     {
         if (barrel.getMode() != null && barrel.getMode().getHandler(barrel) != null)
@@ -86,11 +89,12 @@ public class BarrelItemHandler extends ItemStackHandler {
 			return barrel.getMode().getHandler(barrel).extractItem(slot, amount, simulate);
         }
 		
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+	@Nonnull
+	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
 	{
 		if (barrel.getMode() == null)
 		{
@@ -116,7 +120,7 @@ public class BarrelItemHandler extends ItemStackHandler {
 					}
 
 					ItemStack ret = stack.copy();
-					ret.stackSize--;
+					ret.shrink(1);
 					return ret;
 				}
 			}

@@ -1,57 +1,57 @@
-item.hammerWood.name=Wooden Hammer
-item.hammerStone.name=Stone Hammer
-item.hammerIron.name=Iron Hammer
-item.hammerGold.name=Gold Hammer
-item.hammerDiamond.name=Diamond Hammer
+item.hammerwood.name=Wooden Hammer
+item.hammerstone.name=Stone Hammer
+item.hammeriron.name=Iron Hammer
+item.hammergold.name=Gold Hammer
+item.hammerdiamond.name=Diamond Hammer
 
-item.crookWood.name=Wooden Crook
-item.crookBone.name=Bone Crook
+item.crookwood.name=Wooden Crook
+item.crookbone.name=Bone Crook
 
-item.itemPebble.stone.name=Stone Pebble
-item.itemPebble.granite.name=Granite Pebble
-item.itemPebble.diorite.name=Diorite Pebble
-item.itemPebble.andesite.name=Andesite Pebble
+item.itempebble.stone.name=Stone Pebble
+item.itempebble.granite.name=Granite Pebble
+item.itempebble.diorite.name=Diorite Pebble
+item.itempebble.andesite.name=Andesite Pebble
 
-item.itemMaterial.removed.name=Removed From Mod
-item.itemMaterial.porcelain_clay.name=Porcelain Clay
-item.itemMaterial.silkworm.name=Silkworm
-item.itemMaterial.grass_seeds.name=Grass Seeds
-item.itemMaterial.ancient_spores.name=Ancient Spores
-item.itemMaterial.doll.name=Porcelain Doll
+item.itemmaterial.removed.name=Removed From Mod
+item.itemmaterial.porcelain_clay.name=Porcelain Clay
+item.itemmaterial.silkworm.name=Silkworm
+item.itemmaterial.grass_seeds.name=Grass Seeds
+item.itemmaterial.ancient_spores.name=Ancient Spores
+item.itemmaterial.doll.name=Porcelain Doll
 
-item.itemDoll.blaze.name=Blazing Doll
-item.itemDoll.enderman.name=Creeping Doll
+item.itemdoll.blaze.name=Blazing Doll
+item.itemdoll.enderman.name=Creeping Doll
 
-item.silkwormCooked.name=Cooked Silkworm
+item.silkwormcooked.name=Cooked Silkworm
 
-item.itemSeedBirch.name=Birch Seed
-item.itemSeedOak.name=Oak Seed
-item.itemSeedJungle.name=Jungle Seed
-item.itemSeedAcacia.name=Acacia Seed
-item.itemSeedSpruce.name=Spruce Seed
-item.itemSeedCarrot.name=Carrot Seeds
-item.itemSeedPotato.name=Potato Seeds
-item.itemSeedSugarcane.name=Sugarcane Seed
-item.itemSeedCactus.name=Cactus Seed
-item.itemSeedDarkOak.name=Dark Oak Seed
+item.itemseedbirch.name=Birch Seed
+item.itemseedoak.name=Oak Seed
+item.itemseedjungle.name=Jungle Seed
+item.itemseedacacia.name=Acacia Seed
+item.itemseedspruce.name=Spruce Seed
+item.itemseedcarrot.name=Carrot Seeds
+item.itemseedpotato.name=Potato Seeds
+item.itemseedsugarcane.name=Sugarcane Seed
+item.itemseedcactus.name=Cactus Seed
+item.itemseeddarkoak.name=Dark Oak Seed
 
-tile.blockDust.name=Dust
-tile.blockNetherrackCrushed.name=Crushed Netherrack
-tile.blockEndstoneCrushed.name=Crushed Endstone
+tile.blockdust.name=Dust
+tile.blocknetherrackcrushed.name=Crushed Netherrack
+tile.blockendstonecrushed.name=Crushed Endstone
 
-tile.blockBarrel0.name=Wooden Barrel
-tile.blockBarrel1.name=Stone Barrel
+tile.blockbarrel0.name=Wooden Barrel
+tile.blockbarrel1.name=Stone Barrel
 
-tile.blockCrucible.0.name=Unfired Crucible
-tile.blockCrucible.1.name=Crucible
+tile.blockcrucible.0.name=Unfired Crucible
+tile.blockcrucible.1.name=Crucible
 
-tile.blockInfestedLeaves.name=Infested Leaves
+tile.blockinfestedleaves.name=Infested Leaves
 
-tile.blockSieve.name=Sieve
-item.itemMesh.1.name=String Mesh
-item.itemMesh.2.name=Flint Stiffened Mesh
-item.itemMesh.3.name=Iron Stiffened Mesh
-item.itemMesh.4.name=Diamond Stiffened Mesh
+tile.blocksieve.name=Sieve
+item.itemmesh.1.name=String Mesh
+item.itemmesh.2.name=Flint Stiffened Mesh
+item.itemmesh.3.name=Iron Stiffened Mesh
+item.itemmesh.4.name=Diamond Stiffened Mesh
 
 orepiece.name=Ore Piece
 orehunk.name=Ore Chunk

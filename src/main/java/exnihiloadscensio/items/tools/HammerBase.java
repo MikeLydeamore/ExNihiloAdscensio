@@ -2,18 +2,18 @@ package exnihiloadscensio.items.tools;
 
 
 import com.google.common.collect.Sets;
-
 import exnihiloadscensio.registries.HammerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class HammerBase extends ItemTool implements IHammer  {
 
@@ -24,7 +24,7 @@ public class HammerBase extends ItemTool implements IHammer  {
 		super(material, Sets.newHashSet(new Block[]{}));
 		this.setUnlocalizedName(name);
 		this.setRegistryName(name);
-		GameRegistry.<Item>register(this);
+		ForgeRegistries.ITEMS.register(this);
 		this.setMaxDamage(maxUses);
 		this.miningLevel = material.getHarvestLevel();
 	}
@@ -41,7 +41,7 @@ public class HammerBase extends ItemTool implements IHammer  {
 		return miningLevel;
 	}
 
-	public float getStrVsBlock(ItemStack stack, IBlockState state)
+	public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state)
 	{
 		return HammerRegistry.registered(state.getBlock()) ? this.efficiencyOnProperMaterial : 1.0F;
 	}
@@ -56,7 +56,8 @@ public class HammerBase extends ItemTool implements IHammer  {
 	@SideOnly(Side.CLIENT)
 	public void initModel()
 	{
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+		if (getRegistryName() != null)
+			ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 
 	}
 

@@ -1,21 +1,17 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import exnihiloadscensio.blocks.ENBlocks;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 public class BarrelLiquidBlacklistRegistry
 {
@@ -25,33 +21,21 @@ public class BarrelLiquidBlacklistRegistry
     
     public static boolean isBlacklisted(int level, String fluid)
     {
-        return level < 0 || blacklist.getOrDefault(level, Collections.EMPTY_LIST).contains(fluid);
+        return level < 0 || blacklist.getOrDefault(level, Collections.emptyList()).contains(fluid);
     }
     
     public static void register(int level, String fluid)
     {
         registerInternal(level, fluid);
         
-        List<String> list = externalBlacklist.get(level);
-        
-        if(list == null)
-        {
-            list = new ArrayList<>();
-            externalBlacklist.put(level, list);
-        }
+        List<String> list = externalBlacklist.computeIfAbsent(level, key -> Lists.newArrayList());
         
         list.add(fluid);
     }
     
     private static void registerInternal(int level, String fluid)
     {
-        List<String> list = blacklist.get(level);
-        
-        if(list == null)
-        {
-            list = new ArrayList<>();
-            blacklist.put(level, list);
-        }
+        List<String> list = blacklist.computeIfAbsent(level, key -> Lists.newArrayList());
         
         list.add(fluid);
     }
