@@ -1,12 +1,9 @@
 package exnihiloadscensio;
 
-import java.io.File;
-
 import exnihiloadscensio.blocks.ENBlocks;
 import exnihiloadscensio.capabilities.ENCapabilities;
 import exnihiloadscensio.command.CommandReloadConfig;
-import exnihiloadscensio.compatibility.CompatEIO;
-import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
+// import exnihiloadscensio.compatibility.tconstruct.CompatTConstruct;
 import exnihiloadscensio.compatibility.theoneprobe.CompatTOP;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.enchantments.ENEnchantments;
@@ -15,24 +12,12 @@ import exnihiloadscensio.handlers.HandlerCrook;
 import exnihiloadscensio.handlers.HandlerHammer;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.networking.PacketHandler;
-import exnihiloadscensio.registries.BarrelLiquidBlacklistRegistry;
-import exnihiloadscensio.registries.BarrelModeRegistry;
-import exnihiloadscensio.registries.CompostRegistry;
-import exnihiloadscensio.registries.CrookRegistry;
-import exnihiloadscensio.registries.CrucibleRegistry;
-import exnihiloadscensio.registries.FluidBlockTransformerRegistry;
-import exnihiloadscensio.registries.FluidOnTopRegistry;
-import exnihiloadscensio.registries.FluidTransformRegistry;
-import exnihiloadscensio.registries.HammerRegistry;
-import exnihiloadscensio.registries.HeatRegistry;
-import exnihiloadscensio.registries.OreRegistry;
-import exnihiloadscensio.registries.RegistryReloadedEvent;
-import exnihiloadscensio.registries.SieveRegistry;
+import exnihiloadscensio.registries.*;
 import exnihiloadscensio.registries.manager.ExNihiloDefaultRecipes;
-import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.util.LogUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
@@ -40,14 +25,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLModIdMappingEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.File;
 
 @Mod(modid = ExNihiloAdscensio.MODID, name = "Ex Nihilo Adscensio", version = "0.1.5")
 public class ExNihiloAdscensio {
@@ -110,9 +92,6 @@ public class ExNihiloAdscensio {
 
 		proxy.initOreModels();
 		proxy.registerColorHandlers();
-
-		FMLInterModComms.sendMessage("Waila", "register",
-				"exnihiloadscensio.compatibility.CompatWaila.callbackRegister");
 		
 		if (Loader.isModLoaded("theoneprobe") && Config.doTOPCompat) {
 			CompatTOP.init();
@@ -123,10 +102,7 @@ public class ExNihiloAdscensio {
 	public static void postInit(FMLPostInitializationEvent event) {
 
 		if (Loader.isModLoaded("tconstruct") && Config.doTICCompat) {
-			CompatTConstruct.postInit();
-		}
-		if (Loader.isModLoaded("EnderIO") && Config.doEnderIOCompat) {
-			CompatEIO.postInit();
+			// CompatTConstruct.postInit();
 		}
 		
 	}
@@ -158,8 +134,8 @@ public class ExNihiloAdscensio {
 	public static CreativeTabs tabExNihilo = new CreativeTabs("exNihilo") {
 		@Override
 		@SideOnly(Side.CLIENT)
-		public Item getTabIconItem() {
-			return Item.getItemFromBlock(ENBlocks.sieve);
+		public ItemStack getTabIconItem() {
+			return new ItemStack(Item.getItemFromBlock(ENBlocks.sieve));
 		}
 	};
 

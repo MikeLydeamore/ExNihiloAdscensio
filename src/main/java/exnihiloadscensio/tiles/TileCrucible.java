@@ -15,8 +15,8 @@ import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -26,15 +26,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+
+import javax.annotation.Nonnull;
 
 public class TileCrucible extends TileEntity implements ITickable {
 	
@@ -76,14 +74,14 @@ public class TileCrucible extends TileEntity implements ITickable {
             
             if(solidAmount <= 0)
             {
-                if(itemHandler.getStackInSlot(0) != null)
+                if(!itemHandler.getStackInSlot(0).isEmpty())
                 {
                     currentItem = new ItemInfo(itemHandler.getStackInSlot(0));
-                    itemHandler.getStackInSlot(0).stackSize--;
+                    itemHandler.getStackInSlot(0).shrink(1);
                     
-                    if(itemHandler.getStackInSlot(0).stackSize <= 0)
+                    if(itemHandler.getStackInSlot(0).getCount() <= 0)
                     {
-                        itemHandler.setStackInSlot(0, null);
+                        itemHandler.setStackInSlot(0, ItemStack.EMPTY);
                     }
                     
                     solidAmount = CrucibleRegistry.getMeltable(currentItem).getAmount();
@@ -101,17 +99,17 @@ public class TileCrucible extends TileEntity implements ITickable {
                 }
             }
             
-            if(itemHandler.getStackInSlot(0) != null && itemHandler.getStackInSlot(0).isItemEqual(currentItem.getItemStack()))
+            if(!itemHandler.getStackInSlot(0).isEmpty() && itemHandler.getStackInSlot(0).isItemEqual(currentItem.getItemStack()))
             {
                 // For meltables with a really small "amount"
-                while(heatRate > solidAmount && itemHandler.getStackInSlot(0) != null)
+                while(heatRate > solidAmount && !itemHandler.getStackInSlot(0).isEmpty())
                 {
                     solidAmount += CrucibleRegistry.getMeltable(currentItem).getAmount();
-                    itemHandler.getStackInSlot(0).stackSize--;
+                    itemHandler.getStackInSlot(0).shrink(1);
                     
-                    if (itemHandler.getStackInSlot(0).stackSize <= 0)
+                    if (itemHandler.getStackInSlot(0).getCount() <= 0)
                     {
-                        itemHandler.setStackInSlot(0, null);
+                        itemHandler.setStackInSlot(0, ItemStack.EMPTY);
                     }
                 }
             }
@@ -141,7 +139,7 @@ public class TileCrucible extends TileEntity implements ITickable {
         BlockPos posBelow = pos.add(0, -1, 0);
         IBlockState stateBelow = world.getBlockState(posBelow);
         
-        if (stateBelow == null)
+        if (stateBelow.getBlock() == Blocks.AIR)
         {
             return 0;
         }
@@ -166,8 +164,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
 	public SpriteColor getSpriteAndColor() {
-		int noItems = itemHandler.getStackInSlot(0) == null ? 0 : 
-			itemHandler.getStackInSlot(0).stackSize;
+		int noItems = itemHandler.getStackInSlot(0).getCount();
 		if (noItems == 0 && currentItem == null && tank.getFluidAmount() == 0) //Empty!
 			return null;
 		
@@ -208,7 +205,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 				BlockInfo override = meltable.getTextureOverride();
 				
 				if (override == null) {
-					if (Block.getBlockFromItem(currentItem.getItem()) != null) {
+					if (Block.getBlockFromItem(currentItem.getItem()) != Blocks.AIR) {
 						block = Block.getBlockFromItem(currentItem.getItem())
 								.getStateFromMeta(currentItem.getMeta());
 					}
@@ -228,7 +225,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	
 	@SideOnly(Side.CLIENT)
 	public float getFilledAmount() {
-		int noItems = itemHandler.getStackInSlot(0) == null ? 0 : itemHandler.getStackInSlot(0).stackSize;
+		int noItems = itemHandler.getStackInSlot(0).getCount();
 		if (noItems == 0 && currentItem == null && tank.getFluidAmount() == 0) //Empty!
 			return 0;
 		
@@ -252,8 +249,8 @@ public class TileCrucible extends TileEntity implements ITickable {
 			return false;
 		
 		//Bucketing out the fluid.
-		if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-			boolean result = FluidUtil.interactWithFluidHandler(stack, tank, player);
+		if (!stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			boolean result = FluidUtil.interactWithFluidHandler(player, player.swingingHand, tank);
 			if (result) {
 				PacketHandler.sendNBTUpdate(this);
 			}
@@ -261,11 +258,11 @@ public class TileCrucible extends TileEntity implements ITickable {
 		}
 		
 		//Adding a meltable.
-		ItemStack addStack = stack.copy(); addStack.stackSize = 1;
+		ItemStack addStack = stack.copy(); addStack.setCount(1);
 		ItemStack insertStack = itemHandler.insertItem(0, addStack, true);
 		if (!ItemStack.areItemStacksEqual(addStack, insertStack)) {
 			itemHandler.insertItem(0, addStack, false);
-			stack.stackSize--;
+			stack.shrink(1);
 			PacketHandler.sendNBTUpdate(this);
 			return true;
 		}
@@ -274,7 +271,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing)
 	{
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
@@ -288,7 +285,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing)
 	{
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
 				capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ||
@@ -296,6 +293,7 @@ public class TileCrucible extends TileEntity implements ITickable {
     }
     
     @Override
+	@Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
         if (currentItem != null)
@@ -351,6 +349,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
 		NBTTagCompound tag = pkt.getNbtCompound();
@@ -358,6 +357,7 @@ public class TileCrucible extends TileEntity implements ITickable {
 	}
 
 	@Override
+	@Nonnull
 	public NBTTagCompound getUpdateTag()
 	{
 		NBTTagCompound tag = writeToNBT(new NBTTagCompound());

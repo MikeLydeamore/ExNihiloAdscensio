@@ -1,7 +1,5 @@
 package exnihiloadscensio.barrel.modes.compost;
 
-import java.util.List;
-
 import exnihiloadscensio.barrel.IBarrelMode;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.networking.MessageBarrelModeUpdate;
@@ -34,6 +32,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.List;
+
 public class BarrelModeCompost implements IBarrelMode {
 
 	@Setter @Getter
@@ -60,7 +60,7 @@ public class BarrelModeCompost implements IBarrelMode {
 	{
 		if (fillAmount == 0)
 		{
-			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
+			if (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
 			{
 				ItemInfo info = ItemInfo.getItemInfoFromStack(player.getHeldItem(EnumHand.MAIN_HAND));
 				if (CompostRegistry.containsItem(info))
@@ -74,7 +74,7 @@ public class BarrelModeCompost implements IBarrelMode {
 		}
 		if (fillAmount < 1 && compostState != null)
 		{
-			if (player.getHeldItem(EnumHand.MAIN_HAND) != null)
+			if (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
 			{
 				ItemInfo info = ItemInfo.getItemInfoFromStack(player.getHeldItem(EnumHand.MAIN_HAND));
 				Compostable comp = CompostRegistry.getItem(info);
@@ -94,7 +94,7 @@ public class BarrelModeCompost implements IBarrelMode {
 					if (fillAmount > 1)
 						fillAmount = 1;
 					if (!player.capabilities.isCreativeMode)
-						player.getHeldItem(EnumHand.MAIN_HAND).stackSize--;
+						player.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
 					PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
 					barrel.markDirty();
 					return true;
@@ -103,7 +103,9 @@ public class BarrelModeCompost implements IBarrelMode {
 		}
 		else if (progress >= 1)
 		{
-			Util.dropItemInWorld(barrel, player, new ItemStack(compostState.getBlock(), 1, compostState.getBlock().getMetaFromState(compostState)), 0.02f);
+			if (compostState != null) {
+				Util.dropItemInWorld(barrel, player, new ItemStack(compostState.getBlock(), 1, compostState.getBlock().getMetaFromState(compostState)), 0.02f);
+			}
 			removeItem(barrel);		
 			return true;
 		}
@@ -116,7 +118,7 @@ public class BarrelModeCompost implements IBarrelMode {
 		progress = 0;
 		fillAmount = 0;
 		color = new Color("EEA96D");
-		handler.setStackInSlot(0, null);
+		handler.setStackInSlot(0, ItemStack.EMPTY);
 		compostState = null;
 		PacketHandler.sendToAllAround(new MessageCompostUpdate(this.fillAmount, this.color, this.progress, barrel.getPos()), barrel);
 		barrel.setMode("null");

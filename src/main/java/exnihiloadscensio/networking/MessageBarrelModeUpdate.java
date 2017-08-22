@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageBarrelModeUpdate implements IMessage {
 
@@ -45,9 +47,11 @@ public class MessageBarrelModeUpdate implements IMessage {
 	public static class MessageBarrelModeUpdateHandler implements IMessageHandler<MessageBarrelModeUpdate, IMessage> 
 	{
 		@Override
+		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(final MessageBarrelModeUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@SideOnly(Side.CLIENT)
 				@Override
 				public void run()
 				{

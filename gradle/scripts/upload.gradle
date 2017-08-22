@@ -1,0 +1,77 @@
+curseforge {
+    apiKey = project.hasProperty('CURSEFORGE_KEY') ? project.getProperty('CURSEFORGE_KEY') : ''
+
+    if (project.hasProperty('CURSE_RELEASE') && project.getProperty('CURSE_RELEASE').equals('true')) {
+        project {
+            id = project.hasProperty('CURSEFORGE_PROJECT_ID') ? project.getProperty('CURSEFORGE_PROJECT_ID') : ''
+            releaseType = project.hasProperty('MOD_SUFFIX') ? project.getProperty('MOD_SUFFIX') : ''
+            changelogType = 'text'
+            changelog = project.hasProperty('CHANGELOG') ? project.getProperty('CHANGELOG') : ''
+
+            addArtifact sourcesJar
+            addArtifact apiJar
+            addArtifact devJar
+        }
+    }
+}
+
+uploadArchives {
+	dependsOn build
+
+    repositories {
+        mavenDeployer {
+            if (project.hasProperty('NEXUS_URL')) {
+                logger.info('Publishing to files server')
+
+                repository (url: project.getProperty('NEXUS_URL')) {
+                    authentication (userName: project.getProperty('NEXUS_USERNAME') ?: '', password: project.getProperty('NEXUS_PASSWORD') ?: '')
+                }
+            } else {
+                repository (url: 'file://localhost/' + project.file('repo').getAbsolutePath())
+            }
+
+            pom {
+                groupId = project.group
+                artifactId = project.archivesBaseName
+                version = project.artifactVersion
+
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description mod_description
+                    url "https://github.com/${mod_github}"
+
+                    scm {
+                        url "https://github.com/${mod_github}"
+                        connection "scm:git:git://github.com/${mod_github}.git"
+                        developerConnection "scm:git:git@github.com:${mod_github}.git"
+                    }
+
+                    issueManagement {
+                        system 'github'
+                        url "https://github.com/${mod_github}/issues"
+                    }
+
+                    licenses {
+                        license {
+                            name 'The MIT License'
+                            url 'https://opensource.org/licenses/MIT'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id mod_author_id
+                            name mod_author_id
+
+                            roles {
+                                role 'developer'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

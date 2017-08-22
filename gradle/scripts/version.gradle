@@ -1,0 +1,26 @@
+task buildInfo {
+    def cmd = "git rev-parse --short HEAD"
+    def proc = cmd.execute()
+
+    proc.waitFor()
+
+    if (proc.exitValue() == 0) {
+        ext.revision = proc.text.trim()
+    } else {
+        ext.revision = 'GITBORK'
+    }
+
+    if (System.getenv().BUILD_NUMBER != null) {
+        ext.buildNumber = System.getenv().BUILD_NUMBER
+    } else {
+        ext.buildNumber = "DEV_${project.buildInfo.revision}"
+    }
+}
+
+ext.artifactVersion = "${mod_version}.${project.buildInfo.buildNumber}"
+
+if (project.hasProperty('MOD_SUFFIX')) {
+    artifactVersion = "${project.property('MOD_SUFFIX')}-${artifactVersion}"
+}
+
+version = artifactVersion

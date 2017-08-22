@@ -6,6 +6,8 @@ import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class BarrelItemHandlerCompost extends ItemStackHandler {
 	
 	@Setter
@@ -17,7 +19,8 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 	}
 	
 	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+	@Nonnull
+	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
 	{
 		if (CompostRegistry.containsItem(stack))
 		{
@@ -26,7 +29,7 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 			if (mode != null && mode.getFillAmount() < 1)
 			{
 				ItemStack toReturn = stack.copy();
-				toReturn.stackSize--;
+				toReturn.shrink(1);
 				
 				if (!simulate)
 				{
@@ -41,8 +44,9 @@ public class BarrelItemHandlerCompost extends ItemStackHandler {
 	}
 	
 	@Override
+	@Nonnull
 	public ItemStack extractItem(int slot, int amount, boolean simulate)
 	{
-		return null;
+		return ItemStack.EMPTY;
 	}
 }

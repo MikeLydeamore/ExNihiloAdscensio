@@ -1,23 +1,21 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.registries.manager.IFluidTransformDefaultRegistryProvider;
 import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.registries.types.FluidTransformer;
 import exnihiloadscensio.util.BlockInfo;
 import lombok.Getter;
-import net.minecraft.init.Blocks;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FluidTransformRegistry
 {

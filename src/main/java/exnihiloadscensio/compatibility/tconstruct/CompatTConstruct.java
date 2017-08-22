@@ -1,11 +1,11 @@
-package exnihiloadscensio.compatibility.tconstruct;
+/* package exnihiloadscensio.compatibility.tconstruct;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import exnihiloadscensio.items.ENItems;
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.registries.OreRegistry;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.modifiers.Modifier;
@@ -30,4 +30,4 @@ public class CompatTConstruct
     		}
     	}
     }
-}
+} */

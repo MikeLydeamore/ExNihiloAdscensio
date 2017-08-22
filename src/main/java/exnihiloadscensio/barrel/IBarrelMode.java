@@ -1,7 +1,5 @@
 package exnihiloadscensio.barrel;
 
-import java.util.List;
-
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.tiles.TileBarrel;
 import net.minecraft.block.state.IBlockState;
@@ -17,6 +15,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.List;
 
 public interface IBarrelMode {
 	

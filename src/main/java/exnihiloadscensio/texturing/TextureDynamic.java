@@ -1,15 +1,15 @@
 package exnihiloadscensio.texturing;
 
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
 
 public class TextureDynamic extends TextureAtlasSprite {
 
@@ -50,7 +50,7 @@ public class TextureDynamic extends TextureAtlasSprite {
 	  // creates the textures
 	  // originally based on code from DenseOres, but refactored down to what you see here.
 	  @Override
-	  public boolean load(IResourceManager manager, ResourceLocation location) {
+	  public boolean load(IResourceManager manager, ResourceLocation location, Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
 	    // get mipmapping levels
 	    int mipmapLevels = Minecraft.getMinecraft().gameSettings.mipmapLevels;
 

@@ -1,26 +1,24 @@
 package exnihiloadscensio.client.renderers;
 
-import org.lwjgl.opengl.GL11;
-
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.texturing.SpriteColor;
 import exnihiloadscensio.tiles.TileCrucible;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
 
 public class RenderCrucible extends TileEntitySpecialRenderer<TileCrucible> {
 	@Override
-	public void renderTileEntityAt(TileCrucible te, double x, double y, double z,
-			float partialTicks, int destroyStage) 
+	public void render(TileCrucible te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
 	{
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer wr = tes.getBuffer();
+		BufferBuilder wr = tes.getBuffer();
 
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.pushMatrix();

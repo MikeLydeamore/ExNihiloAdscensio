@@ -1,9 +1,5 @@
 package exnihiloadscensio.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.tools.ICrook;
@@ -11,13 +7,10 @@ import exnihiloadscensio.tiles.TileInfestedLeaves;
 import exnihiloadscensio.util.Util;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoAccessor;
 import mcjty.theoneprobe.api.ProbeMode;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -32,21 +25,29 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider, ITOPInfoProvider {
 
 	public BlockInfestedLeaves() {
 		super();
-		this.setUnlocalizedName("blockInfestedLeaves");
-		this.setRegistryName("blockInfestedLeaves");
-		GameRegistry.<Block>register(this);
-		GameRegistry.register(new ItemBlock(this).setRegistryName("blockInfestedLeaves"));
+		this.setUnlocalizedName("blockinfestedleaves");
+		this.setRegistryName("blockinfestedleaves");
+		ForgeRegistries.BLOCKS.register(this);
+		ForgeRegistries.ITEMS.register(new ItemBlock(this).setRegistryName("blockinfestedleaves"));
 		this.setDefaultState(
 				this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, false));
 		this.leavesFancy = true;
 	}
 
+	@Nonnull
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
@@ -65,20 +66,25 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
-				new ModelResourceLocation(getRegistryName(), "inventory"));
+		if (getRegistryName() != null) {
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
+					new ModelResourceLocation(getRegistryName(), "inventory"));
+		}
 	}
 
 	@Override
+	@Nonnull
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { CHECK_DECAY, DECAYABLE });
+		return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE);
 	}
 
 	@Override
+	@Nonnull
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(CHECK_DECAY, meta == 0 || meta == 1 ? true : false)
-				.withProperty(DECAYABLE, meta == 0 || meta == 2 ? true : false);
+		return getDefaultState().withProperty(CHECK_DECAY, meta == 0 || meta == 1)
+				.withProperty(DECAYABLE, meta == 0 || meta == 2);
 	}
 
 	@Override
@@ -95,12 +101,13 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	}
 
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+	@Nonnull
+	public List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
 		return new ArrayList<ItemStack>();
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, Random rand) {
 
 	}
 
@@ -113,7 +120,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 				if (tile instanceof TileInfestedLeaves) {
 					TileInfestedLeaves leaves = (TileInfestedLeaves) tile;
 
-					if (leaves != null && player.getHeldItemMainhand() != null
+					if (!player.getHeldItemMainhand().isEmpty()
 							&& player.getHeldItemMainhand().getItem() instanceof ICrook) {
 						if (world.rand.nextFloat() < leaves.getProgress() * Config.stringChance) {
 							Util.dropItemInWorld(leaves, player, new ItemStack(Items.STRING, 1, 0), 0.02f);
@@ -131,19 +138,20 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 	}
 
 	@Override
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+	public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		ret.add(new ItemStack(this));
 		return ret;
 	}
 
 	@Override
+	@Nonnull
 	public EnumType getWoodType(int meta) {
-		return null;
+		return EnumType.OAK;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
 		return new TileInfestedLeaves();
 	}
 
@@ -153,10 +161,12 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
 		TileInfestedLeaves tile = (TileInfestedLeaves) world.getTileEntity(data.getPos());
 
-		if (tile.getProgress() >= 1.0F) {
-			probeInfo.text("Progress: Done");
-		} else {
-			probeInfo.progress((int) (tile.getProgress()*100), 100);
+		if (tile != null) {
+			if (tile.getProgress() >= 1.0F) {
+				probeInfo.text("Progress: Done");
+			} else {
+				probeInfo.progress((int) (tile.getProgress()*100), 100);
+			}
 		}
 
 	}

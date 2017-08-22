@@ -1,8 +1,5 @@
 package exnihiloadscensio.compatibility.jei.barrel.compost;
 
-import java.util.Collections;
-import java.util.List;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.registries.CompostRegistry;
 import exnihiloadscensio.registries.types.Compostable;
@@ -18,6 +15,10 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 
 public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
 {
@@ -36,20 +37,29 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
         this.background = helper.createDrawable(texture, 0, 0, 166, 128);
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
-    
+
     @Override
+    @Nonnull
+    public String getModName() {
+        return "ExNihiloAdscensio";
+    }
+
+    @Override
+    @Nonnull
     public String getUid()
     {
         return UID;
     }
     
     @Override
+    @Nonnull
     public String getTitle()
     {
         return "Compost";
     }
     
     @Override
+    @Nonnull
     public IDrawable getBackground()
     {
         return background;
@@ -63,14 +73,7 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
             slotHighlight.draw(minecraft, highlightX, highlightY);
         }
     }
-    
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-        
-    }
-    
-    @Override
+
     public void setRecipe(IRecipeLayout layout, CompostRecipe recipe)
     {
         // Block
@@ -109,7 +112,7 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
     }
     
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, CompostRecipe recipeWrapper, IIngredients ingredients)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull CompostRecipe recipeWrapper, @Nonnull IIngredients ingredients)
     {
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
@@ -124,7 +127,7 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
     private class CompostTooltipCallback implements ITooltipCallback<ItemStack>
     {
         @Override
-        public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip)
+        public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip)
         {
             if (input)
             {
@@ -136,6 +139,7 @@ public class CompostRecipeCategory implements IRecipeCategory<CompostRecipe>
     }
 
 	@Override
+    @Nonnull
 	public List<String> getTooltipStrings(int mouseX, int mouseY) {
 		return Collections.emptyList();
 	}

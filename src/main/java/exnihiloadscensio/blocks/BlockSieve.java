@@ -1,8 +1,5 @@
 package exnihiloadscensio.blocks;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import exnihiloadscensio.compatibility.theoneprobe.ITOPInfoProvider;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ItemMesh;
@@ -14,7 +11,6 @@ import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -28,9 +24,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPInfoProvider {
 
@@ -46,6 +47,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 		}
 
 		@Override
+		@Nonnull
 		public String getName() {
 			return name;
 		}
@@ -78,13 +80,13 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 	public static final PropertyEnum<MeshType> MESH = PropertyEnum.create("mesh", MeshType.class);
 	
 	public BlockSieve() {
-		super(Material.WOOD, "blockSieve");
+		super(Material.WOOD, "blocksieve");
 		this.setDefaultState(this.blockState.getBaseState().withProperty(MESH, MeshType.NONE));
 		this.setHardness(2.0f);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (world.isRemote)
 			return true;
@@ -92,25 +94,26 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 		// I think this should work. Let's just go with it.
 		if(player instanceof FakePlayer && !Config.fakePlayersCanSieve)
 		    return false;
-		
+
+		ItemStack heldItem = player.getHeldItem(hand);
 		TileSieve te = (TileSieve) world.getTileEntity(pos);
 		if (te != null) {
-			if (heldItem != null && heldItem.getItem() instanceof ItemMesh) {
+			if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemMesh) {
 				//Adding a mesh.
-				ItemStack meshStack = heldItem.copy(); meshStack.stackSize = 1;
+				ItemStack meshStack = heldItem.copy(); meshStack.setCount(1);
 				MeshType type = MeshType.getMeshTypeByID(heldItem.getItemDamage());
 				boolean done = te.setMesh(meshStack, false);
 				
 				if (done) {
 				    if(!player.isCreative())
-				        heldItem.stackSize--;
+				        heldItem.shrink(1);
 				    
 					world.setBlockState(pos, state.withProperty(MESH, type));
 					PacketHandler.sendNBTUpdate(te);			
 					return true;
 				}
 			}
-			if (player.getHeldItemMainhand() == null && te.getMeshStack() != null && player.isSneaking() && te.setMesh(null, true)) {
+			if (player.getHeldItemMainhand().isEmpty() && te.getMeshStack() != null && player.isSneaking() && te.setMesh(null, true)) {
 				//Removing a mesh.
 				Util.dropItemInWorld(te, player, te.getMeshStack(), 0.02f);
 				te.setMesh(null);
@@ -122,16 +125,16 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 			
 			if (te.addBlock(heldItem)) {
 			    if(!player.isCreative())
-                    heldItem.stackSize--;
+                    heldItem.shrink(1);
                 
-				for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= 1*Config.sieveSimilarRadius ; xOffset++) {
-					for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= 1*Config.sieveSimilarRadius ; zOffset++) {
+				for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= Config.sieveSimilarRadius ; xOffset++) {
+					for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= Config.sieveSimilarRadius ; zOffset++) {
 						TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, zOffset));
 						if (entity != null && entity instanceof TileSieve) {
 							TileSieve sieve = (TileSieve) entity;
-							if (heldItem.stackSize > 0 && te.isSieveSimilarToInput(sieve)) 
+							if (heldItem.getCount() > 0 && te.isSieveSimilarToInput(sieve))
                                 if (sieve.addBlock(heldItem) && !player.isCreative())
-                                    heldItem.stackSize--;
+                                    heldItem.shrink(1);
 						}
 					}
 				}
@@ -140,7 +143,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 			
 			ArrayList<BlockPos> toSift = new ArrayList<BlockPos>();
 			for (int xOffset = -1*Config.sieveSimilarRadius ; xOffset <= Config.sieveSimilarRadius ; xOffset++) {
-				for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= 1*Config.sieveSimilarRadius ; zOffset++) {
+				for (int zOffset = -1*Config.sieveSimilarRadius ; zOffset <= Config.sieveSimilarRadius ; zOffset++) {
 					TileEntity entity = world.getTileEntity(pos.add(xOffset, 0, zOffset));
 					if (entity != null && entity instanceof TileSieve) {
 						TileSieve sieve = (TileSieve) entity;
@@ -152,7 +155,10 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 			for (BlockPos posIter : toSift) {
 				if (posIter != null) {
 					TileSieve sieve = (TileSieve) world.getTileEntity(posIter);
-					sieve.doSieving(player);
+
+					if (sieve != null) {
+						sieve.doSieving(player);
+					}
 				}
 			}
 			return true;
@@ -162,11 +168,13 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 	}
 
 	@Override
+	@Nonnull
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] {MESH});
+		return new BlockStateContainer(this, MESH);
 	}
 
 	@Override
+	@Nonnull
 	public IBlockState getStateFromMeta(int meta) {
 		MeshType type;
 		switch (meta) {
@@ -199,7 +207,7 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null) {
 			TileSieve sieve = (TileSieve) te;
@@ -211,14 +219,8 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
 		return new TileSieve();
-	}
-
-	@Override
-	public boolean isFullyOpaque(IBlockState state)
-	{
-		return false;
 	}
 
 	@Override
@@ -246,20 +248,21 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 		TileSieve sieve = (TileSieve) world.getTileEntity(data.getPos());
 		if (sieve == null)
 			return;
-		
-		if (sieve.getMeshStack() == null) {
+
+		if (sieve.getMeshStack() == null || sieve.getMeshStack().isEmpty()) {
 			probeInfo.text("Mesh: None");
 			return;
 		}
-		probeInfo.text("Mesh: " + I18n.format(sieve.getMeshStack().getUnlocalizedName() + ".name"));
-		
+
+		probeInfo.text("Mesh: " + new TextComponentTranslation(sieve.getMeshStack().getUnlocalizedName() + ".name").getFormattedText());
+
 		if (mode == ProbeMode.EXTENDED) {
 			Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(sieve.getMeshStack());
+
 			for (Enchantment enchantment : enchantments.keySet()) {
 				probeInfo.text(TextFormatting.BLUE + enchantment.getTranslatedName(enchantments.get(enchantment)));
 			}
 		}
-		
 	}
 
 }

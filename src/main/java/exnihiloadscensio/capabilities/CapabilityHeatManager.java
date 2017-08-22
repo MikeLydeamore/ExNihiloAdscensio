@@ -1,12 +1,12 @@
 package exnihiloadscensio.capabilities;
 
-import java.util.concurrent.Callable;
-
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+
+import java.util.concurrent.Callable;
 
 public class CapabilityHeatManager implements Capability.IStorage<ICapabilityHeat>, Callable<ICapabilityHeat>
 {

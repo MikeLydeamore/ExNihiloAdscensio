@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,14 +19,15 @@ public class BlockBaseFalling extends BlockFalling
         setUnlocalizedName(name);
         setRegistryName(name);
         setSoundType(sound);
-        GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this).setRegistryName(name));
+        ForgeRegistries.BLOCKS.register(this);
+        ForgeRegistries.ITEMS.register(new ItemBlock(this).setRegistryName(name));
     }
     
     @SideOnly(Side.CLIENT)
     public void initModel()
     {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+        if (getRegistryName() != null)
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
         //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "normal"));
     }
 }

@@ -13,8 +13,8 @@
             },
             "hunk": {
                 "textures": {
-                    "layer0": "exnihiloadscensio:items/oreChunk",
-                    "layer1": "exnihiloadscensio:items/oreChunkOverlay"
+                    "layer0": "exnihiloadscensio:items/orechunk",
+                    "layer1": "exnihiloadscensio:items/orechunkoverlay"
                 }
             },
             "dust": {
@@ -24,8 +24,8 @@
             },
             "piece": {
                 "textures": {
-                    "layer0": "exnihiloadscensio:items/orePiece",
-                    "layer1": "exnihiloadscensio:items/orePieceOverlay"
+                    "layer0": "exnihiloadscensio:items/orepiece",
+                    "layer1": "exnihiloadscensio:items/orepieceoverlay"
                 }
             }
         }

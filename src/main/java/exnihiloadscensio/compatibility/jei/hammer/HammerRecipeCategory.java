@@ -1,12 +1,7 @@
 package exnihiloadscensio.compatibility.jei.hammer;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.registries.HammerRegistry;
 import exnihiloadscensio.registries.HammerReward;
@@ -25,6 +20,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
 {
     public static final String UID = "exnihiloadscensio:hammer";
@@ -42,20 +42,29 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
         this.background = helper.createDrawable(texture, 0, 0, 166, 128);
         this.slotHighlight = helper.createDrawable(texture, 166, 0, 18, 18);
     }
-    
+
     @Override
+    @Nonnull
+    public String getModName() {
+        return "ExNihiloAdscensio";
+    }
+
+    @Override
+    @Nonnull
     public String getUid()
     {
         return UID;
     }
     
     @Override
+    @Nonnull
     public String getTitle()
     {
         return "Hammer";
     }
     
     @Override
+    @Nonnull
     public IDrawable getBackground()
     {
         return background;
@@ -69,14 +78,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
             slotHighlight.draw(minecraft, highlightX, highlightY);
         }
     }
-    
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-        
-    }
-    
-    @Override
+
     public void setRecipe(IRecipeLayout recipeLayout, HammerRecipe recipeWrapper)
     {
         // Block
@@ -100,7 +102,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
             
             ItemStack focusStack = (ItemStack) focus.getValue();
             
-            if (focus.getMode() == IFocus.Mode.OUTPUT && focusStack != null && focusStack.getItem() == outputStack.getItem() && focusStack.getItemDamage() == outputStack.getItemDamage())
+            if (focus.getMode() == IFocus.Mode.OUTPUT && !focusStack.isEmpty() && focusStack.getItem() == outputStack.getItem() && focusStack.getItemDamage() == outputStack.getItemDamage())
             {
                 highlightX = slotX;
                 highlightY = slotY;
@@ -111,7 +113,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
     }
     
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, HammerRecipe recipeWrapper, IIngredients ingredients)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull HammerRecipe recipeWrapper, @Nonnull IIngredients ingredients)
     {
         // I learn from the best
         setRecipe(recipeLayout, recipeWrapper);
@@ -182,7 +184,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
                         
                         String format = chance >= 10 ? " - %3.0f%% (x%d)" : "%1.1f%% - (x%d)";
                         
-                        tooltip.add(String.format(format, chance, reward.getStack().stackSize));
+                        tooltip.add(String.format(format, chance, reward.getStack().getCount()));
                     }
                 }
             }
@@ -190,6 +192,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipe>
     }
 
 	@Override
+    @Nonnull
 	public List<String> getTooltipStrings(int mouseX, int mouseY) {
 		return Collections.emptyList();
 	}

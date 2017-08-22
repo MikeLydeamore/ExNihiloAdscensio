@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageNBTUpdate implements IMessage {
 	
@@ -44,15 +46,20 @@ public class MessageNBTUpdate implements IMessage {
 
 	public static class MessageNBTUpdateHandler implements IMessageHandler<MessageNBTUpdate, IMessage> 
 	{
+		@SideOnly(Side.CLIENT)
 		@Override
 		public IMessage onMessage(final MessageNBTUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@SideOnly(Side.CLIENT)
 				@Override
 				public void run()
 				{
 					TileEntity entity =  Minecraft.getMinecraft().player.world.getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
-					entity.readFromNBT(msg.tag);
+
+					if (entity != null) {
+						entity.readFromNBT(msg.tag);
+					}
 				}
 			});
 			return null;

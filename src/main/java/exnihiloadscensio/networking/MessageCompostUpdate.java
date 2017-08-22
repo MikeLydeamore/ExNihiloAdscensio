@@ -10,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageCompostUpdate implements IMessage {
 	
@@ -62,10 +64,12 @@ public class MessageCompostUpdate implements IMessage {
 
 	public static class MessageCompostAmountUpdateHandler implements IMessageHandler<MessageCompostUpdate, IMessage> 
 	{
+		@SideOnly(Side.CLIENT)
 		@Override
 		public IMessage onMessage(final MessageCompostUpdate msg, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@SideOnly(Side.CLIENT)
 				@Override
 				public void run()
 				{

@@ -5,6 +5,8 @@ import lombok.Setter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+
 public class CrucibleItemHandler extends ItemStackHandler {
 
 	@Setter
@@ -15,7 +17,8 @@ public class CrucibleItemHandler extends ItemStackHandler {
 	}
 
 	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+	@Nonnull
+	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 		if (CrucibleRegistry.canBeMelted(stack)) {
 			return super.insertItem(slot, stack, simulate);
 		}
@@ -23,12 +26,13 @@ public class CrucibleItemHandler extends ItemStackHandler {
 		return stack;
 	}
 	@Override
+	@Nonnull
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
-	protected int getStackLimit(int slot, ItemStack stack) {
+	protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
 		return te.getCurrentItem() == null ? 4 : 3;
 	}
 }

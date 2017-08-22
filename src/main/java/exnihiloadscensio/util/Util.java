@@ -1,12 +1,10 @@
 package exnihiloadscensio.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import exnihiloadscensio.texturing.Color;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +17,11 @@ import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.UniversalBucket;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Util {
 	
@@ -59,11 +62,11 @@ public class Util {
 		if (player != null) {
 			Vec3d motion = new Vec3d(player.posX - stackCoordX, player.posY - stackCoordY, player.posZ - stackCoordZ);
 			motion.normalize();
-			droppedEntity.motionX = motion.xCoord;
-			droppedEntity.motionY = motion.yCoord;
-			droppedEntity.motionZ = motion.zCoord;
+			droppedEntity.motionX = motion.x;
+			droppedEntity.motionY = motion.y;
+			droppedEntity.motionZ = motion.z;
 			double offset = 0.25D;
-			droppedEntity.move(motion.xCoord * offset, motion.yCoord * offset, motion.zCoord * offset);
+			droppedEntity.move(MoverType.SELF, motion.x * offset, motion.y * offset, motion.z * offset);
 		}
 
 		droppedEntity.motionX *= speedfactor;
@@ -74,7 +77,8 @@ public class Util {
 
 		source.getWorld().spawnEntity(droppedEntity);
 	}
-	
+
+	@SideOnly(Side.CLIENT)
 	public static TextureAtlasSprite getTextureFromBlockState(IBlockState state) {
 		if (state == null)
 			return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
@@ -85,6 +89,7 @@ public class Util {
 		return ret != null ? ret : Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
 	}
 
+	@SideOnly(Side.CLIENT)
     public static TextureAtlasSprite getTextureFromFluidStack(FluidStack stack)
     {
         if(stack.getFluid() != null)

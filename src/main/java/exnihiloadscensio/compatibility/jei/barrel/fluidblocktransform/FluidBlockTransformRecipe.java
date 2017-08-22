@@ -1,9 +1,6 @@
 package exnihiloadscensio.compatibility.jei.barrel.fluidblocktransform;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
-
 import exnihiloadscensio.registries.types.FluidBlockTransformer;
 import exnihiloadscensio.util.Util;
 import mezz.jei.api.ingredients.IIngredients;
@@ -12,6 +9,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class FluidBlockTransformRecipe implements IRecipeWrapper
 {
@@ -33,7 +33,7 @@ public class FluidBlockTransformRecipe implements IRecipeWrapper
     }
     
     @Override
-    public void getIngredients(IIngredients ingredients)
+    public void getIngredients(@Nonnull IIngredients ingredients)
     {
         ingredients.setInputs(ItemStack.class, getInputs());
         ingredients.setInputs(FluidStack.class, getFluidInputs());
@@ -41,28 +41,19 @@ public class FluidBlockTransformRecipe implements IRecipeWrapper
         ingredients.setOutput(ItemStack.class, outputStack);
     }
 
-    @Override
     public List<ItemStack> getInputs()
     {
         return ImmutableList.of(inputBucket, inputStack);
     }
 
-    @Override
     public List<ItemStack> getOutputs()
     {
         return ImmutableList.of(outputStack);
     }
 
-    @Override
     public List<FluidStack> getFluidInputs()
     {
         return ImmutableList.of(inputFluid);
-    }
-
-    @Override
-    public List<FluidStack> getFluidOutputs()
-    {
-        return ImmutableList.of();
     }
 
     @Override
@@ -72,12 +63,7 @@ public class FluidBlockTransformRecipe implements IRecipeWrapper
     }
 
     @Override
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-        
-    }
-
-    @Override
+    @Nonnull
     public List<String> getTooltipStrings(int mouseX, int mouseY)
     {
         return null;

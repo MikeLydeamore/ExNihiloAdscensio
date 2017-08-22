@@ -1,17 +1,18 @@
 package exnihiloadscensio.client.renderers;
 
-import java.awt.Color;
-
 import exnihiloadscensio.items.ore.ItemOre;
 import exnihiloadscensio.items.ore.Ore;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+import java.awt.*;
+
 public class RenderOrePiece implements IItemColor {
 
 	@Override
-	public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-		if (stack == null)
+	public int getColorFromItemstack(@Nonnull ItemStack stack, int tintIndex) {
+		if (stack.isEmpty())
 			return 0;
 		
 		if (stack.getItem() instanceof ItemOre) {

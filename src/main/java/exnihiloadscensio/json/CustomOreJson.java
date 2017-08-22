@@ -1,18 +1,11 @@
 package exnihiloadscensio.json;
 
-import java.lang.reflect.Type;
-
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
+import com.google.gson.*;
 import exnihiloadscensio.items.ore.Ore;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.ItemInfo;
+
+import java.lang.reflect.Type;
 
 public class CustomOreJson implements JsonDeserializer<Ore>, JsonSerializer<Ore>
 {

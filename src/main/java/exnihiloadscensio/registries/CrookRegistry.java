@@ -1,30 +1,22 @@
 package exnihiloadscensio.registries;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import exnihiloadscensio.items.ItemResource;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemStackJson;
-import exnihiloadscensio.registries.manager.ICompostDefaultRegistryProvider;
 import exnihiloadscensio.registries.manager.ICrookDefaultRegistryProvider;
 import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.registries.types.CrookReward;
 import exnihiloadscensio.util.BlockInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.*;
 
 public class CrookRegistry {
 

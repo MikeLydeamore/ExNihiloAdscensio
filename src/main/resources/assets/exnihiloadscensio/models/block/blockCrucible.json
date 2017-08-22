@@ -2,11 +2,11 @@
 	"ambientocclusion": false,
     "parent": "minecraft:block/block",
     "textures": {
-        "particle": "exnihiloadscensio:blocks/blockCrucible",
-        "top": "exnihiloadscensio:blocks/blockCrucible",
-        "bottom": "exnihiloadscensio:blocks/blockCrucible",
-        "side": "exnihiloadscensio:blocks/blockCrucible",
-        "inside": "exnihiloadscensio:blocks/blockCrucible"
+        "particle": "exnihiloadscensio:blocks/blockcrucible",
+        "top": "exnihiloadscensio:blocks/blockcrucible",
+        "bottom": "exnihiloadscensio:blocks/blockcrucible",
+        "side": "exnihiloadscensio:blocks/blockcrucible",
+        "inside": "exnihiloadscensio:blocks/blockcrucible"
     },
     "elements": [
         {

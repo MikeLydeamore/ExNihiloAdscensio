@@ -1,16 +1,12 @@
 package exnihiloadscensio.compatibility.theoneprobe;
 
-import javax.annotation.Nullable;
-
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ITheOneProbe;
-import mcjty.theoneprobe.api.ProbeMode;
+import mcjty.theoneprobe.api.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+
+import javax.annotation.Nullable;
 
 public class CompatTOP {
 

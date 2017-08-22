@@ -1,13 +1,13 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "exnihiloadscensio:blockCrucible"
+        "model": "exnihiloadscensio:blockcrucible"
     },
     "variants": {
         "fired": {
             "true": {},
             "false": {
-                "model": "exnihiloadscensio:blockCrucibleUnfired"
+                "model": "exnihiloadscensio:blockcrucibleunfired"
             }
         },
         "normal": [

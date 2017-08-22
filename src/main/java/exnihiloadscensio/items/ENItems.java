@@ -1,7 +1,5 @@
 package exnihiloadscensio.items;
 
-import java.util.ArrayList;
-
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.items.seeds.ItemSeedBase;
 import exnihiloadscensio.items.tools.CrookBase;
@@ -13,6 +11,8 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
 
 public class ENItems {
 	
@@ -39,25 +39,25 @@ public class ENItems {
 	@SuppressWarnings("deprecation")
     public static void init()
 	{
-		hammerWood = new HammerBase("hammerWood", 64, ToolMaterial.WOOD);
+		hammerWood = new HammerBase("hammerwood", 64, ToolMaterial.WOOD);
 		hammerWood.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
-		hammerStone = new HammerBase("hammerStone", 128, ToolMaterial.STONE);
+		hammerStone = new HammerBase("hammerstone", 128, ToolMaterial.STONE);
 		hammerStone.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
-		hammerIron = new HammerBase("hammerIron", 512, ToolMaterial.IRON);
+		hammerIron = new HammerBase("hammeriron", 512, ToolMaterial.IRON);
 		hammerIron.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
-		hammerDiamond = new HammerBase("hammerDiamond", 4096, ToolMaterial.DIAMOND);
+		hammerDiamond = new HammerBase("hammerdiamond", 4096, ToolMaterial.DIAMOND);
 		hammerDiamond.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
-		hammerGold = new HammerBase("hammerGold", 64, ToolMaterial.GOLD);
+		hammerGold = new HammerBase("hammergold", 64, ToolMaterial.GOLD);
 		hammerGold.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
-		crookWood = new CrookBase("crookWood", 64);
+		crookWood = new CrookBase("crookwood", 64);
 		crookWood.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
-		crookBone = new CrookBase("crookBone", 256);
+		crookBone = new CrookBase("crookbone", 256);
 		crookBone.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
 		mesh = new ItemMesh();
@@ -75,7 +75,7 @@ public class ENItems {
 		itemSeeds.add(new ItemSeedBase("birch", Blocks.SAPLING.getStateFromMeta(2)));
 		itemSeeds.add(new ItemSeedBase("jungle", Blocks.SAPLING.getStateFromMeta(3)));
         itemSeeds.add(new ItemSeedBase("acacia", Blocks.SAPLING.getStateFromMeta(4)));
-        itemSeeds.add(new ItemSeedBase("darkOak", Blocks.SAPLING.getStateFromMeta(5)));
+        itemSeeds.add(new ItemSeedBase("darkoak", Blocks.SAPLING.getStateFromMeta(5)));
 		itemSeeds.add(new ItemSeedBase("cactus", Blocks.CACTUS.getDefaultState()).setPlantType(EnumPlantType.Desert));
 		itemSeeds.add(new ItemSeedBase("sugarcane", Blocks.REEDS.getDefaultState()).setPlantType(EnumPlantType.Beach));
 		itemSeeds.add(new ItemSeedBase("carrot", Blocks.CARROTS.getDefaultState()).setPlantType(EnumPlantType.Crop));
