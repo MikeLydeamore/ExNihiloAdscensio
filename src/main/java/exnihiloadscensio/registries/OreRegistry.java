@@ -14,6 +14,7 @@ import exnihiloadscensio.registries.manager.RegistryManager;
 import exnihiloadscensio.texturing.Color;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.LegacyCraftingHelper;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -112,8 +113,7 @@ public class OreRegistry {
 			if (Config.shouldOreDictOreDusts)
 				OreDictionary.registerOre("dust"+StringUtils.capitalize(ore.getOre().getName()), new ItemStack(ore, 1, 2));
 
-			// TODO
-			// GameRegistry.addRecipe(new ItemStack(ore, 1, 1), new Object[] { "xx", "xx", 'x', new ItemStack(ore, 1, 0) });
+			LegacyCraftingHelper.addShapedOreRecipe(new ItemStack(ore, 1, 1), "xx", "xx", 'x', new ItemStack(ore, 1, 0));
 
 			ItemStack smeltingResult;
 

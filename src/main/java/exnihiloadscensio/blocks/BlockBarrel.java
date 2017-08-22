@@ -165,15 +165,17 @@ public class BlockBarrel extends BlockBase implements ITileEntityProvider, ITOPI
     }
 
 	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
-			IBlockState blockState, IProbeHitData data) {
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
 		TileBarrel barrel = (TileBarrel) world.getTileEntity(data.getPos());
-		if (barrel == null)
+
+		if (barrel == null || barrel.getMode() == null)
 			return;
+
 		if (mode == ProbeMode.EXTENDED)
 			probeInfo.text(TextFormatting.GREEN + "Mode: "+StringUtils.capitalize(barrel.getMode().getName()));
 		
 		List<String> tooltips = barrel.getMode().getWailaTooltip(barrel, new ArrayList<String>());
+
 		for (String tooltip : tooltips) {
 			probeInfo.text( tooltip);
 		}

@@ -24,6 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
@@ -248,19 +249,20 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, ITOPIn
 		if (sieve == null)
 			return;
 
-		if (sieve.getMeshStack() == null) {
+		if (sieve.getMeshStack() == null || sieve.getMeshStack().isEmpty()) {
 			probeInfo.text("Mesh: None");
 			return;
 		}
-		probeInfo.text("Mesh: " + I18n.format(sieve.getMeshStack().getUnlocalizedName() + ".name"));
-		
+
+		probeInfo.text("Mesh: " + new TextComponentTranslation(sieve.getMeshStack().getUnlocalizedName() + ".name").getFormattedText());
+
 		if (mode == ProbeMode.EXTENDED) {
 			Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(sieve.getMeshStack());
+
 			for (Enchantment enchantment : enchantments.keySet()) {
 				probeInfo.text(TextFormatting.BLUE + enchantment.getTranslatedName(enchantments.get(enchantment)));
 			}
 		}
-		
 	}
 
 }

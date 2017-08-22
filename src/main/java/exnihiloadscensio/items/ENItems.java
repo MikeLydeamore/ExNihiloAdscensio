@@ -64,7 +64,7 @@ public class ENItems {
 		mesh.setCreativeTab(ExNihiloAdscensio.tabExNihilo);
 		
 		resources = new ItemResource();
-		OreDictionary.registerOre("clayporcelain", ItemResource.getResourceStack("porcelain_clay"));
+		OreDictionary.registerOre("clayPorcelain", ItemResource.getResourceStack("porcelain_clay"));
 		
 		cookedSilkworm = new ItemCookedSilkworm();
 
